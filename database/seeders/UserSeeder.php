@@ -13,6 +13,19 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        $admins = User::factory(2)->create();
+        foreach ($admins as $admin) {
+            $admin->assignRole('admin');
+        }
+
+        $teachers = User::factory(10)->create();
+        foreach ($teachers as $teacher) {
+            $teacher->assignRole('teacher');
+        }
+
+        $students = User::factory(50)->create();
+        foreach ($students as $student) {
+            $student->assignRole('student');
+        }
     }
 }

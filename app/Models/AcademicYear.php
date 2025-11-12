@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\SemesterEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,7 @@ class AcademicYear extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'semester' => SemesterEnum::class
     ];
 
     /**

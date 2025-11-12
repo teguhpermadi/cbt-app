@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\AcademicYear;
+use App\SemesterEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,7 +17,7 @@ class AcademicYearFactory extends Factory
     {
         $startYear = $this->faker->numberBetween(2020, 2030);
         $endYear = $startYear + 1;
-        $semester = $this->faker->randomElement(['Ganjil', 'Genap']);
+        $semester = $this->faker->randomElement(SemesterEnum::cases());
         
         return [
             'year' => "{$startYear}/{$endYear}",

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('academic_years', function (Blueprint $table) {
-            $table->ulid('id')->primary(); // Menggunakan ULID sebagai Primary Key
-            $table->string('year', 9); // Contoh: 2024/2025
-            $table->string('semester');
-            $table->boolean('is_active')->default(false);
+        Schema::create('grades', function (Blueprint $table) {
+            $table->ulid('id')->primary();
+            $table->string('name');
+            $table->string('level')->nullable();
+            $table->foreignUlid('academic_year_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('academic_years');
+        Schema::dropIfExists('grades');
     }
 };

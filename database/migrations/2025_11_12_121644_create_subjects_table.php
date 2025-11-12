@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->ulid('id')->primary(); // ULID Primary Key
-            $table->string('name')->unique();
-            $table->string('code', 10)->unique()->nullable();
+            $table->string('name');
+            $table->string('code')->nullable();
             $table->text('description')->nullable();
+            $table->foreignUlid('academic_year_id')->constrained()->onDelete('cascade');
+            $table->foreignUlid('grade_id')->constrained()->onDelete('cascade');
+            $table->foreignUlid('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

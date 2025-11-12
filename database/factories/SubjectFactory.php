@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\AcademicYear;
+use App\Models\Grade;
 use App\Models\Subject;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,27 +13,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SubjectFactory extends Factory
 {
-    protected $model = Subject::class;
-
     public function definition(): array
     {
-        $name = $this->faker->unique()->randomElement([
-            'Matematika', 
-            'Bahasa Indonesia', 
-            'Bahasa Inggris', 
-            'Fisika', 
-            'Kimia', 
-            'Biologi', 
-            'Sejarah'
-        ]) . ' ' . $this->faker->randomElement(['Wajib', 'Peminatan']);
-
-        // Mengambil 3 huruf pertama dan 3 angka acak untuk kode
-        $code = strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $name), 0, 3)) . $this->faker->unique()->randomNumber(3);
-
         return [
-            'name' => $name,
-            'code' => $code,
+            'name' => $this->faker->word(),
+            'code' => $this->faker->word(),
             'description' => $this->faker->paragraph(),
+            'academic_year_id' => AcademicYear::get()->random()->id,
+            'grade_id' => Grade::get()->random()->id,
+            'user_id' => User::get()->random()->id,
         ];
     }
 }

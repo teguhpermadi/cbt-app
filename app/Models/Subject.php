@@ -20,6 +20,9 @@ class Subject extends Model implements HasMedia
         'name',
         'code',
         'description',
+        'academic_year_id',
+        'grade_id',
+        'user_id',
     ];
 
     /**
@@ -45,5 +48,20 @@ class Subject extends Model implements HasMedia
             ->addMediaConversion('thumb')
             ->width(100)
             ->height(100);
+    }
+
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

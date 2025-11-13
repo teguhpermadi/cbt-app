@@ -15,7 +15,6 @@ return new class extends Migration
             $table->ulid('id')->primary();
             
             // Foreign Keys
-            $table->ulid('exam_id');
             $table->foreignUlid('exam_id')->references('id')->on('exams')->onDelete('cascade');
             
             $table->foreignUlid('user_id')->references('id')->on('users')->onDelete('cascade')->comment('ID Siswa');

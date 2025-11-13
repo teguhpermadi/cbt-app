@@ -18,6 +18,9 @@
         },
         "modal": {
             "installationTime": 1763041096
+        },
+        "checkbox": {
+            "installationTime": 1763069631
         }
     }
 }

@@ -2,33 +2,49 @@
 
 namespace Database\Seeders;
 
-use App\Models\Grade;
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Jalankan seeder database.
      */
     public function run(): void
     {
+        $this->command->info('Memulai proses Seeding CBT App...');
+        
         $this->call([
-            RoleAndPermissionSeeder::class,
-            UserSeeder::class,
-            AcademicYearSeeder::class,
-            GradeSeeder::class,
-            SubjectSeeder::class,
-            ReadingMaterialSeeder::class,
+            // =========================================================
+            // I. Konfigurasi Dasar (Harus ada terlebih dahulu)
+            // =========================================================
+            RoleAndPermissionSeeder::class, // Spatie Roles
+            UserSeeder::class,              // User (Admin, Teacher, Student)
+            AcademicYearSeeder::class,      // Tahun Ajaran
+            GradeSeeder::class,             // Kelas
+            SubjectSeeder::class,           // Mata Pelajaran
             
-            // --- Model Bank Soal ---
-            QuestionBankSeeder::class,       
-            QuestionSeeder::class,           
-            QuestionPeerReviewSeeder::class, 
+            // =========================================================
+            // II. Bank Soal (Questions)
+            // =========================================================
+            ReadingMaterialSeeder::class,   // Materi Bacaan
+            QuestionBankSeeder::class,      // Bank Soal
+            QuestionSeeder::class,          // Soal Utama (dengan media)
+            QuestionPeerReviewSeeder::class,// Review Soal
             
-            // --- Model Konfigurasi Ujian ---
-            ExamSeeder::class,
+            // =========================================================
+            // III. Konfigurasi Ujian
+            // =========================================================
+            ExamSeeder::class,              // Konfigurasi Ujian (Exam)
+            ExamQuestionSeeder::class,      // Salinan Soal Ujian (ExamQuestion)
+            
+            // =========================================================
+            // IV. Transaksional Ujian (Sesi & Hasil)
+            // =========================================================
+            ExamSessionSeeder::class,       // Sesi Pengerjaan Siswa (ExamSession)
+            ExamResultDetailSeeder::class,  // Detail Jawaban per Soal (ExamResultDetail)
+            ExamResultSeeder::class,        // Rekapitulasi Hasil Resmi/Akhir (ExamResult)
         ]);
+        
+        $this->command->info('✅ Proses Seeding CBT App selesai!');
     }
 }

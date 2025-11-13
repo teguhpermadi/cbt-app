@@ -21,8 +21,14 @@ class DatabaseSeeder extends Seeder
             GradeSeeder::class,
             SubjectSeeder::class,
             ReadingMaterialSeeder::class,
-            QuestionBankSeeder::class,
-            QuestionSeeder::class,
+            
+            // --- Model Bank Soal ---
+            QuestionBankSeeder::class,       
+            QuestionSeeder::class,           
+            QuestionPeerReviewSeeder::class, 
+            
+            // --- Model Konfigurasi Ujian ---
+            ExamSeeder::class,
         ]);
     }
 }

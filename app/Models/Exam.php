@@ -1,0 +1,94 @@
+<?php
+
+namespace App\Models;
+
+use App\Enums\ExamTypeEnum;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+
+class Exam extends Model
+{
+    use HasFactory, HasUlids, LogsActivity, SoftDeletes;
+
+    protected $fillable = [
+        'academic_year_id',
+        'grade_id',
+        'subject_id',
+        'teacher_id',       // Guru yang membuat ujian
+        'title',
+        'exam_type',        // Tipe ujian (Harian, UTS, UAS, dll.)
+        'duration',         // Durasi ujian dalam menit
+        'total_questions',  // Jumlah total soal yang digunakan
+        'is_published',     // Status ujian: draft/terbit
+        'is_randomized',    // Apakah urutan soal diacak
+        'passing_score',    // Nilai minimum kelulusan
+        'start_time',       // Waktu mulai ujian
+        'end_time',         // Waktu berakhir ujian
+    ];
+
+    protected $casts = [
+        'exam_type' => ExamTypeEnum::class,
+        'duration' => 'integer',
+        'total_questions' => 'integer',
+        'is_published' => 'boolean',
+        'is_randomized' => 'boolean',
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
+    // --- RELATIONS ---
+
+    public function academicYear(): BelongsTo
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
+
+    public function grade(): BelongsTo
+    {
+        return $this->belongsTo(Grade::class);
+    }
+
+    public function subject(): BelongsTo
+    {
+        return $this->belongsTo(Subject::class);
+    }
+    
+    public function teacher(): BelongsTo
+    {
+        // Guru yang membuat/mengawasi ujian
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+    /**
+     * Relasi ke model ExamQuestion (Salinan soal yang digunakan dalam ujian ini).
+     */
+    // public function examQuestions(): HasMany
+    // {
+    //     return $this->hasMany(ExamQuestion::class);
+    // }
+
+    /**
+     * Relasi ke model ExamResult (Hasil ujian siswa).
+     */
+    // public function examResults(): HasMany
+    // {
+    //     return $this->hasMany(ExamResult::class);
+    // }
+    
+    // --- SPATIE CONFIGURATIONS ---
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['title', 'exam_type', 'duration', 'is_published'])
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(fn(string $eventName) => "Ujian '{$this->title}' ({$this->exam_type->value}) di-{$eventName}")
+            ->useLogName('exam_configuration');
+    }
+}

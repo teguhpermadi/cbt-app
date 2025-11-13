@@ -2,3 +2,5 @@ Question::latest()->get();
 Question::latest()->get();
 QuestionPeerReview::latest()->get();
 QuestionPeerReview::latest()->get();
+Exam::latest()->get();
+App\Models\Exam::latest()->get();

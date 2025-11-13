@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\ExamResultDetail;
 use App\Models\ExamSession;
+use App\Models\ExamQuestion; // <--- IMPORT ExamQuestion
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Collection; // Penting: Import Collection
 
 class ExamResultDetailSeeder extends Seeder
 {
@@ -22,23 +22,19 @@ class ExamResultDetailSeeder extends Seeder
 
         $successfulDetails = 0;
         $skippedSessions = 0;
-        
+
         foreach ($sessions as $session) {
-            // PERBAIKAN KRUSIAL: Gunakan Safe Navigation untuk mencegah crash jika relasi hilang.
-            $questions = $session->exam?->examQuestions ?? Collection::make([]);
-            
+            // PERBAIKAN: Ambil ExamQuestion secara langsung berdasarkan ID, bukan melalui relasi
+            $questions = ExamQuestion::where('exam_id', $session->exam_id)->get();
+
             $totalDetails = 0;
 
-            // Jika tidak ada soal terkait dengan Exam ini, lewati sesi
             if ($questions->isEmpty()) {
-                // Hapus baris write() jika Anda tidak ingin melihat output ini
-                // $this->command->getOutput()->write("  -> Sesi ID {$session->id} dilewati: Tidak ada ExamQuestion terkait.\n");
                 $skippedSessions++;
                 continue;
             }
 
             foreach ($questions as $question) {
-                // Buat detail jawaban untuk setiap soal dalam sesi ini
                 ExamResultDetail::factory()->create([
                     'exam_session_id' => $session->id,
                     'exam_question_id' => $question->id,

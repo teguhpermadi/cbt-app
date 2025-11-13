@@ -14,7 +14,7 @@ class QuestionPeerReviewFactory extends Factory
 
     public function definition(): array
     {
-        $reviewer = User::get()->random();
+        $reviewer = User::where('user_type', 'teacher')->inRandomOrder()->first() ?? User::factory()->create(['user_type' => 'teacher']);
         
         $question = Question::get()->random();
 

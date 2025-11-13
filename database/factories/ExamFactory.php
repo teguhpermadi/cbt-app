@@ -22,7 +22,7 @@ class ExamFactory extends Factory
         $subject = Subject::inRandomOrder()->first();
         
         // Asumsi guru yang membuat ujian adalah user_type 'teacher'
-        $teacher = User::get()->random();
+        $teacher = User::where('user_type', 'teacher')->inRandomOrder()->first();
 
         $examType = $this->faker->randomElement(ExamTypeEnum::cases());
         $titlePrefix = match ($examType) {

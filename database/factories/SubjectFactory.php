@@ -21,7 +21,7 @@ class SubjectFactory extends Factory
             'description' => $this->faker->paragraph(),
             'academic_year_id' => AcademicYear::get()->random()->id,
             'grade_id' => Grade::get()->random()->id,
-            'user_id' => User::get()->random()->id,
+            'user_id' => User::where('user_type', 'teacher')->inRandomOrder()->first()->id,
         ];
     }
 }

@@ -3,7 +3,6 @@
 namespace Database\Factories\Traits;
 
 use App\Models\Question;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
@@ -19,51 +18,59 @@ trait FillsWithMedia
      */
     protected function createDummyMedia(Question $question, string $collectionName, string $filename): ?string
     {
-        // Path sementara untuk menyimpan gambar yang dibuat GD
-        $tempPath = Storage::disk('public')->path('temp/' . $filename);
+        $tempDir = 'temp';
+        $tempPath = Storage::disk('local')->path($tempDir . '/' . $filename);
         
-        // Pastikan direktori sementara ada
-        if (!Storage::disk('public')->exists('temp')) {
-            Storage::disk('public')->makeDirectory('temp');
+        if (!Storage::disk('local')->exists($tempDir)) {
+            Storage::disk('local')->makeDirectory($tempDir);
         }
-
+        
         // 1. Buat Gambar Dummy dengan GD Library
-        // Ukuran: 200x200, warna acak, teks acak
-        $width = 200;
-        $height = 200;
+        $width = 200; $height = 200;
         $image = imagecreate($width, $height);
         
-        // Warna latar belakang acak
-        $r = rand(100, 255);
-        $g = rand(100, 255);
-        $b = rand(100, 255);
+        $r = rand(100, 255); $g = rand(100, 255); $b = rand(100, 255);
         $bgColor = imagecolorallocate($image, $r, $g, $b);
-        
-        // Warna teks (kontras)
         $textColor = imagecolorallocate($image, 255 - $r, 255 - $g, 255 - $b);
         
-        imagestring($image, 5, 20, 90, "Option Media", $textColor);
-        imagestring($image, 3, 20, 110, $filename, $textColor);
+        imagestring($image, 4, 10, 80, "Media Opsi", $textColor);
+        imagestring($image, 3, 10, 100, $filename, $textColor);
         
         // Simpan gambar ke path sementara
         imagepng($image, $tempPath);
         imagedestroy($image);
         
+        $mediaId = null;
+
         try {
             // 2. Simpan Gambar ke Spatie Media Library
+            // Spatie menggunakan fungsi copy() atau move() tergantung konfigurasi.
             $media = $question->addMedia($tempPath)
                 ->preservingOriginal()
                 ->toMediaCollection($collectionName);
                 
-            // Hapus file sementara
-            // unlink($tempPath);
+            $mediaId = $media->id; 
             
-            return $media->id; // Kembalikan ULID
-            
-        } catch (FileCannotBeAdded $e) {
-            // Jika gagal, log error dan kembalikan null
-            Log::error("Failed to add dummy media: " . $e->getMessage());
-            return null;
+        }catch (\Exception $e) {
+             // Tangkap Exception lain yang mungkin terjadi selama proses penyimpanan
+            Log::error("Exception saat menyimpan media: " . $e->getMessage());
+        } 
+        catch (FileCannotBeAdded $e) {
+            // Log error Spatie jika penyimpanan gagal
+            Log::error("Spatie Media Gagal Menyimpan File Dummy: " . $e->getMessage());
+        } finally {
+            // 3. Hapus File Sementara dengan Pengecekan Aman
+            if (file_exists($tempPath)) {
+                // Gunakan @ untuk menekan error jika unlink gagal karena permission
+                // Atau, yang lebih baik, gunakan Storage facade Laravel
+                try {
+                    Storage::disk('local')->delete($tempDir . '/' . $filename);
+                } catch (\Exception $e) {
+                    Log::warning("Gagal menghapus file sementara: {$tempPath}. Mungkin masalah izin.");
+                }
+            }
         }
+        
+        return $mediaId;
     }
 }

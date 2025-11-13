@@ -8,13 +8,13 @@
     <form wire:submit.prevent="save">
         <x-modal-body>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <x-input-field label="Nama Lengkap" type="text" wire:model.defer="state.name" required />
+                <x-ui.input label="Nama Lengkap" type="text" wire:model.defer="state.name" required />
                 
-                <x-input-field label="Username" type="text" wire:model.defer="state.username" required />
+                <x-ui.input label="Username" type="text" wire:model.defer="state.username" required />
                 
-                <x-input-field label="Email" type="email" wire:model.defer="state.email" required />
+                <x-ui.input label="Email" type="email" wire:model.defer="state.email" required />
                 
-                <x-input-field label="Password" type="password" 
+                <x-ui.input label="Password" type="password" 
                     wire:model.defer="state.password" 
                     :required="!$user" 
                     :placeholder="$user ? 'Kosongkan jika tidak diubah' : ''" 
@@ -25,10 +25,10 @@
                 <div class="mt-6 border-t pt-4">
                     <h4 class="text-lg font-semibold mb-3">Data Siswa (Wajib)</h4>
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <x-input-field label="NISN" type="text" wire:model.defer="state.nisn" required />
-                        <x-input-field label="NIS" type="text" wire:model.defer="state.nis" required />
-                        <x-input-field label="Tempat Lahir" type="text" wire:model.defer="state.tempat_lahir" required />
-                        <x-input-field label="Tanggal Lahir" type="date" wire:model.defer="state.tanggal_lahir" required />
+                        <x-ui.input label="NISN" type="text" wire:model.defer="state.nisn" required />
+                        <x-ui.input label="NIS" type="text" wire:model.defer="state.nis" required />
+                        <x-ui.input label="Tempat Lahir" type="text" wire:model.defer="state.tempat_lahir" required />
+                        <x-ui.input label="Tanggal Lahir" type="date" wire:model.defer="state.tanggal_lahir" required />
                     </div>
                 </div>
             @endif

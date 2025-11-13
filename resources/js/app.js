@@ -6,6 +6,6 @@ import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.e
 // components using Alpine.data(...) and
 // plugins using Alpine.plugin(...) 
 
-
+import './globals/modals.js';
  
 Livewire.start()

@@ -1,9 +1,10 @@
 <div>
     <div class="border-b border-gray-200">
-        <nav class="-mb-px-ui. flex-ui. space-x-ui.8" aria-label="Tabs">
+        {{-- Tabs --}}
+        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
             @foreach ($tabs as $key => $label)
                 <button wire:click="setTab('{{ $key }}')"
-                    class="@if ($activeTab === $key) border-indigo-500 tex-ui.t-indigo-600 @else border-transparent tex-ui.t-gray-500 hover:tex-ui.t-gray-700 hover:border-gray-300 @endif whitespace-nowrap py-4 px-ui.1 border-b-2 font-medium tex-ui.t-sm">
+                    class="@if ($activeTab === $key) border-indigo-500 text-indigo-600 @else border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 @endif whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
                     {{ $label }}
                 </button>
             @endforeach
@@ -11,95 +12,93 @@
     </div>
 
     <div class="mt-4">
-        <div class="flex-ui. items-center justify-between space-x-ui.2 mb-4">
-            <div class="flex-ui. space-x-ui.2">
-                <div>
-                    <x-ui.button variant="primary" wire:click="$dispatch('createUser', { type: '{{ $activeTab }}' })">
-                        <x-ui.icon name="plus" class="w-4 h-4 mr-1" />
-                        Tambah {{ $tabs[$activeTab] }}
-                    </x-ui.button>
+        {{-- Toolbar: Tombol Aksi & Pencarian --}}
+        <div class="flex items-center justify-between space-x-2 mb-4">
+            <div class="flex space-x-2">
+                
+                {{-- Tombol Tambah --}}
+                <x-ui.button variant="primary" wire:click="$dispatch('createUser', { type: '{{ $activeTab }}' })">
+                    <x-ui.icon name="plus" class="w-4 h-4 mr-1" />
+                    Tambah {{ $tabs[$activeTab] }}
+                </x-ui.button>
 
-                    @forelse ($users as $user)
-                        <x-ui.table-row wire:key="{{ $user->id }}">
-                            <x-ui.table-cell class="tex-ui.t-right">
-                                <x-ui.button variant="ghost" size="sm"
-                                    wire:click="$dispatch('editUser', { userId: '{{ $user->id }}' })">
-                                    Edit
-                                </x-ui.button>
-                                <x-ui.button variant="ghost" size="sm">Delete</x-ui.button>
-                            </x-ui.table-cell>
-                        </x-ui.table-row>
-                    @empty
-                    @endforelse
-
-                    <livewire:user-management.user-form />
-                </div>
-
+                {{-- Komponen ini Dihapus/Dipotong karena tidak memiliki struktur tabel yang benar dan terulang di bawah --}}
+                
                 @if (count($selectedUsers) > 0)
-                    <x-ui.button wire:click="bulkDelete" variant="destructive" x-ui.data
-                        x-ui.on:click.prevent="$dispatch('open-modal', 'confirm-bulk-delete')">
+                    {{-- Tombol Hapus Massal --}}
+                    <x-ui.button wire:click="bulkDelete" variant="destructive" x-data
+                        x-on:click.prevent="$dispatch('open-modal', 'confirm-bulk-delete')">
                         <x-ui.icon name="trash" class="w-4 h-4 mr-1" />
                         Hapus ({{ count($selectedUsers) }})
                     </x-ui.button>
                 @endif
 
-                <x-ui.dropdown>
-                    <x-ui.dropdown-trigger as-child>
-                        <x-ui.button variant="outline">
-                            Aksi Lain
-                            <x-ui.icon name="chevron-down" class="w-4 h-4 ml-1" />
-                        </x-ui.button>
-                    </x-ui.dropdown-trigger>
-                    <x-ui.dropdown-content>
-                        <x-ui.dropdown-item wire:click="$dispatch('open-modal', 'import-modal')">Import
-                            Data</x-ui.dropdown-item>
-                        <x-ui.dropdown-item wire:click="ex-ui.portData">Ex-ui.port Data</x-ui.dropdown-item>
-                        <x-ui.separator />
-                        <x-ui.dropdown-item wire:click="$dispatch('open-modal', 'manage-role-modal')">Kelola
-                            Role</x-ui.dropdown-item>
-                    </x-ui.dropdown-content>
-                </x-ui.dropdown>
             </div>
 
-            <x-ui.input wire:model.live.debounce.300ms="search" type="tex-ui.t" placeholder="Cari pengguna..."
-                class="max-ui.w-x-ui.s" />
+            {{-- Input Pencarian --}}
+            <x-ui.input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari pengguna..."
+                class="max-w-xs" />
         </div>
 
-        <div x-ui.data="{ selectAll: @entangle('selectAll').live }">
-            <div class="flex-ui. items-center justify-between space-x-ui.2 mb-4">
-                <div class="flex-ui. space-x-ui.2">
-                    @if (count($selectedUsers) > 0)
-                        <x-ui.button wire:click="confirmBulkDeletion" variant="destructive">
-                            <x-ui.icon name="trash" class="w-4 h-4 mr-1" />
-                            Hapus ({{ count($selectedUsers) }})
-                        </x-ui.button>
-                    @endif
-                </div>
-            </div>
+        {{-- Struktur Tabel Inti --}}
+        <div x-data="{ selectAll: @entangle('selectAll').live }">
+            
+            {{-- Wrapper Komponen Tabel Kustom --}}
+            <x-ui.table> 
+                
+                {{-- Table Header --}}
+                <x-ui.table.header>
+                    <x-ui.table.row>
+                        <x-ui.table.head class="w-10">
+                            <input type="checkbox" x-model="selectAll"
+                                x-on:click="$wire.set('selectedUsers', selectAll ? @js($users->pluck('id')->toArray()) : [])" />
+                        </x-ui.table.head>
+                        {{-- Tambahkan kolom Judul lainnya di sini --}}
+                        <x-ui.table.head>Nama</x-ui.table.head>
+                        <x-ui.table.head>Username</x-ui.table.head>
+                        <x-ui.table.head>Email</x-ui.table.head>
+                        <x-ui.table.head class="text-right">Aksi</x-ui.table.head>
+                    </x-ui.table.row>
+                </x-ui.table.header>
 
-            <x-ui.table-header>
-                <x-ui.table-row>
-                    <x-ui.table-head class="w-10">
-                        <input type="checkbox-ui." x-ui.model="selectAll"
-                            x-ui.on:click="$wire.set('selectedUsers', selectAll ? @js($users->pluck('id')->toArray()) : [])" />
-                    </x-ui.table-head>
-                </x-ui.table-row>
-            </x-ui.table-header>
-            @forelse ($users as $user)
-                <x-ui.table-row wire:key="{{ $user->id }}">
-                    <x-ui.table-cell class="tex-ui.t-right">
-                        <x-ui.button variant="ghost" size="sm"
-                            wire:click="$dispatch('editUser', { userId: '{{ $user->id }}' })">
-                            Edit
-                        </x-ui.button>
-                        <x-ui.button variant="ghost" size="sm"
-                            wire:click="confirmUserDeletion('{{ $user->id }}')" variant="destructive">
-                            Delete
-                        </x-ui.button>
-                    </x-ui.table-cell>
-                </x-ui.table-row>
-            @empty
-            @endforelse
+                {{-- Table Body --}}
+                <x-ui.table.body>
+                    @forelse ($users as $user)
+                        <x-ui.table.row wire:key="{{ $user->id }}">
+                            {{-- Checkbox --}}
+                            <x-ui.table.cell class="w-10">
+                                <input type="checkbox" wire:model.live="selectedUsers" value="{{ $user->id }}" />
+                            </x-ui.table.cell>
+                            {{-- Data Pengguna --}}
+                            <x-ui.table.cell>{{ $user->name }}</x-ui.table.cell>
+                            <x-ui.table.cell>{{ $user->username }}</x-ui.table.cell>
+                            <x-ui.table.cell>{{ $user->email }}</x-ui.table.cell>
+                            
+                            {{-- Kolom Aksi --}}
+                            <x-ui.table.cell class="text-right">
+                                <x-ui.button variant="ghost" size="sm"
+                                    wire:click="$dispatch('editUser', { userId: '{{ $user->id }}' })">
+                                    Edit
+                                </x-ui.button>
+                                <x-ui.button variant="ghost" size="sm"
+                                    wire:click="confirmUserDeletion('{{ $user->id }}')" variant="destructive">
+                                    Delete
+                                </x-ui.button>
+                            </x-ui.table.cell>
+                        </x-ui.table.row>
+                    @empty
+                        {{-- Baris kosong --}}
+                        <x-ui.table.row>
+                            <x-ui.table.cell colspan="5" class="text-center py-4">
+                                Tidak ada data {{ $tabs[$activeTab] }}.
+                            </x-ui.table.cell>
+                        </x-ui.table.row>
+                    @endforelse
+                </x-ui.table.body>
+                
+            </x-ui.table>
+
+            {{-- <livewire:user-management.user-form /> --}}
         </div>
 
         <div class="mt-4">
@@ -107,18 +106,18 @@
         </div>
     </div>
 
-
-    <x-ui.modal name="confirm-user-deletion" focusable wire:model="deletingUserId">
+    {{-- Modal Konfirmasi Hapus Pengguna Tunggal --}}
+    {{-- <x-ui.modal name="confirm-user-deletion" focusable wire:model="deletingUserId">
         <div class="p-6">
-            <h2 class="tex-ui.t-lg font-medium tex-ui.t-gray-900">
+            <h2 class="text-lg font-medium text-gray-900">
                 Konfirmasi Penghapusan Pengguna
             </h2>
-            <p class="mt-1 tex-ui.t-sm tex-ui.t-gray-600">
+            <p class="mt-1 text-sm text-gray-600">
                 Apakah Anda yakin ingin menghapus pengguna ini? Tindakan ini tidak dapat dibatalkan.
             </p>
-            <div class="mt-6 flex-ui. justify-end">
+            <div class="mt-6 flex justify-end">
                 <x-ui.button variant="secondary"
-                    x-ui.on:click="$wire.set('deletingUserId', null); $dispatch('close-modal', 'confirm-user-deletion')">
+                    x-on:click="$wire.set('deletingUserId', null); $dispatch('close-modal', 'confirm-user-deletion')">
                     Batal
                 </x-ui.button>
                 <x-ui.button variant="destructive" class="ml-3" wire:click="deleteUser">
@@ -126,19 +125,20 @@
                 </x-ui.button>
             </div>
         </div>
-    </x-ui.modal>
+    </x-ui.modal> --}}
 
 
-    <x-ui.modal name="confirm-bulk-deletion" focusable>
+    {{-- Modal Konfirmasi Hapus Massal --}}
+    {{-- <x-ui.modal name="confirm-bulk-deletion" focusable>
         <div class="p-6">
-            <h2 class="tex-ui.t-lg font-medium tex-ui.t-gray-900">
+            <h2 class="text-lg font-medium text-gray-900">
                 Konfirmasi Hapus Massal ({{ count($selectedUsers) }} Pengguna)
             </h2>
-            <p class="mt-1 tex-ui.t-sm tex-ui.t-gray-600">
+            <p class="mt-1 text-sm text-gray-600">
                 Anda akan menghapus **{{ count($selectedUsers) }}** pengguna terpilih. Apakah Anda yakin?
             </p>
-            <div class="mt-6 flex-ui. justify-end">
-                <x-ui.button variant="secondary" x-ui.on:click="$dispatch('close-modal', 'confirm-bulk-deletion')">
+            <div class="mt-6 flex justify-end">
+                <x-ui.button variant="secondary" x-on:click="$dispatch('close-modal', 'confirm-bulk-deletion')">
                     Batal
                 </x-ui.button>
                 <x-ui.button variant="destructive" class="ml-3" wire:click="bulkDelete">
@@ -146,5 +146,5 @@
                 </x-ui.button>
             </div>
         </div>
-    </x-ui.modal>
+    </x-ui.modal> --}}
 </div>

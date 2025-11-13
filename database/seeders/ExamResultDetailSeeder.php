@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\ExamResultDetail;
 use App\Models\ExamSession;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 
 class ExamResultDetailSeeder extends Seeder
 {
@@ -20,8 +21,19 @@ class ExamResultDetailSeeder extends Seeder
         $this->command->info('Membuat detail jawaban (ExamResultDetail) untuk setiap sesi...');
 
         foreach ($sessions as $session) {
-            $questions = $session->exam->examQuestions;
+            // PERBAIKAN UTAMA:
+            // Menggunakan Optional Chaining (?->) untuk mengakses relasi examQuestions.
+            // Jika $session->exam adalah null, maka ?? collect() akan memastikan $questions 
+            // bernilai Collection kosong, sehingga loop foreach aman.
+            $questions = $session->exam?->examQuestions ?? Collection::make([]);
+            
             $totalDetails = 0;
+
+            // Jika tidak ada soal (misalnya ExamQuestionSeeder belum dijalankan), lewati sesi ini
+            if ($questions->isEmpty()) {
+                 $this->command->getOutput()->write("  -> Sesi ID {$session->id} (Percobaan {$session->attempt_number}) dilewati: Tidak ada soal ditemukan.\n");
+                continue;
+            }
 
             foreach ($questions as $question) {
                 // Buat detail jawaban untuk setiap soal dalam sesi ini

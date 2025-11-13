@@ -2,4 +2,5 @@
     <flux:main>
         {{ $slot }}
     </flux:main>
+    {{-- Include Sheaf UI JavaScript --}}
 </x-layouts.app.sidebar>

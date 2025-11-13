@@ -8,7 +8,8 @@
     "internalDependencies": {
         "icon": [
             "dropdown",
-            "input"
+            "input",
+            "button"
         ]
     }
 }

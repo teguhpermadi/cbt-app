@@ -15,7 +15,7 @@
             <div class="flex-ui. space-x-ui.2">
                 <div>
                     <x-ui.button variant="primary" wire:click="$dispatch('createUser', { type: '{{ $activeTab }}' })">
-                        {{-- <x-ui.icon name="plus" class="w-4 h-4 mr-1" /> --}}
+                        <x-ui.icon name="plus" class="w-4 h-4 mr-1" />
                         Tambah {{ $tabs[$activeTab] }}
                     </x-ui.button>
 
@@ -38,7 +38,7 @@
                 @if (count($selectedUsers) > 0)
                     <x-ui.button wire:click="bulkDelete" variant="destructive" x-ui.data
                         x-ui.on:click.prevent="$dispatch('open-modal', 'confirm-bulk-delete')">
-                        {{-- <x-ui.icon name="trash" class="w-4 h-4 mr-1" /> --}}
+                        <x-ui.icon name="trash" class="w-4 h-4 mr-1" />
                         Hapus ({{ count($selectedUsers) }})
                     </x-ui.button>
                 @endif
@@ -47,14 +47,14 @@
                     <x-ui.dropdown-trigger as-child>
                         <x-ui.button variant="outline">
                             Aksi Lain
-                            {{-- <x-ui.icon name="chevron-down" class="w-4 h-4 ml-1" /> --}}
+                            <x-ui.icon name="chevron-down" class="w-4 h-4 ml-1" />
                         </x-ui.button>
                     </x-ui.dropdown-trigger>
                     <x-ui.dropdown-content>
                         <x-ui.dropdown-item wire:click="$dispatch('open-modal', 'import-modal')">Import
                             Data</x-ui.dropdown-item>
                         <x-ui.dropdown-item wire:click="ex-ui.portData">Ex-ui.port Data</x-ui.dropdown-item>
-                        {{-- <x-ui.dropdown-separator /> --}}
+                        <x-ui.separator />
                         <x-ui.dropdown-item wire:click="$dispatch('open-modal', 'manage-role-modal')">Kelola
                             Role</x-ui.dropdown-item>
                     </x-ui.dropdown-content>
@@ -70,7 +70,7 @@
                 <div class="flex-ui. space-x-ui.2">
                     @if (count($selectedUsers) > 0)
                         <x-ui.button wire:click="confirmBulkDeletion" variant="destructive">
-                            {{-- <x-ui.icon name="trash" class="w-4 h-4 mr-1" /> --}}
+                            <x-ui.icon name="trash" class="w-4 h-4 mr-1" />
                             Hapus ({{ count($selectedUsers) }})
                         </x-ui.button>
                     @endif

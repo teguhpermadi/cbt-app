@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\SemesterEnum;
+use App\Enums\SemesterEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

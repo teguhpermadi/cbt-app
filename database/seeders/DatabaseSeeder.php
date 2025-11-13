@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             SubjectSeeder::class,
             ReadingMaterialSeeder::class,
             QuestionBankSeeder::class,
+            QuestionSeeder::class,
         ]);
     }
 }

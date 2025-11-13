@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\AcademicYear;
-use App\SemesterEnum;
+use App\Enums\SemesterEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

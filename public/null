@@ -22,3 +22,4 @@ App\Models\ExamSession::get();
 App\Models\ExamResultDetail::get();
 App\Models\ExamResult::get();
 App\Models\ExamResultDetail::get();
+App\Models\ExamSession::get();

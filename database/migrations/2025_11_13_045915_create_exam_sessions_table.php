@@ -27,6 +27,7 @@ return new class extends Migration
             
             $table->dateTime('start_time')->nullable();
             $table->dateTime('finish_time')->nullable();
+            
             $table->unsignedSmallInteger('duration_taken')->nullable()->comment('Durasi pengerjaan dalam menit');
             
             $table->string('ip_address')->nullable();

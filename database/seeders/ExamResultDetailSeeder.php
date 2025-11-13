@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\ExamResultDetail;
 use App\Models\ExamSession;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Collection; // Penting: Import Collection
 
 class ExamResultDetailSeeder extends Seeder
 {
@@ -20,18 +20,20 @@ class ExamResultDetailSeeder extends Seeder
 
         $this->command->info('Membuat detail jawaban (ExamResultDetail) untuk setiap sesi...');
 
+        $successfulDetails = 0;
+        $skippedSessions = 0;
+        
         foreach ($sessions as $session) {
-            // PERBAIKAN UTAMA:
-            // Menggunakan Optional Chaining (?->) untuk mengakses relasi examQuestions.
-            // Jika $session->exam adalah null, maka ?? collect() akan memastikan $questions 
-            // bernilai Collection kosong, sehingga loop foreach aman.
+            // PERBAIKAN KRUSIAL: Gunakan Safe Navigation untuk mencegah crash jika relasi hilang.
             $questions = $session->exam?->examQuestions ?? Collection::make([]);
             
             $totalDetails = 0;
 
-            // Jika tidak ada soal (misalnya ExamQuestionSeeder belum dijalankan), lewati sesi ini
+            // Jika tidak ada soal terkait dengan Exam ini, lewati sesi
             if ($questions->isEmpty()) {
-                 $this->command->getOutput()->write("  -> Sesi ID {$session->id} (Percobaan {$session->attempt_number}) dilewati: Tidak ada soal ditemukan.\n");
+                // Hapus baris write() jika Anda tidak ingin melihat output ini
+                // $this->command->getOutput()->write("  -> Sesi ID {$session->id} dilewati: Tidak ada ExamQuestion terkait.\n");
+                $skippedSessions++;
                 continue;
             }
 
@@ -44,8 +46,11 @@ class ExamResultDetailSeeder extends Seeder
                 $totalDetails++;
             }
             $this->command->getOutput()->write("  -> Sesi ID {$session->id} (Percobaan {$session->attempt_number}) diisi dengan {$totalDetails} detail jawaban.\n");
+            $successfulDetails += $totalDetails;
         }
 
-        $this->command->info('✅ ExamResultDetail Seeder selesai.');
+        $this->command->info('----------------------------------------------------');
+        $this->command->info("✅ ExamResultDetail Seeder selesai. Total Detail Dibuat: {$successfulDetails}. Sesi Dilewati: {$skippedSessions}");
+        $this->command->info('----------------------------------------------------');
     }
 }

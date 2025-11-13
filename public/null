@@ -4,3 +4,4 @@ QuestionPeerReview::latest()->get();
 QuestionPeerReview::latest()->get();
 Exam::latest()->get();
 App\Models\Exam::latest()->get();
+App\Models\ExamQuestion::get();

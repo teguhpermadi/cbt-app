@@ -54,10 +54,10 @@ class Question extends Model implements HasMedia
         return $this->belongsTo(ReadingMaterial::class);
     }
     
-    // public function peerReviews(): HasMany
-    // {
-    //     return $this->hasMany(QuestionPeerReview::class);
-    // }
+    public function peerReviews(): HasMany
+    {
+        return $this->hasMany(QuestionPeerReview::class);
+    }
     
     // --- SPATIE CONFIGURATIONS ---
 

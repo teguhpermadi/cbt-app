@@ -1,6 +1,5 @@
 <?php
 
-use App\Livewire\UserManagement\UserTable;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
@@ -30,6 +29,4 @@ Route::middleware(['auth'])->group(function () {
             ),
         )
         ->name('two-factor.show');
-
-    Route::get('/users', App\Livewire\UserManagement::class)->name('users.index');
 });

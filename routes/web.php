@@ -31,6 +31,5 @@ Route::middleware(['auth'])->group(function () {
         )
         ->name('two-factor.show');
 
-    Route::get('/users', UserTable::class)
-        ->name('users.index');
+    Route::get('/users', App\Livewire\UserManagement::class)->name('users.index');
 });

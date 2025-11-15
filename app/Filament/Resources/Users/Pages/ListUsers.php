@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Filament\Resources\Users\Pages;
+
+use App\Filament\Resources\Users\UserResource;
+use App\Models\User;
+use Filament\Actions\CreateAction;
+use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
+use Illuminate\Database\Eloquent\Builder;
+
+class ListUsers extends ListRecords
+{
+    protected static string $resource = UserResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            CreateAction::make(),
+        ];
+    }
+
+    public function getTabs(): array
+    {
+        return [
+            'admin' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('user_type', 'admin'))
+                ->badge(User::query()->where('user_type', 'admin')->count()),
+            'teacher' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('user_type', 'teacher'))
+                ->badge(User::query()->where('user_type', 'teacher')->count()),
+            'student' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('user_type', 'student'))
+                ->badge(User::query()->where('user_type', 'student')->count()),
+            'parent' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('user_type', 'parent'))
+                ->badge(User::query()->where('user_type', 'parent')->count()),
+        ];
+    }
+}

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\DifficultyLevelEnum;
 use App\Enums\QuestionTypeEnum;
+use App\Enums\TimerEnum;
 use App\Models\Question;
 use App\Models\QuestionBank;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -40,6 +41,7 @@ class QuestionFactory extends Factory
             
             'question_type' => $type,
             'difficulty_level' => $this->faker->randomElement(DifficultyLevelEnum::cases()),
+            'timer' => $this->faker->randomElement(TimerEnum::cases()),
             
             'content' => $data['content'],
             'options' => $data['options'],

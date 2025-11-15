@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\DifficultyLevelEnum;
 use App\Enums\QuestionTypeEnum;
+use App\Enums\TimerEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +26,7 @@ class Question extends Model implements HasMedia
         'reading_material_id',
         'question_type',
         'difficulty_level',
+        'timer',
         'content', 
         'options',      // JSON array/object
         'key_answer',   // JSON array/object (kunci jawaban/rubrik)
@@ -36,6 +38,7 @@ class Question extends Model implements HasMedia
     protected $casts = [
         'question_type' => QuestionTypeEnum::class,
         'difficulty_level' => DifficultyLevelEnum::class,
+        'timer' => TimerEnum::class,
         'options' => 'array',     // Untuk opsi jawaban, termasuk media ULID
         'key_answer' => 'array',  // Untuk kunci jawaban, termasuk rubrik/urutan
         'is_active' => 'boolean',
@@ -75,6 +78,14 @@ class Question extends Model implements HasMedia
     public function getDifficultyLevelAttribute($value): DifficultyLevelEnum
     {
         return DifficultyLevelEnum::from($value);
+    }
+
+    /**
+     * Accessor untuk timer enum
+     */
+    public function getTimerAttribute($value): ?TimerEnum
+    {
+        return $value ? TimerEnum::from($value) : null;
     }
 
     // --- SPATIE CONFIGURATIONS ---

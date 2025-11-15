@@ -48,9 +48,14 @@ class QuestionDetailViewer extends Component
     {
         $keyAnswer = $this->question->key_answer ?? [];
         
-        // Handle structure like {"answers":["B","C"]}
+        // Handle structure like {"answers":["B","C"]} for multiple selection
         if (isset($keyAnswer['answers']) && is_array($keyAnswer['answers'])) {
             return $keyAnswer['answers'];
+        }
+        
+        // Handle structure like {"pairs":{"L1":"R1","L2":"R2"}} for matching
+        if (isset($keyAnswer['pairs']) && is_array($keyAnswer['pairs'])) {
+            return $keyAnswer;
         }
         
         // Handle simple array structure like ["B","C"]

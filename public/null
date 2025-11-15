@@ -6,3 +6,21 @@ QuestionBank::with('questions')->find('01ka4v45m8b4a1sayx49bmvp79');
 
 QuestionBank::with('questions')->find('01ka4v45mjpavwh50tacx68swc');
 
+
+
+Question::find('01KA4V45TGPCCS98TW19JB85VG')->update(['key_answer', '"{"pairs":{"L1":{"R1", "R2"},"L2":"R3","L3":"R4"}}",'])
+QuestionBank::with('questions')->find('01ka4v45mjpavwh50tacx68swc');
+
+
+
+
+Question::find('01KA4V45TGPCCS98TW19JB85VG')->update(['key_answer', '"{"pairs":{"L1":{"R1", "R2"},"L2":"R3","L3":"R4"}}"']);
+
+
+Question::find('01KA4V45TGPCCS98TW19JB85VG')->update(['key_answer', '"{"pairs":{"L1":{"R1", "R2"},"L2":"R3","L3":"R4"}}"']);
+
+
+Question::find('01KA4V45TGPCCS98TW19JB85VG')->update(['key_answer', '"{"pairs":{"L1":{"R1", "R2"},"L2":"R3","L3":"R4"}}"']);
+QuestionBank::with('questions')->find('01ka4v45mjpavwh50tacx68swc');
+
+

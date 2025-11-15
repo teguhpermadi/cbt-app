@@ -1,7 +1,7 @@
 <x-filament-panels::page>
     @foreach ($questions as $question)
         <div>
-            {{ $question->content }}
+            <livewire:question-detail-viewer :question="$question" />
         </div>
     @endforeach
 </x-filament-panels::page>

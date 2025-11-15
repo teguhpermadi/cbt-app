@@ -37,4 +37,9 @@ class AcademicYear extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Tahun Ajaran telah di-{$eventName}")
             ->useLogName('academic_year');
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }

@@ -1,45 +1,52 @@
-QuestionBank::with('questions')->find('01ka2nep0s9q49t1ex3vq3dv9t');
-
-
-
-QuestionBank::with('questions')->find('01ka2nep0s9q49t1ex3vq3dv9t');
-
-
-
-QuestionBank::with('questions')->find('01ka2nep0s9q49t1ex3vq3dv9t');
-
-
-
-QuestionBank::with('questions')->find('01ka2nep0s9q49t1ex3vq3dv9t');
-
-
-
-
-
-
-
-User::get()
 
 
 
 
 User::get();
-ExamResultDetail::get()
 
-
-
-
-User::get();
-ExamResultDetail::first()
-
+QuestionBank::with('questions')->find('01ka3h5jdqtxq9zvgvq55pwsg8');
 
 
 
 User::get();
-ExamResultDetail::first()->toArray()
+
+QuestionBank::with('questions')->find('01ka3h5jdqtxq9zvgvq55pwsg8');
+
+
+
+User::get();
+
+QuestionBank::with('questions')->find('01ka3h5jdqtxq9zvgvq55pwsg8');
+
+
+
+User::get();
+
+QuestionBank::with('questions')->find('01ka3h5jdqtxq9zvgvq55pwsg8');
+
+
+
+User::get();
+
+QuestionBank::with('questions')->find('01ka3h5jdqtxq9zvgvq55pwsg8');
+
+
+
+User::get();
+
 QuestionBank::with('questions')->find('01ka3h5jdqtxq9zvgvq55pwsg8');
 
 
 
 
+
+
+
+
+
+User::get();
+
+QuestionBank::with('questions')->find('01ka49001cgzeyxj9eqn34k8v0');
+
+QuestionBank::with('questions')->find('01ka49001cgzeyxj9eqn34k8v0');
 

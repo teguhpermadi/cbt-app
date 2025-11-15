@@ -102,6 +102,7 @@ class QuestionFactory extends Factory
                 break;
             
             case QuestionTypeEnum::TrueFalse:
+                $data['options'] = ['True' => 'Benar', 'False' => 'Salah'];
                 $data['key_answer'] = ['answer' => $this->faker->randomElement(['True', 'False'])];
                 break;
                 

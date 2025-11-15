@@ -70,17 +70,20 @@
                     
                     @if($this->getOptionMedia($key))
                         <div class="mt-2">
-                            {{-- Media placeholder - bisa ditambahkan logic untuk menampilkan media --}}
-                            <div class="text-xs text-gray-500 italic">
-                                Media ID: {{ $this->getOptionMedia($key) }}
-                            </div>
+                            @if($mediaUrl = $this->getOptionMediaUrl($key))
+                                <img src="{{ $mediaUrl }}" alt="Option {{ $key }}" class="max-w-full h-auto rounded-lg border border-gray-200" style="max-height: 200px;">
+                            @else
+                                <div class="text-xs text-gray-500 italic">
+                                    Media ID: {{ $this->getOptionMedia($key) }} (URL tidak tersedia)
+                                </div>
+                            @endif
                         </div>
                     @endif
                 </div>
                 
                 @if($showCorrectAnswers && $this->isOptionCorrect($key))
                     <div class="flex-shrink-0">
-                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-200 text-green-800">
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                             Benar
                         </span>
                     </div>

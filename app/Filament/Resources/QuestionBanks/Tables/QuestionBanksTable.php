@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\QuestionBanks\Tables;
 
+use App\Models\QuestionBank;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\Action;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\TextColumn;
@@ -33,6 +35,9 @@ class QuestionBanksTable
             ])
             ->recordActions([
                 EditAction::make(),
+                Action::make('questions')
+                    ->label('Questions')
+                    ->url(fn (QuestionBank $record): string => route('filament.admin.resources.question-banks.questions', $record)),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -51,12 +51,24 @@ class QuestionBank extends Model
     }
     
     /**
+     * Scope untuk menampilkan Question Bank berdasarkan Subject yang memiliki academic_year_id yang sedang aktif
+     */
+    public function scopeSubjectActive($query)
+    {
+        return $query->whereHas('subject', function ($subjectQuery) {
+            $subjectQuery->whereHas('academicYear', function ($academicYearQuery) {
+                $academicYearQuery->where('is_active', true);
+            });
+        });
+    }
+
+    /**
      * Relasi One-to-Many: Satu Bank Soal memiliki banyak Question.
      */
-    // public function questions(): HasMany
-    // {
-    //     return $this->hasMany(Question::class);
-    // }
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class);
+    }
 
     /**
      * Konfigurasi untuk Spatie Activity Log

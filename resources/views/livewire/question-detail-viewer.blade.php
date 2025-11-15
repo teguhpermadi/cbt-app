@@ -50,13 +50,30 @@
         <div class="text-base text-gray-800 dark:text-gray-200 leading-relaxed space-y-4">
             {!! nl2br(e($question->content)) !!}
         </div>
-        @if (in_array($question->question_type->value, ['multiple_choice', 'true_false', 'multiple_selection']))
+        @if ($question->question_type->value === 'multiple_choice')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
             Pilihan Jawaban (Kunci)
         </h3>
-        <livewire:multiple-options-viewer 
+        <livewire:multiple-choice-viewer 
             :options="$this->getOptions()"
-            :question-type="$question->question_type"
+            :correct-answers="$this->getCorrectAnswers()"
+            :show-correct-answers="true"
+        />
+        @elseif ($question->question_type->value === 'true_false')
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
+            Pilihan Jawaban (Kunci)
+        </h3>
+        <livewire:true-false-viewer 
+            :options="$this->getOptions()"
+            :correct-answers="$this->getCorrectAnswers()"
+            :show-correct-answers="true"
+        />
+        @elseif ($question->question_type->value === 'multiple_selection')
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
+            Pilihan Jawaban (Kunci)
+        </h3>
+        <livewire:multiple-selection-viewer 
+            :options="$this->getOptions()"
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
         />

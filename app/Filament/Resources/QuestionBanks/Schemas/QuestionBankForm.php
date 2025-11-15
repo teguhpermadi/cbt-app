@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\QuestionBanks\Schemas;
 
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class QuestionBankForm
@@ -10,7 +12,12 @@ class QuestionBankForm
     {
         return $schema
             ->components([
-                //
+                TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                Textarea::make('description')
+                    ->required()
+                    ->rows(3),
             ]);
     }
 }

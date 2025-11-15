@@ -1,1 +1,3 @@
 User::get()
+QuestionBank::find('01ka2nep0s9q49t1ex3vq3dv9t')
+QuestionBank::with('questions')->find('01ka2nep0s9q49t1ex3vq3dv9t')

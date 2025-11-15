@@ -22,15 +22,18 @@ class MultipleSelectionViewer extends Component
             $this->options = $options;
         }
         
-        // Handle correct answers - can be array, JSON string, or structured array
+        // Handle correct answers - support multiple formats
         if (is_string($correctAnswers)) {
             $this->correctAnswers = [json_decode($correctAnswers, true) ?? []];
-        } elseif (is_array($correctAnswers) && isset($correctAnswers[0]) && is_string($correctAnswers[0])) {
+        } elseif (is_array($correctAnswers) && isset($correctAnswers[0]) && is_string($correctAnswers[0]) && str_contains($correctAnswers[0], '{')) {
             // Array of JSON strings: ['{"answers":["A","B"]}']
             $this->correctAnswers = array_map(fn($answer) => json_decode($answer, true) ?? [], $correctAnswers);
         } elseif (is_array($correctAnswers) && (isset($correctAnswers['answer']) || isset($correctAnswers['answers']))) {
             // Single structured array: ['answers' => ['A', 'B']]
             $this->correctAnswers = [$correctAnswers];
+        } elseif (is_array($correctAnswers) && isset($correctAnswers[0]) && is_string($correctAnswers[0])) {
+            // Simple array of answers: ['A', 'B', 'C'] - wrap in structured format
+            $this->correctAnswers = [['answers' => $correctAnswers]];
         } else {
             // Array of structured arrays or other format
             $this->correctAnswers = $correctAnswers;

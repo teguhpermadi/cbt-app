@@ -50,34 +50,16 @@
         <div class="text-base text-gray-800 dark:text-gray-200 leading-relaxed space-y-4">
             {!! nl2br(e($question->content)) !!}
         </div>
-
-        @if ($question->question_type === 'multiple choice')
+        @if (in_array($question->question_type->value, ['multiple_choice', 'true_false', 'multiple_selection']))
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
             Pilihan Jawaban (Kunci)
         </h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            @foreach ($this->getOptions() as $key => $option)
-            <div @class([ 'p-4 rounded-xl border flex items-start space-x-3 transition duration-150' , '!bg-red-50 !border-red-400 !text-red-800 dark:!bg-red-950 dark:!border-red-700 dark:!text-red-300'=> !$option['is_correct'],
-                '!bg-green-50 !border-green-400 !text-green-800 dark:!bg-green-950 dark:!border-green-700 dark:!text-green-300' => $option['is_correct'],
-                ])>
-                <div class="flex-shrink-0 mt-0.5">
-                    @if ($option['is_correct'])
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    @else
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    @endif
-                </div>
-
-                <p class="text-sm m-0 leading-relaxed">
-                    <strong class="font-bold">{{ $key }}.</strong> {!! $option['text'] !!}
-                </p>
-            </div>
-            @endforeach
-        </div>
+        <livewire:multiple-options-viewer 
+            :options="$this->getOptions()"
+            :question-type="$question->question_type"
+            :correct-answers="$this->getCorrectAnswers()"
+            :show-correct-answers="true"
+        />
         @endif
 
         @if ($question->feedback)

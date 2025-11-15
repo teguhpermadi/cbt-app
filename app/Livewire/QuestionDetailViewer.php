@@ -41,26 +41,23 @@ class QuestionDetailViewer extends Component
 
     public function getOptions()
     {
-        if ($this->question->question_type === 'multiple choice') {
-            return [
-                'A' => [
-                    'text' => 'Semua keragaman harus disatukan dan disamakan agar tidak ada perbedaan.',
-                    'is_correct' => false
-                ],
-                'B' => [
-                    'text' => 'Perbedaan adalah sumber konflik yang harus dihindari dalam kehidupan bermasyarakat.',
-                    'is_correct' => false
-                ],
-                'C' => [
-                    'text' => 'Walaupun berbeda-beda suku dan budaya, kita harus tetap menjaga keutuhan negara.',
-                    'is_correct' => true
-                ],
-                'D' => [
-                    'text' => 'Setiap daerah harus fokus pada budayanya sendiri tanpa perlu berinteraksi dengan daerah lain.',
-                    'is_correct' => false
-                ],
-            ];
+        return $this->question->options ?? [];
+    }
+
+    public function getCorrectAnswers()
+    {
+        $keyAnswer = $this->question->key_answer ?? [];
+        
+        // Handle structure like {"answers":["B","C"]}
+        if (isset($keyAnswer['answers']) && is_array($keyAnswer['answers'])) {
+            return $keyAnswer['answers'];
         }
+        
+        // Handle simple array structure like ["B","C"]
+        if (is_array($keyAnswer)) {
+            return $keyAnswer;
+        }
+        
         return [];
     }
 

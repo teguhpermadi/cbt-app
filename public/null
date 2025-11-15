@@ -37,3 +37,9 @@ ExamResultDetail::first()
 
 User::get();
 ExamResultDetail::first()->toArray()
+QuestionBank::with('questions')->find('01ka3h5jdqtxq9zvgvq55pwsg8');
+
+
+
+
+

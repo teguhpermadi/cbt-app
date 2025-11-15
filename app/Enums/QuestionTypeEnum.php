@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum QuestionTypeEnum: string
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Contracts\Support\Htmlable;
+
+enum QuestionTypeEnum: string implements HasLabel
 {
     // 1. Pilihan Tunggal (Jawaban Benar Hanya Satu)
     case MultipleChoice = 'multiple_choice';
@@ -29,7 +32,7 @@ enum QuestionTypeEnum: string
     /**
      * Helper: Mendapatkan label yang lebih mudah dibaca untuk UI
      */
-    public function label(): string
+    public function getLabel(): string
     {
         return match ($this) {
             self::MultipleChoice => 'Pilihan Ganda (Tunggal)',

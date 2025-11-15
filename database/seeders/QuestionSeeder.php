@@ -19,13 +19,13 @@ class QuestionSeeder extends Seeder
             QuestionBank::factory(3)->create();
         }
 
-        $this->command->info('Membuat 70 soal (Question) dengan variasi tipe dan media...');
+        $this->command->info('Membuat 21 soal (Question) dengan variasi tipe dan media...');
 
-        // Kita akan membuat 70 soal secara total. 
+        // Kita akan membuat 21 soal secara total. 
         // Factory akan secara acak memilih tipe soal, bobot, dan menambahkan media dummy.
-        Question::factory(70)->create();
+        Question::factory(21)->create();
         
-        $this->command->info('✅ 70 Question berhasil dibuat.');
+        $this->command->info('✅ 21 Question berhasil dibuat.');
 
         // Opsional: Buat beberapa soal spesifik untuk memastikan semua tipe terwakili.
         // Meskipun factory acak, ini memastikan semua tipe soal minimal ada 1.

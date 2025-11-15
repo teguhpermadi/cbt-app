@@ -59,6 +59,24 @@ class Question extends Model implements HasMedia
         return $this->hasMany(QuestionPeerReview::class);
     }
     
+    // --- ACCESSORS & MUTATORS ---
+
+    /**
+     * Accessor untuk question_type enum
+     */
+    public function getQuestionTypeAttribute($value): QuestionTypeEnum
+    {
+        return QuestionTypeEnum::from($value);
+    }
+
+    /**
+     * Accessor untuk difficulty_level enum  
+     */
+    public function getDifficultyLevelAttribute($value): DifficultyLevelEnum
+    {
+        return DifficultyLevelEnum::from($value);
+    }
+
     // --- SPATIE CONFIGURATIONS ---
 
     /**

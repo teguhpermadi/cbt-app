@@ -27,6 +27,12 @@
         },
         "badge": {
             "installationTime": 1763145476
+        },
+        "card": {
+            "installationTime": 1763190156
+        },
+        "heading": {
+            "installationTime": 1763190179
         }
     }
 }

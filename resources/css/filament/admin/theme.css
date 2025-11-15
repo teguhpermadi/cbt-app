@@ -2,3 +2,7 @@
 
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
+
+@source '../../../../resources/views/livewire/**/*';
+@source '../../../../resources/views/components/ui/**/*';
+@source '../../../../resources/css/app.css';

@@ -3,27 +3,27 @@
     <div class="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 space-y-6 border border-gray-200 dark:border-gray-700">
 
         <div class="flex items-start justify-between border-b pb-4">
-            <div class="flex items-center space-x-3">
-                <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full capitalize 
-                       bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
-                    {{ $question->question_type->getLabel() }}
-                </span>
+            <div class="flex-1">
+                <div class="flex items-center space-x-3 mb-3">
+                    <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full capitalize 
+                           bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                        {{ $question->question_type->getLabel() }}
+                    </span>
 
-                <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full capitalize 
-                       bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                    {{ $question->difficulty_level->getLabel() }}
-                </span>
-
-                <div class="text-xs text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 bg-gray-50 dark:bg-gray-700">
-                    <span class="font-medium">{{ $question->timer?->getLabel() ?? 'N/A' }}</span>
-                </div>
-
-                <div class="text-xs text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 bg-gray-50 dark:bg-gray-700">
-                    <span class="font-medium">{{ $question->score_value ?? 'N/A' }}</span> point
+                    <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full capitalize 
+                           bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                        {{ $question->difficulty_level->getLabel() }}
+                    </span>
+                    
+                    <livewire:timer-selector :question="$question" />
+                    
+                    <div class="text-xs text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 bg-gray-50 dark:bg-gray-700">
+                        <span class="font-medium">{{ $question->score_value ?? 'N/A' }}</span> point
+                    </div>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-2 ml-4">
                 <button type="button"
                     class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 
                                dark:text-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 transition duration-150">
@@ -99,4 +99,27 @@
         Soal tidak ditemukan atau ID soal tidak valid.
     </div>
     @endif
+    
+    <!-- Notification Script -->
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('notify', (event) => {
+                // Create a simple notification
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 px-4 py-2 rounded-lg text-white font-medium z-50 transition-all duration-300 ${
+                    event.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+                }`;
+                notification.textContent = event.message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 2000);
+            });
+        });
+    </script>
 </div>

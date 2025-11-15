@@ -21,6 +21,20 @@ class QuestionDetailViewer extends Component
         $this->question = $question;
     }
 
+    /**
+     * Listen for timer-updated event
+     */
+    protected $listeners = ['timer-updated' => 'refreshQuestion'];
+
+    /**
+     * Refresh question data when timer is updated
+     */
+    public function refreshQuestion()
+    {
+        // Refresh the question model to get updated timer value
+        $this->question->refresh();
+    }
+
     public function getOptions()
     {
         if ($this->question->question_type === 'multiple choice') {

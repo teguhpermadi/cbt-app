@@ -22,19 +22,20 @@ class QuestionDetailViewer extends Component
     }
 
     /**
-     * Listen for timer-updated and difficulty-updated events
+     * Listen for timer-updated, difficulty-updated, and score-updated events
      */
     protected $listeners = [
         'timer-updated' => 'refreshQuestion',
-        'difficulty-updated' => 'refreshQuestion'
+        'difficulty-updated' => 'refreshQuestion',
+        'score-updated' => 'refreshQuestion'
     ];
 
     /**
-     * Refresh question data when timer or difficulty is updated
+     * Refresh question data when timer, difficulty, or score is updated
      */
     public function refreshQuestion()
     {
-        // Refresh the question model to get updated timer and difficulty values
+        // Refresh the question model to get updated timer, difficulty, and score values
         $this->question->refresh();
     }
 

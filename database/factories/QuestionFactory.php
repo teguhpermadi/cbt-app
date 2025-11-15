@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\DifficultyLevelEnum;
+use App\Enums\QuestionScoreEnum;
 use App\Enums\QuestionTypeEnum;
 use App\Enums\TimerEnum;
 use App\Models\Question;
@@ -47,7 +48,7 @@ class QuestionFactory extends Factory
             'options' => $data['options'],
             'key_answer' => $data['key_answer'],
             
-            'score_value' => $this->faker->numberBetween(5, 15),
+            'score_value' => $this->faker->randomElement(QuestionScoreEnum::cases()),
             'is_active' => true,
             'is_approved' => $this->faker->boolean(50), 
         ];

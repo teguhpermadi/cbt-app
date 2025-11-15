@@ -43,10 +43,8 @@ class QuestionSeeder extends Seeder
         $types = \App\Enums\QuestionTypeEnum::cases();
         
         foreach ($types as $type) {
-            // Gunakan factory dengan state spesifik jika perlu, atau cukup panggil factory dasar
-            Question::factory()->create([
+            Question::factory()->withType($type)->create([
                 'question_bank_id' => $bank->id,
-                'question_type' => $type,
                 'score_value' => 15, // Bobot lebih tinggi untuk soal spesifik
             ]);
         }

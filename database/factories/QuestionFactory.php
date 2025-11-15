@@ -55,6 +55,19 @@ class QuestionFactory extends Factory
     }
     
     /**
+     * Create a question with specific type
+     */
+    public function withType(QuestionTypeEnum $type): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'question_type' => $type,
+            'content' => $this->generateQuestionData($type, Question::make($attributes))['content'],
+            'options' => $this->generateQuestionData($type, Question::make($attributes))['options'],
+            'key_answer' => $this->generateQuestionData($type, Question::make($attributes))['key_answer'],
+        ]);
+    }
+    
+    /**
      * Menghasilkan data options dan key_answer berdasarkan tipe soal
      * @param QuestionTypeEnum $type
      * @param Question $question
@@ -63,18 +76,14 @@ class QuestionFactory extends Factory
     private function generateQuestionData(QuestionTypeEnum $type, Question $question): array
     {
         $data = [
-            'content' => $this->faker->paragraph(),
             'options' => [],
             'key_answer' => [],
         ];
 
         switch ($type) {
             case QuestionTypeEnum::MultipleChoice:
-            case QuestionTypeEnum::MultipleSelection:
                 $options = ['A', 'B', 'C', 'D'];
-                $correct = ($type === QuestionTypeEnum::MultipleSelection) 
-                           ? $this->faker->randomElements($options, $this->faker->numberBetween(2, 3))
-                           : $this->faker->randomElement($options);
+                $correct = $this->faker->randomElement($options);
                 
                 foreach ($options as $option) {
                     $hasMedia = $this->faker->boolean(20); // 20% kemungkinan memiliki media
@@ -89,9 +98,29 @@ class QuestionFactory extends Factory
                     ];
                 }
                 
-                $data['key_answer'] = ($type === QuestionTypeEnum::MultipleSelection) 
-                                      ? ['answers' => $correct] 
-                                      : ['answer' => $correct];
+                $data['key_answer'] = ['answer' => $correct];
+                $data['content'] = 'Pilih satu jawaban yang paling tepat dari pilihan yang tersedia.';
+                break;
+
+            case QuestionTypeEnum::MultipleSelection:
+                $options = ['A', 'B', 'C', 'D'];
+                $correct = $this->faker->randomElements($options, $this->faker->numberBetween(2, 3));
+                
+                foreach ($options as $option) {
+                    $hasMedia = $this->faker->boolean(20); // 20% kemungkinan memiliki media
+                    
+                    $mediaId = $hasMedia 
+                               ? $this->createDummyMedia($question, 'option_media', "MS_Opt_{$option}_{$this->faker->uuid()}.png")
+                               : null;
+                               
+                    $data['options'][$option] = [
+                        'text' => $hasMedia ? "Lihat Gambar Opsi {$option}" : $this->faker->sentence(3), 
+                        'media_id' => $mediaId
+                    ];
+                }
+                
+                $data['key_answer'] = ['answers' => $correct];
+                $data['content'] = 'Pilih semua jawaban yang benar (bisa lebih dari satu).';
                 break;
 
             case QuestionTypeEnum::Essay:
@@ -99,11 +128,16 @@ class QuestionFactory extends Factory
                     ['poin' => 'Ketepatan Definisi', 'max_score' => 5],
                     ['poin' => 'Kelengkapan Contoh', 'max_score' => 5],
                 ];
+                $data['content'] = 'Jelaskan secara mendalam mengenai konsep berikut dan berikan contoh yang relevan.';
                 break;
             
             case QuestionTypeEnum::TrueFalse:
-                $data['options'] = ['True' => 'Benar', 'False' => 'Salah'];
+                $data['options'] = [
+                    'True' => ['text' => 'Benar', 'media_id' => null],
+                    'False' => ['text' => 'Salah', 'media_id' => null]
+                ];
                 $data['key_answer'] = ['answer' => $this->faker->randomElement(['True', 'False'])];
+                $data['content'] = 'Tentukan apakah pernyataan berikut benar atau salah.';
                 break;
                 
             case QuestionTypeEnum::Matching:
@@ -157,10 +191,10 @@ class QuestionFactory extends Factory
                 
                 $shuffledSteps = $steps;
                 shuffle($shuffledSteps);
-                $itemKeys = ['A', 'B', 'C', 'D'];
+                $itemKeys = ['1', '2', '3', '4'];
                 
                 $optionsData = [];
-                // Map untuk memetakan konten asli (correct step) ke key yang diacak (A, B, C, D)
+                // Map untuk memetakan konten asli (correct step) ke key yang diacak (1, 2, 3, 4)
                 $contentToKeyMap = []; 
                 
                 for ($i = 0; $i < count($shuffledSteps); $i++) {
@@ -177,7 +211,7 @@ class QuestionFactory extends Factory
                         'media_id' => $mediaId,
                     ];
                     
-                    // Simpan pemetaan: Konten Asli -> Key tampilan (A, B, C, D)
+                    // Simpan pemetaan: Konten Asli -> Key tampilan (1, 2, 3, 4)
                     $contentToKeyMap[$originalContent] = $key;
                 }
                 
@@ -186,8 +220,8 @@ class QuestionFactory extends Factory
                 // Kunci Jawaban: Iterasi melalui urutan yang benar ($steps) dan temukan key yang sesuai dari map
                 $correctOrder = [];
                 foreach ($steps as $correctStep) { 
-                    // Ambil key (A, B, C, D) yang menyimpan konten yang benar untuk urutan ini
-                    $correctOrder[] = $contentToKeyMap[$correctStep];
+                    // Ambil key (1, 2, 3, 4) yang menyimpan konten yang benar untuk urutan ini
+                    $correctOrder[] = (int) $contentToKeyMap[$correctStep];
                 }
                 
                 $data['key_answer'] = ['order' => $correctOrder];

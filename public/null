@@ -1,1 +1,1 @@
-App\Models\User::get();
+User::get()

@@ -26,6 +26,8 @@ return new class extends Migration
             $table->float('score_percent')->default(0);
             $table->boolean('is_passed')->default(false);
             $table->string('result_type')->default('official')->comment('official, best_attempt, latest_attempt');
+            $table->float('best_score')->default(0);
+            $table->foreignUlid('best_session_id')->nullable()->references('id')->on('exam_sessions')->onDelete('cascade');
 
             $table->timestamps();
             

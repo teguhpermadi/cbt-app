@@ -62,6 +62,17 @@
         />
         @endif
 
+        @if ($question->question_type->value === 'essay')
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
+            Rubrik Penilaian
+        </h3>
+        <livewire:essay-answer-viewer 
+            :key-answer="$this->getCorrectAnswers()"
+            :question-type="$question->question_type"
+            :show-correct-answers="true"
+        />
+        @endif
+
         @if ($question->feedback)
         <div class="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6 space-y-2">
             <p class="text-sm font-bold text-gray-600 dark:text-gray-400">Umpan Balik Umum:</p>

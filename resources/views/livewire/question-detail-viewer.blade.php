@@ -10,12 +10,9 @@
                         {{ $question->question_type->getLabel() }}
                     </span>
 
-                    <span class="inline-flex items-center px-3 py-1 text-sm font-semibold rounded-full capitalize 
-                           bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                        {{ $question->difficulty_level->getLabel() }}
-                    </span>
-                    
                     <livewire:timer-selector :question="$question" />
+                    
+                    <livewire:difficulty-selector :question="$question" />
                     
                     <div class="text-xs text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 bg-gray-50 dark:bg-gray-700">
                         <span class="font-medium">{{ $question->score_value ?? 'N/A' }}</span> point

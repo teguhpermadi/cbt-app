@@ -48,7 +48,8 @@ class QuestionFactory extends Factory
             'options' => $data['options'],
             'key_answer' => $data['key_answer'],
             
-            'score_value' => $this->faker->randomElement(QuestionScoreEnum::cases()),
+            'score_value' => $this->faker->numberBetween(1, 5),
+            'order' => $this->faker->numberBetween(1, 100), // Nomor urut acak
             'is_active' => true,
             'is_approved' => $this->faker->boolean(50), 
         ];

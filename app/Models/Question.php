@@ -31,6 +31,7 @@ class Question extends Model implements HasMedia
         'options',      // JSON array/object
         'key_answer',   // JSON array/object (kunci jawaban/rubrik)
         'score_value',
+        'order',        // Nomor urut
         'is_active',
         'is_approved',
     ];

@@ -7,3 +7,8 @@ User::get();
 
 User::get();
 
+QuestionBank::with('questions')->find('01ka4v45mw8vee6rg0yghs4gh7');
+
+
+
+User::get();

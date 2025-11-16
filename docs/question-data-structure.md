@@ -286,7 +286,7 @@ null
 ### Key Answer Structure
 ```json
 {
-    "value": 25.67,
+    "answer": 25.67,
     "tolerance": 0.05,
     "unit": "kg"
 }
@@ -294,7 +294,7 @@ null
 
 **Catatan:**
 - Tidak memiliki opsi (kosong atau null)
-- `value`: nilai jawaban benar yang tepat
+- `answer`: nilai jawaban benar yang tepat
 - `tolerance`: toleransi kesalahan (contoh: 0.05 = ±5%)
 - `unit`: satuan dari jawaban (opsional)
 
@@ -340,7 +340,7 @@ Pastikan data yang disimpan ke database mengikuti struktur di atas. Berikut adal
 - [ ] Essay: Tanpa opsi, array rubrik
 - [ ] Matching: 8 opsi (L1-L4, R1-R4), 4 pasangan
 - [ ] Ordering: 4 opsi (A-D), array urutan
-- [ ] NumericalInput: Tanpa opsi, value + tolerance + unit
+- [ ] NumericalInput: Tanpa opsi, answer + tolerance + unit
 
 ---
 

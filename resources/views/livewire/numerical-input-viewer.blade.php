@@ -1,4 +1,8 @@
 <div class="numerical-input-viewer">
+    @php
+        $correctAnswer = $this->getCorrectAnswer();
+    @endphp
+    
     @if($showCorrectAnswers && !empty($correctAnswer))
         <!-- Answer Header -->
         <div class="mb-4">

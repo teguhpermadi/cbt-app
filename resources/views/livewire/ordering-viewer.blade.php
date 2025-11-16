@@ -13,7 +13,7 @@
     <div class="space-y-3">
         @if($showCorrectAnswers && !empty($correctOrder))
             @php
-            $sortedOptions = $getSortedOptions();
+            $sortedOptions = $this->getSortedOptions();
             @endphp
             
             @foreach($sortedOptions as $optionKey => $optionData)
@@ -47,11 +47,11 @@
                                 
                                 <!-- Option Text and Media -->
                                 <div class="flex-grow">
-                                    @if($mediaUrl = $getOptionMediaUrl($optionKey))
+                                    @if($mediaUrl = $this->getOptionMediaUrl($optionKey))
                                         <img src="{{ $mediaUrl }}" alt="Option {{ $optionKey }}" class="h-16 w-16 object-cover rounded mb-2">
                                     @endif
                                     <p class="text-sm text-gray-700 dark:text-gray-300">
-                                        {{ $getOptionText($optionKey) }}
+                                        {{ $this->getOptionText($optionKey) }}
                                     </p>
                                 </div>
                                 
@@ -92,7 +92,7 @@
                 </div>
                 <div class="flex-grow">
                     <p class="text-sm text-blue-800 dark:text-blue-200">
-                        <strong>Urutan yang benar:</strong> {{ implode(' → ', array_keys($sortedOptions)) }}
+                        <strong>Urutan yang benar:</strong> {{ implode(' → ', $correctOrder) }}
                     </p>
                 </div>
             </div>

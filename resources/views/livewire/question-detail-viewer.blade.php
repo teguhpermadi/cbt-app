@@ -15,6 +15,8 @@
                     <livewire:difficulty-selector :question="$question" />
                     
                     <livewire:question-score-selector :question="$question" />
+
+                    <livewire:order-selector :question="$question" />
                 </div>
             </div>
 

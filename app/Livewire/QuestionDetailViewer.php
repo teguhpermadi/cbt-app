@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Question; 
+use Illuminate\Support\Facades\Log;
 // TIDAK perlu lagi mengimport model Question jika Anda hanya menerima array/object
 // Namun, kita pertahankan untuk type hinting jika diperlukan di masa depan.
 
@@ -22,21 +23,32 @@ class QuestionDetailViewer extends Component
     }
 
     /**
-     * Listen for timer-updated, difficulty-updated, and score-updated events
+     * Listen for timer-updated, difficulty-updated, score-updated, and order-updated events
      */
     protected $listeners = [
         'timer-updated' => 'refreshQuestion',
         'difficulty-updated' => 'refreshQuestion',
-        'score-updated' => 'refreshQuestion'
+        'score-updated' => 'refreshQuestion',
+        'order-updated' => 'refreshQuestion'
     ];
 
     /**
-     * Refresh question data when timer, difficulty, or score is updated
+     * Refresh question data when timer, difficulty, score, or order is updated
      */
     public function refreshQuestion()
     {
-        // Refresh the question model to get updated timer, difficulty, and score values
+        Log::info('QuestionDetailViewer: refreshQuestion called', [
+            'question_id' => $this->question->id,
+            'current_order' => $this->question->order
+        ]);
+        
+        // Refresh the question model to get updated timer, difficulty, score, and order values
         $this->question->refresh();
+        
+        Log::info('QuestionDetailViewer: question refreshed', [
+            'question_id' => $this->question->id,
+            'new_order' => $this->question->order
+        ]);
     }
 
     public function getOptions()

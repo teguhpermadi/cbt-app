@@ -1,14 +1,12 @@
 
-User::get();
+
+QuestionBank::first();
 
 
-User::get();
-
-
-User::get();
-
-QuestionBank::with('questions')->find('01ka4v45mw8vee6rg0yghs4gh7');
-
-
+QuestionBank::first()->toArray();
 
 User::get();
+
+QuestionBank::with('questions')->find('01ka62f1x2fewdf9ax7d9tyvhr');
+
+

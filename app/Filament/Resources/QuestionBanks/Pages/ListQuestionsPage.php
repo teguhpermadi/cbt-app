@@ -18,4 +18,16 @@ class ListQuestionsPage extends Page
     {
         $this->questions = QuestionBank::find($record)->questions;
     }
+
+    /**
+     * Refresh questions data - can be called from other components
+     */
+    public function refreshQuestions(): void
+    {
+        $recordId = $this->questions->first()?->question_bank_id;
+        if ($recordId) {
+            $this->questions = QuestionBank::find($recordId)->questions()->orderBy('order')->get();
+        }
+        $this->dispatch('component-refreshed');
+    }
 }

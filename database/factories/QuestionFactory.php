@@ -235,71 +235,61 @@ class QuestionFactory extends Factory
                         'question' => 'Hitung nilai dari $$\\frac{3}{4} + \\frac{2}{5}$$',
                         'answer' => 1.15,  // 3/4 + 2/5 = 15/20 + 8/20 = 23/20 = 1.15
                         'tolerance' => 0.01,
-                        'unit' => null,
-                        'explanation' => 'Penyelesaian: $$\\frac{3}{4} + \\frac{2}{5} = \\frac{15}{20} + \\frac{8}{20} = \\frac{23}{20} = 1.15$$'
+                        'unit' => null
                     ],
                     [
                         'question' => 'Jika $$x = 2$$, hitung nilai dari $$2x^2 + 3x - 5$$',
                         'answer' => 9,  // 2(2)^2 + 3(2) - 5 = 8 + 6 - 5 = 9
                         'tolerance' => 0.01,
-                        'unit' => null,
-                        'explanation' => 'Substitusi $$x = 2$$: $$2(2)^2 + 3(2) - 5 = 8 + 6 - 5 = 9$$'
+                        'unit' => null
                     ],
                     [
                         'question' => 'Hitung luas persegi panjang dengan panjang $$\\sqrt{16}$$ cm dan lebar $$\\frac{3}{2}$$ cm',
                         'answer' => 6,  // sqrt(16) * 3/2 = 4 * 1.5 = 6
                         'tolerance' => 0.01,
-                        'unit' => 'cm²',
-                        'explanation' => 'Luas = panjang × lebar = $$\\sqrt{16} \\times \\frac{3}{2} = 4 \\times 1.5 = 6 \\text{ cm}^2$$'
+                        'unit' => 'cm²'
                     ],
                     [
                         'question' => 'Hitung nilai dari $$\\sin(30°) + \\cos(60°)$$',
                         'answer' => 1,  // sin(30°) + cos(60°) = 0.5 + 0.5 = 1
                         'tolerance' => 0.01,
-                        'unit' => null,
-                        'explanation' => '$$\\sin(30°) = 0.5$$ dan $$\\cos(60°) = 0.5$$, maka $$0.5 + 0.5 = 1$$'
+                        'unit' => null
                     ],
                     [
                         'question' => 'Jika $$a = 3$$ dan $$b = 4$$, hitung $$\\sqrt{a^2 + b^2}$$',
                         'answer' => 5,  // sqrt(3^2 + 4^2) = sqrt(9 + 16) = sqrt(25) = 5
                         'tolerance' => 0.01,
-                        'unit' => null,
-                        'explanation' => '$$\\sqrt{3^2 + 4^2} = \\sqrt{9 + 16} = \\sqrt{25} = 5$$'
+                        'unit' => null
                     ],
                     [
                         'question' => 'Hitung volume kubus dengan rusuk $$\\sqrt[3]{27}$$ cm',
                         'answer' => 27,  // (cube_root(27))^3 = 3^3 = 27
                         'tolerance' => 0.01,
-                        'unit' => 'cm³',
-                        'explanation' => 'Volume = rusuk³ = $$(\\sqrt[3]{27})^3 = 3^3 = 27 \\text{ cm}^3$$'
+                        'unit' => 'cm³'
                     ],
                     [
                         'question' => 'Hitung nilai dari $$\\sum_{i=1}^{5} i = 1 + 2 + 3 + 4 + 5$$',
                         'answer' => 15,  // sum of 1 to 5 = 15
                         'tolerance' => 0.01,
-                        'unit' => null,
-                        'explanation' => '$$\\sum_{i=1}^{5} i = 1 + 2 + 3 + 4 + 5 = 15$$'
+                        'unit' => null
                     ],
                     [
                         'question' => 'Jika $$\\pi \\approx 3.14$$, hitung luas lingkaran dengan jari-jari $$r = 2$$ cm menggunakan rumus $$L = \\pi r^2$$',
                         'answer' => 12.56,  // 3.14 * 2^2 = 3.14 * 4 = 12.56
                         'tolerance' => 0.01,
-                        'unit' => 'cm²',
-                        'explanation' => '$$L = \\pi r^2 = 3.14 \\times 2^2 = 3.14 \\times 4 = 12.56 \\text{ cm}^2$$'
+                        'unit' => 'cm²'
                     ],
                     [
                         'question' => 'Sederhanakan ekspresi $$\\frac{x^2 - 4}{x - 2}$$ untuk $$x \\neq 2$$',
                         'answer' => 4,  // (x^2 - 4)/(x - 2) = (x - 2)(x + 2)/(x - 2) = x + 2, untuk x ≠ 2
                         'tolerance' => 0.01,
-                        'unit' => null,
-                        'explanation' => '$$\\frac{x^2 - 4}{x - 2} = \\frac{(x - 2)(x + 2)}{x - 2} = x + 2$$, untuk $$x \\neq 2$$'
+                        'unit' => null
                     ],
                     [
                         'question' => 'Hitung integral $$\\int_0^2 3x^2 dx$$',
                         'answer' => 8,  // ∫3x² dx from 0 to 2 = [x³] from 0 to 2 = 2³ - 0³ = 8
                         'tolerance' => 0.01,
-                        'unit' => null,
-                        'explanation' => '$$\\int 3x^2 dx = x^3 + C$$, maka $$\\int_0^2 3x^2 dx = [x^3]_0^2 = 2^3 - 0^3 = 8$$'
+                        'unit' => null
                     ]
                 ];
                 
@@ -310,11 +300,9 @@ class QuestionFactory extends Factory
                 $data['key_answer'] = [
                     'answer' => $selectedMath['answer'],
                     'tolerance' => $selectedMath['tolerance'], 
-                    'unit' => $selectedMath['unit'],
-                    'latex_explanation' => $selectedMath['explanation'] // LaTeX explanation
+                    'unit' => $selectedMath['unit']
                 ];
                 $data['content'] = $selectedMath['question'] . ' (Masukkan jawaban numerik)';
-                $data['explanation'] = $selectedMath['explanation']; // Add LaTeX explanation
                 break;
         }
 

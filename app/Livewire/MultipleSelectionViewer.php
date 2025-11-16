@@ -8,7 +8,7 @@ use Livewire\Component;
 class MultipleSelectionViewer extends Component
 {
     public array $options = [];
-    public array $correctAnswers = [];
+    public array|string $correctAnswers = [];
     public bool $showCorrectAnswers = false;
 
     public function mount(array|string $options, array|string $correctAnswers = [], bool $showCorrectAnswers = false)
@@ -22,21 +22,35 @@ class MultipleSelectionViewer extends Component
             $this->options = $options;
         }
         
-        // Handle correct answers - support multiple formats
+        // Handle correct answers - can be array, JSON string, or structured array
         if (is_string($correctAnswers)) {
-            $this->correctAnswers = [json_decode($correctAnswers, true) ?? []];
+            // Handle simple string like "B,C" or JSON string like "{\"answers\":[\"B\",\"C\"]}"
+            $decoded = json_decode($correctAnswers, true);
+            if ($decoded !== null) {
+                // It's a JSON string
+                $this->correctAnswers = [$decoded];
+            } else {
+                // It's a simple string like "B,C" - convert to array
+                $answers = explode(',', $correctAnswers);
+                $this->correctAnswers = [['answers' => array_map('trim', $answers)]];
+            }
         } elseif (is_array($correctAnswers) && isset($correctAnswers[0]) && is_string($correctAnswers[0]) && str_contains($correctAnswers[0], '{')) {
-            // Array of JSON strings: ['{"answers":["A","B"]}']
+            // Array of JSON strings: ['{"answers":["B","C"]}']
             $this->correctAnswers = array_map(fn($answer) => json_decode($answer, true) ?? [], $correctAnswers);
         } elseif (is_array($correctAnswers) && (isset($correctAnswers['answer']) || isset($correctAnswers['answers']))) {
-            // Single structured array: ['answers' => ['A', 'B']]
+            // Single structured array: ['answers' => ['B', 'C']]
             $this->correctAnswers = [$correctAnswers];
         } elseif (is_array($correctAnswers) && isset($correctAnswers[0]) && is_string($correctAnswers[0])) {
-            // Simple array of answers: ['A', 'B', 'C'] - wrap in structured format
+            // Array of simple strings: ['B', 'C']
             $this->correctAnswers = [['answers' => $correctAnswers]];
         } else {
             // Array of structured arrays or other format
             $this->correctAnswers = $correctAnswers;
+        }
+        
+        // Ensure correctAnswers is always an array for internal use
+        if (!is_array($this->correctAnswers)) {
+            $this->correctAnswers = [];
         }
     }
 

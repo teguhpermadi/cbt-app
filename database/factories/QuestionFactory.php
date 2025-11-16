@@ -233,7 +233,7 @@ class QuestionFactory extends Factory
                 
                 $data['options'] = []; 
                 $data['key_answer'] = [
-                    'value' => $answer,
+                    'answer' => $answer,
                     'tolerance' => 0.05, 
                     'unit' => 'kg'
                 ];

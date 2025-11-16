@@ -7,7 +7,7 @@ use Livewire\Component;
 class MatchingViewer extends Component
 {
     public array $options = [];
-    public array $correctAnswers = [];
+    public array|string $correctAnswers = [];
     public bool $showCorrectAnswers = false;
     public array $leftColumn = [];
     public array $rightColumn = [];
@@ -26,7 +26,15 @@ class MatchingViewer extends Component
         
         // Handle correct answers - support multiple formats
         if (is_string($correctAnswers)) {
-            $this->correctAnswers = [json_decode($correctAnswers, true) ?? []];
+            // Handle simple string or JSON string like "{\"pairs\":{\"L1\":\"R1\"}}"
+            $decoded = json_decode($correctAnswers, true);
+            if ($decoded !== null) {
+                // It's a JSON string
+                $this->correctAnswers = [$decoded];
+            } else {
+                // It's a simple string - for matching, this might be unexpected but handle gracefully
+                $this->correctAnswers = [['pairs' => []]];
+            }
         } elseif (is_array($correctAnswers) && isset($correctAnswers[0]) && is_string($correctAnswers[0]) && str_contains($correctAnswers[0], '{')) {
             // Array of JSON strings: ['{"pairs":{"L1":"R1","L2":"R2"}}']
             $this->correctAnswers = array_map(fn($answer) => json_decode($answer, true) ?? [], $correctAnswers);
@@ -34,8 +42,13 @@ class MatchingViewer extends Component
             // Single structured array: ['pairs' => ['L1' => 'R1', 'L2' => 'R2']]
             $this->correctAnswers = [$correctAnswers];
         } else {
-            // Other format
+            // Array of structured arrays or other format
             $this->correctAnswers = $correctAnswers;
+        }
+        
+        // Ensure correctAnswers is always an array for internal use
+        if (!is_array($this->correctAnswers)) {
+            $this->correctAnswers = [];
         }
         
         $this->parseOptions();

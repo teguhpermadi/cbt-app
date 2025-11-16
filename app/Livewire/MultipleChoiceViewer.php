@@ -8,7 +8,7 @@ use Livewire\Component;
 class MultipleChoiceViewer extends Component
 {
     public array $options = [];
-    public array $correctAnswers = [];
+    public array|string $correctAnswers = [];
     public bool $showCorrectAnswers = false;
 
     public function mount(array|string $options, array|string $correctAnswers = [], bool $showCorrectAnswers = false)
@@ -24,16 +24,29 @@ class MultipleChoiceViewer extends Component
         
         // Handle correct answers - can be array, JSON string, or structured array
         if (is_string($correctAnswers)) {
-            $this->correctAnswers = [json_decode($correctAnswers, true) ?? []];
+            // Handle simple string like "B" or JSON string like "{\"answer\":\"B\"}"
+            $decoded = json_decode($correctAnswers, true);
+            if ($decoded !== null) {
+                // It's a JSON string
+                $this->correctAnswers = [$decoded];
+            } else {
+                // It's a simple string like "B"
+                $this->correctAnswers = [['answer' => $correctAnswers]];
+            }
         } elseif (is_array($correctAnswers) && isset($correctAnswers[0]) && is_string($correctAnswers[0])) {
-            // Array of JSON strings: ['{"answer":"A"}']
+            // Array of JSON strings: ['{"answer":"B"}']
             $this->correctAnswers = array_map(fn($answer) => json_decode($answer, true) ?? [], $correctAnswers);
         } elseif (is_array($correctAnswers) && (isset($correctAnswers['answer']) || isset($correctAnswers['answers']))) {
-            // Single structured array: ['answer' => 'A']
+            // Single structured array: ['answer' => 'B']
             $this->correctAnswers = [$correctAnswers];
         } else {
             // Array of structured arrays or other format
             $this->correctAnswers = $correctAnswers;
+        }
+        
+        // Ensure correctAnswers is always an array for internal use
+        if (!is_array($this->correctAnswers)) {
+            $this->correctAnswers = [];
         }
     }
 

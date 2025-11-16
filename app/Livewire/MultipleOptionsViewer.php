@@ -9,7 +9,7 @@ class MultipleOptionsViewer extends Component
 {
     public array $options = [];
     public QuestionTypeEnum|string $questionType;
-    public array $correctAnswers = [];
+    public array|string $correctAnswers = [];
     public bool $showCorrectAnswers = false;
 
     public function mount(array|string $options, QuestionTypeEnum|string $questionType, array|string $correctAnswers = [], bool $showCorrectAnswers = false)
@@ -26,7 +26,15 @@ class MultipleOptionsViewer extends Component
         
         // Handle correct answers - can be array, JSON string, or structured array
         if (is_string($correctAnswers)) {
-            $this->correctAnswers = [json_decode($correctAnswers, true) ?? []];
+            // Handle simple string like "A" or JSON string like "{\"answer\":\"A\"}"
+            $decoded = json_decode($correctAnswers, true);
+            if ($decoded !== null) {
+                // It's a JSON string
+                $this->correctAnswers = [$decoded];
+            } else {
+                // It's a simple string like "A"
+                $this->correctAnswers = [['answer' => $correctAnswers]];
+            }
         } elseif (is_array($correctAnswers) && isset($correctAnswers[0]) && is_string($correctAnswers[0])) {
             // Array of JSON strings: ['{"answer":"A"}']
             $this->correctAnswers = array_map(fn($answer) => json_decode($answer, true) ?? [], $correctAnswers);
@@ -36,6 +44,11 @@ class MultipleOptionsViewer extends Component
         } else {
             // Array of structured arrays or other format
             $this->correctAnswers = $correctAnswers;
+        }
+        
+        // Ensure correctAnswers is always an array for internal use
+        if (!is_array($this->correctAnswers)) {
+            $this->correctAnswers = [];
         }
         
         // Set default options for true/false questions if empty

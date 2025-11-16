@@ -63,8 +63,18 @@ class QuestionDetailViewer extends Component
             return $keyAnswer;
         }
         
+        // Handle structure like {"answer":"42"} or {"answer":"\\frac{1}{2}"} for numerical_input
+        if (isset($keyAnswer['answer'])) {
+            return $keyAnswer['answer'];
+        }
+        
         // Handle simple array structure like ["B","C"]
         if (is_array($keyAnswer)) {
+            return $keyAnswer;
+        }
+        
+        // Handle simple string value
+        if (is_string($keyAnswer)) {
             return $keyAnswer;
         }
         

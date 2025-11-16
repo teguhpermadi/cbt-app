@@ -95,6 +95,14 @@
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
         />
+        @elseif ($question->question_type->value === 'numerical_input')
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
+            Kunci Jawaban
+        </h3>
+        <livewire:numerical-input-viewer 
+            :correct-answers="$this->getCorrectAnswers()"
+            :show-correct-answers="true"
+        />
         @endif
 
         @if ($question->question_type->value === 'essay')

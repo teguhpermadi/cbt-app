@@ -59,6 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->renderHook(PanelsRenderHook::HEAD_START, fn() => view('partials.head'))
             ->renderHook(PanelsRenderHook::HEAD_END, fn() => view('partials.katex-css'))
-            ->renderHook(PanelsRenderHook::BODY_END, fn() => view('partials.katex-js'));
+            ->renderHook(PanelsRenderHook::BODY_END, fn() => view('partials.katex-js'))
+            ->renderHook(PanelsRenderHook::BODY_END, fn() => view('partials.alpine-js'));
     }
 }

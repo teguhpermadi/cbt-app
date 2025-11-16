@@ -29,6 +29,10 @@ class QuestionBanksTable
                     ->wrap(),
                 ToggleColumn::make('is_public')
                     ->sortable(),
+                TextColumn::make('questions_count')
+                    ->label('Questions')
+                    ->counts('questions')
+                    ->sortable(),
             ])
             ->filters([
                 TrashedFilter::make(),

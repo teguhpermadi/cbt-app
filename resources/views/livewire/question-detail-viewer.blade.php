@@ -86,6 +86,15 @@
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
         />
+        @elseif ($question->question_type->value === 'ordering')
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
+            Kunci Jawaban Urutan
+        </h3>
+        <livewire:ordering-viewer 
+            :options="$this->getOptions()"
+            :correct-answers="$this->getCorrectAnswers()"
+            :show-correct-answers="true"
+        />
         @endif
 
         @if ($question->question_type->value === 'essay')

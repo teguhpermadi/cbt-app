@@ -58,6 +58,11 @@ class QuestionDetailViewer extends Component
             return $keyAnswer;
         }
         
+        // Handle structure like {"order":["A","B","C"]} for ordering
+        if (isset($keyAnswer['order']) && is_array($keyAnswer['order'])) {
+            return $keyAnswer;
+        }
+        
         // Handle simple array structure like ["B","C"]
         if (is_array($keyAnswer)) {
             return $keyAnswer;

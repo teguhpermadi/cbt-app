@@ -10,13 +10,13 @@
                         {{ $question->question_type->getLabel() }}
                     </span>
 
-                    <livewire:timer-selector :question="$question" />
+                    <livewire:timer-selector :question="$question" wire:key="timer-selector-{{ $question->id }}" />
                     
-                    <livewire:difficulty-selector :question="$question" />
+                    <livewire:difficulty-selector :question="$question" wire:key="difficulty-selector-{{ $question->id }}" />
                     
-                    <livewire:question-score-selector :question="$question" />
+                    <livewire:question-score-selector :question="$question" wire:key="question-score-selector-{{ $question->id }}" />
 
-                    <livewire:order-selector :question="$question" />
+                    <livewire:order-selector :question="$question" wire:key="order-selector-{{ $question->id }}" />
                 </div>
             </div>
 
@@ -60,6 +60,7 @@
             :options="$this->getOptions()"
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
+            wire:key="multiple-choice-viewer-{{ $question->id }}"
         />
         @elseif ($question->question_type->value === 'true_false')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
@@ -69,6 +70,7 @@
             :options="$this->getOptions()"
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
+            wire:key="true-false-viewer-{{ $question->id }}"
         />
         @elseif ($question->question_type->value === 'multiple_selection')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
@@ -78,6 +80,7 @@
             :options="$this->getOptions()"
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
+            wire:key="multiple-selection-viewer-{{ $question->id }}"
         />
         @elseif ($question->question_type->value === 'matching')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
@@ -87,6 +90,7 @@
             :options="$this->getOptions()"
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
+            wire:key="matching-viewer-{{ $question->id }}"
         />
         @elseif ($question->question_type->value === 'ordering')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
@@ -96,6 +100,7 @@
             :options="$this->getOptions()"
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
+            wire:key="ordering-viewer-{{ $question->id }}"
         />
         @elseif ($question->question_type->value === 'numerical_input')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
@@ -104,6 +109,7 @@
         <livewire:numerical-input-viewer 
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
+            wire:key="numerical-input-viewer-{{ $question->id }}"
         />
         @endif
 
@@ -115,6 +121,7 @@
             :key-answer="$this->getCorrectAnswers()"
             :question-type="$question->question_type"
             :show-correct-answers="true"
+            wire:key="essay-answer-viewer-{{ $question->id }}"
         />
         @endif
 

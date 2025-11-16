@@ -30,6 +30,7 @@ class Question extends Model implements HasMedia
         'content', 
         'options',      // JSON array/object
         'key_answer',   // JSON array/object (kunci jawaban/rubrik)
+        'explanation',  // Penjelasan/Pembahasan soal (dapat mengandung LaTeX)
         'score_value',
         'is_active',
         'is_approved',
@@ -86,6 +87,123 @@ class Question extends Model implements HasMedia
     public function getTimerAttribute($value): ?TimerEnum
     {
         return $value ? TimerEnum::from($value) : null;
+    }
+
+    /**
+     * Accessor untuk content dengan LaTeX rendering
+     */
+    public function getFormattedContentAttribute(): string
+    {
+        return $this->formatLatex($this->content);
+    }
+
+    /**
+     * Accessor untuk explanation dengan LaTeX rendering
+     */
+    public function getFormattedExplanationAttribute(): string
+    {
+        return $this->explanation ? $this->formatLatex($this->explanation) : '';
+    }
+
+    /**
+     * Accessor untuk key_answer dengan LaTeX rendering
+     */
+    public function getFormattedKeyAnswerAttribute(): string
+    {
+        if (is_array($this->key_answer)) {
+            return $this->formatLatex(json_encode($this->key_answer, JSON_UNESCAPED_UNICODE));
+        }
+        return $this->formatLatex($this->key_answer);
+    }
+
+    /**
+     * Helper method untuk memformat LaTeX expressions
+     */
+    private function formatLatex(string $text): string
+    {
+        // Convert inline LaTeX $$...$$ to MathJax format
+        $text = preg_replace('/\$\$(.*?)\$\$/', '$$\\1$$', $text);
+        
+        // Convert other LaTeX patterns if needed
+        $text = preg_replace('/\\\(\\\frac\{(.*?)\}\{(.*?)\)\\\)/', '\\frac{\\1}{\\2}', $text);
+        $text = preg_replace('/\\\(\\\sqrt\{(.*?)\)\\\)/', '\\sqrt{\\1}', $text);
+        
+        return $text;
+    }
+
+    /**
+     * Check if content contains LaTeX expressions
+     */
+    public function hasLatexContent(): bool
+    {
+        return str_contains($this->content, '$$') || 
+               str_contains($this->content, '\\frac') || 
+               str_contains($this->content, '\\sqrt') ||
+               str_contains($this->content, '\\sum') ||
+               str_contains($this->content, '\\pi');
+    }
+
+    /**
+     * Check if explanation contains LaTeX expressions
+     */
+    public function hasLatexExplanation(): bool
+    {
+        if (!$this->explanation) return false;
+        
+        return str_contains($this->explanation, '$$') || 
+               str_contains($this->explanation, '\\frac') || 
+               str_contains($this->explanation, '\\sqrt') ||
+               str_contains($this->explanation, '\\sum') ||
+               str_contains($this->explanation, '\\pi');
+    }
+
+    /**
+     * Check if key_answer contains LaTeX expressions
+     */
+    public function hasLatexKeyAnswer(): bool
+    {
+        $keyAnswerText = is_array($this->key_answer) ? 
+            json_encode($this->key_answer, JSON_UNESCAPED_UNICODE) : 
+            $this->key_answer;
+            
+        return str_contains($keyAnswerText, '$$') || 
+               str_contains($keyAnswerText, '\\frac') || 
+               str_contains($keyAnswerText, '\\sqrt') ||
+               str_contains($keyAnswerText, '\\sum') ||
+               str_contains($keyAnswerText, '\\pi');
+    }
+
+    /**
+     * Get LaTeX expressions from content
+     */
+    public function getLatexExpressions(): array
+    {
+        preg_match_all('/\$\$(.*?)\$\$/', $this->content, $matches);
+        return $matches[1] ?? [];
+    }
+
+    /**
+     * Get LaTeX expressions from explanation
+     */
+    public function getLatexExplanationExpressions(): array
+    {
+        if (!$this->explanation) return [];
+        
+        preg_match_all('/\$\$(.*?)\$\$/', $this->explanation, $matches);
+        return $matches[1] ?? [];
+    }
+
+    /**
+     * Get LaTeX expressions from key_answer
+     */
+    public function getLatexKeyAnswerExpressions(): array
+    {
+        $keyAnswerText = is_array($this->key_answer) ? 
+            json_encode($this->key_answer, JSON_UNESCAPED_UNICODE) : 
+            $this->key_answer;
+            
+        preg_match_all('/\$\$(.*?)\$\$/', $keyAnswerText, $matches);
+        return $matches[1] ?? [];
     }
 
     // --- SPATIE CONFIGURATIONS ---

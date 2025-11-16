@@ -10,6 +10,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -55,6 +56,9 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->viteTheme('resources/css/filament/admin/theme.css');
+            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->renderHook(PanelsRenderHook::HEAD_START, fn() => view('partials.head'))
+            ->renderHook(PanelsRenderHook::HEAD_END, fn() => view('partials.katex-css'))
+            ->renderHook(PanelsRenderHook::BODY_END, fn() => view('partials.katex-js'));
     }
 }

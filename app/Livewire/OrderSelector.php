@@ -184,6 +184,9 @@ class OrderSelector extends Component
 
             $this->dispatch('order-updated', order: $question->order)->to('question-detail-viewer');
             
+            // Trigger parent component rerender
+            $this->dispatch('refresh-parent');
+            
             // Trigger page refresh and scroll to updated question
             $this->dispatch('page-refreshed', questionId: $question->id);
 

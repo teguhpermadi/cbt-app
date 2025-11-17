@@ -29,4 +29,12 @@ Route::middleware(['auth'])->group(function () {
             ),
         )
         ->name('two-factor.show');
+
+    // Question Bank List Route
+    Route::get('/question-banks', \App\Livewire\QuestionBankList::class)
+        ->name('question-banks.index');
+    
+    // Question Bank Detail Route (with optional question_bank_id parameter)
+    Route::get('/question-banks/{question_bank_id}', \App\Livewire\QuestionBankList::class)
+        ->name('question-banks.show');
 });

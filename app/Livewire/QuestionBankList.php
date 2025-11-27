@@ -15,6 +15,7 @@ class QuestionBankList extends Component
     public $selectedQuestionBank = null;
     public $perPage = 10;
     public $questionBankId = null;
+    public $embedded = false;
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -33,22 +34,14 @@ class QuestionBankList extends Component
         'page-refreshed' => 'rerender',
     ];
 
-    public function mount($question_bank_id = null)
+    public function mount($questionBankId = null, $embedded = false)
     {
-        $this->questionBankId = $question_bank_id;
-        
+        $this->questionBankId = $questionBankId;
+        $this->embedded = $embedded;
+
         if ($this->questionBankId) {
             $this->selectedQuestionBank = QuestionBank::findOrFail($this->questionBankId);
         }
-    }
-
-    public function selectQuestionBank($questionBankId)
-    {
-        $this->selectedQuestionBank = QuestionBank::findOrFail($questionBankId);
-        $this->questionBankId = $questionBankId;
-        
-        // Update URL to reflect the selected question bank
-        $this->dispatch('url-updated', questionBankId: $questionBankId);
     }
 
     public function loadQuestionBanks()
@@ -67,7 +60,7 @@ class QuestionBankList extends Component
         if ($this->selectedQuestionBank) {
             $this->selectedQuestionBank = QuestionBank::find($this->selectedQuestionBank->id);
         }
-        
+
         // Trigger component re-render
         $this->render();
     }

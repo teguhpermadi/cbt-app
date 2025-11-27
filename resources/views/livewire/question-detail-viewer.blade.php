@@ -1,4 +1,8 @@
-<div>
+<div
+    x-data="questionViewer()"
+    x-init="init()"
+    @katex-render.window="renderKatex()"
+    wire:key="question-viewer-{{ $question->id }}">
     @if ($question)
     <div class="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 space-y-6 border border-gray-200 dark:border-gray-700">
         <x-question-loading-indicator />
@@ -134,8 +138,78 @@
     </div>
     @endif
 
-    <!-- Notification Script -->
+    <!-- Alpine.js Component for KaTeX Rendering -->
     <script>
+        function questionViewer() {
+            return {
+                init() {
+                    // Render KaTeX saat komponen pertama kali dimuat
+                    this.renderKatex();
+
+                    // Listen untuk Livewire update dari component ini
+                    this.$wire.$on('refreshed', () => {
+                        console.log('Question refreshed, re-rendering KaTeX...');
+                        this.renderKatex();
+                    });
+                },
+
+                renderKatex() {
+                    // Tunggu sebentar untuk memastikan DOM sudah diupdate
+                    this.$nextTick(() => {
+                        console.log('Re-rendering KaTeX for question viewer...');
+
+                        // Preprocessing: Hapus kelas KaTeX dari elemen yang sudah dirender sebelumnya
+                        this.$el.querySelectorAll('.katex-display, .katex').forEach(el => {
+                            el.classList.remove('katex-display', 'katex');
+                            // Jika KaTeX mengganti elemen dengan span, kita mungkin perlu mengembalikan teks aslinya
+                            // Ini adalah pendekatan yang lebih agresif, mungkin tidak selalu diperlukan
+                            // if (el.dataset.originalText) {
+                            //     el.outerHTML = el.dataset.originalText;
+                            // }
+                        });
+
+                        // Gunakan fungsi global renderKaTeX jika tersedia
+                        if (typeof window.renderKaTeX === 'function') {
+                            window.renderKaTeX(this.$el);
+                        }
+                        // Fallback: gunakan renderMathInElement langsung
+                        else if (typeof renderMathInElement === 'function') {
+                            renderMathInElement(this.$el, {
+                                delimiters: [{
+                                        left: '$$',
+                                        right: '$$',
+                                        display: true
+                                    },
+                                    {
+                                        left: '$',
+                                        right: '$',
+                                        display: false
+                                    },
+                                    {
+                                        left: '\\(',
+                                        right: '\\)',
+                                        display: false
+                                    },
+                                    {
+                                        left: '\\[',
+                                        right: '\\]',
+                                        display: true
+                                    }
+                                ],
+                                throwOnError: false,
+                                strict: false
+                            });
+                        } else {
+                            console.warn('KaTeX not loaded yet, retrying...');
+                            // Retry setelah 500ms jika KaTeX belum loaded
+                            setTimeout(() => this.renderKatex(), 500);
+                        }
+                    });
+                }
+            }
+        }
+
+        // Notification handler
         document.addEventListener('livewire:init', () => {
             Livewire.on('notify', (event) => {
                 // Create a simple notification

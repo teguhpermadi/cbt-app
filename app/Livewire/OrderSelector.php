@@ -10,6 +10,7 @@ use Livewire\Component;
 
 class OrderSelector extends Component
 {
+
     public string $questionId;
 
     public int $order;
@@ -58,14 +59,14 @@ class OrderSelector extends Component
         Log::info('OrderSelector: updatedOrder called', [
             'new_order_value' => $this->order
         ]);
-        
+
         $this->updateOrder();
     }
 
     public function updateOrder(): void
     {
         $question = $this->getQuestion();
-        
+
         Log::info('OrderSelector: updateOrder called', [
             'current_order' => $this->order,
             'question_id' => $question->id,
@@ -87,7 +88,6 @@ class OrderSelector extends Component
                 'errors' => $validator->errors()->toArray()
             ]);
 
-            $this->dispatch('notify', message: 'Urutan harus di antara 1 dan ' . $this->maxOrder, type: 'error');
             $this->order = (int) ($question->order ?? 1);
             return;
         }
@@ -108,7 +108,8 @@ class OrderSelector extends Component
 
         try {
             $this->isLoading = true;
-            
+            $this->dispatch('question-loading-start');
+
             Log::info('OrderSelector: Starting database transaction', [
                 'original_order' => $originalOrder,
                 'new_order' => $newOrder
@@ -126,7 +127,7 @@ class OrderSelector extends Component
                         ->where('id', '!=', $question->id)
                         ->orderBy('order')
                         ->get();
-                    
+
                     Log::info('OrderSelector: Shifting questions down', [
                         'questions_count' => $questionsToShift->count(),
                         'range' => [$newOrder, $originalOrder - 1]
@@ -146,7 +147,7 @@ class OrderSelector extends Component
                         ->where('id', '!=', $question->id)
                         ->orderBy('order')
                         ->get();
-                    
+
                     Log::info('OrderSelector: Shifting questions up', [
                         'questions_count' => $questionsToShift->count(),
                         'range' => [$originalOrder + 1, $newOrder]
@@ -183,14 +184,12 @@ class OrderSelector extends Component
             ]);
 
             $this->dispatch('order-updated', order: $question->order)->to('question-detail-viewer');
-            
+
             // Trigger parent component rerender
             $this->dispatch('refresh-parent');
-            
+
             // Trigger page refresh and scroll to updated question
             $this->dispatch('page-refreshed', questionId: $question->id);
-
-            $this->dispatch('notify', message: 'Urutan soal berhasil diperbarui', type: 'success');
         } catch (\Throwable $e) {
             Log::error('OrderSelector: Error during update', [
                 'error' => $e->getMessage(),
@@ -200,12 +199,11 @@ class OrderSelector extends Component
                 'new_order' => $newOrder
             ]);
 
-            $this->dispatch('notify', message: 'Gagal memperbarui urutan soal: ' . $e->getMessage(), type: 'error');
-
             $this->order = (int) ($question->order ?? 1);
         } finally {
             $this->isLoading = false;
-            
+            $this->dispatch('question-loading-end');
+
             Log::info('OrderSelector: Loading state set to false');
         }
     }

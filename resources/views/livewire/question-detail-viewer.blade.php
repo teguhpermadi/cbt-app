@@ -1,6 +1,7 @@
 <div>
     @if ($question)
     <div class="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-6 space-y-6 border border-gray-200 dark:border-gray-700">
+        <x-question-loading-indicator />
 
         <div class="flex items-start justify-between border-b pb-4">
             <div class="flex-1">
@@ -11,9 +12,9 @@
                     </span>
 
                     <livewire:timer-selector :question="$question" wire:key="timer-selector-{{ $question->id }}" />
-                    
+
                     <livewire:difficulty-selector :question="$question" wire:key="difficulty-selector-{{ $question->id }}" />
-                    
+
                     <livewire:question-score-selector :question="$question" wire:key="question-score-selector-{{ $question->id }}" />
 
                     <livewire:order-selector :question="$question" wire:key="order-selector-{{ $question->id }}" />
@@ -56,73 +57,66 @@
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
             Pilihan Jawaban (Kunci)
         </h3>
-        <livewire:multiple-choice-viewer 
+        <livewire:multiple-choice-viewer
             :options="$this->getOptions()"
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
-            wire:key="multiple-choice-viewer-{{ $question->id }}"
-        />
+            wire:key="multiple-choice-viewer-{{ $question->id }}" />
         @elseif ($question->question_type->value === 'true_false')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
             Pilihan Jawaban (Kunci)
         </h3>
-        <livewire:true-false-viewer 
+        <livewire:true-false-viewer
             :options="$this->getOptions()"
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
-            wire:key="true-false-viewer-{{ $question->id }}"
-        />
+            wire:key="true-false-viewer-{{ $question->id }}" />
         @elseif ($question->question_type->value === 'multiple_selection')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
             Pilihan Jawaban (Kunci)
         </h3>
-        <livewire:multiple-selection-viewer 
+        <livewire:multiple-selection-viewer
             :options="$this->getOptions()"
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
-            wire:key="multiple-selection-viewer-{{ $question->id }}"
-        />
+            wire:key="multiple-selection-viewer-{{ $question->id }}" />
         @elseif ($question->question_type->value === 'matching')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
             Pilihan Jawaban (Kunci)
         </h3>
-        <livewire:matching-viewer 
+        <livewire:matching-viewer
             :options="$this->getOptions()"
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
-            wire:key="matching-viewer-{{ $question->id }}"
-        />
+            wire:key="matching-viewer-{{ $question->id }}" />
         @elseif ($question->question_type->value === 'ordering')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
             Kunci Jawaban Urutan
         </h3>
-        <livewire:ordering-viewer 
+        <livewire:ordering-viewer
             :options="$this->getOptions()"
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
-            wire:key="ordering-viewer-{{ $question->id }}"
-        />
+            wire:key="ordering-viewer-{{ $question->id }}" />
         @elseif ($question->question_type->value === 'numerical_input')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
             Kunci Jawaban
         </h3>
-        <livewire:numerical-input-viewer 
+        <livewire:numerical-input-viewer
             :correct-answers="$this->getCorrectAnswers()"
             :show-correct-answers="true"
-            wire:key="numerical-input-viewer-{{ $question->id }}"
-        />
+            wire:key="numerical-input-viewer-{{ $question->id }}" />
         @endif
 
         @if ($question->question_type->value === 'essay')
         <h3 class="text-xl font-bold text-gray-900 dark:text-white pt-4">
             Rubrik Penilaian
         </h3>
-        <livewire:essay-answer-viewer 
+        <livewire:essay-answer-viewer
             :key-answer="$this->getCorrectAnswers()"
             :question-type="$question->question_type"
             :show-correct-answers="true"
-            wire:key="essay-answer-viewer-{{ $question->id }}"
-        />
+            wire:key="essay-answer-viewer-{{ $question->id }}" />
         @endif
 
         @if ($question->feedback)
@@ -139,7 +133,7 @@
         Soal tidak ditemukan atau ID soal tidak valid.
     </div>
     @endif
-    
+
     <!-- Notification Script -->
     <script>
         document.addEventListener('livewire:init', () => {
@@ -150,9 +144,9 @@
                     event.type === 'success' ? 'bg-green-500' : 'bg-red-500'
                 }`;
                 notification.textContent = event.message;
-                
+
                 document.body.appendChild(notification);
-                
+
                 setTimeout(() => {
                     notification.style.opacity = '0';
                     setTimeout(() => {

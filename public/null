@@ -1,7 +1,2 @@
-QuesionBank::find('01ka62f1x2fewdf9ax7d9tyvhr')
-QuesionBank::find('01ka62f1x2fewdf9ax7d9tyvhr');
-App\Models\QuesionBank::find('01ka62f1x2fewdf9ax7d9tyvhr');
-App\Models\QuestionBank::find('01ka62f1x2fewdf9ax7d9tyvhr');
-App\Models\QuestionBank::with('question')->find('01ka62f1x2fewdf9ax7d9tyvhr');
-App\Models\QuestionBank::with('question')->find('01ka62f1x2fewdf9ax7d9tyvhr');
-App\Models\QuestionBank::with('questions')->find('01ka62f1x2fewdf9ax7d9tyvhr');
+User::get()
+QuestionBank::find('01ka62f1x2fewdf9ax7d9tyvhr')

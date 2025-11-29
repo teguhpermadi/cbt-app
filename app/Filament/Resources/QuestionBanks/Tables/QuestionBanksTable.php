@@ -41,7 +41,7 @@ class QuestionBanksTable
                 EditAction::make(),
                 Action::make('questions')
                     ->label('Questions')
-                    ->url(fn (QuestionBank $record): string => route('filament.admin.resources.question-banks.questions', $record)),
+                    ->url(fn(QuestionBank $record): string => route('question-banks.show', $record)),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

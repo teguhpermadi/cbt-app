@@ -5,7 +5,6 @@ namespace App\Filament\Resources\QuestionBanks;
 use App\Filament\Resources\QuestionBanks\Pages\CreateQuestionBank;
 use App\Filament\Resources\QuestionBanks\Pages\EditQuestionBank;
 use App\Filament\Resources\QuestionBanks\Pages\ListQuestionBanks;
-use App\Filament\Resources\QuestionBanks\Pages\ListQuestionsPage;
 use App\Filament\Resources\QuestionBanks\Schemas\QuestionBankForm;
 use App\Filament\Resources\QuestionBanks\Tables\QuestionBanksTable;
 use App\Models\QuestionBank;
@@ -48,7 +47,6 @@ class QuestionBankResource extends Resource
             'index' => ListQuestionBanks::route('/'),
             'create' => CreateQuestionBank::route('/create'),
             'edit' => EditQuestionBank::route('/{record}/edit'),
-            'questions' => ListQuestionsPage::route('/{record}/questions'),
         ];
     }
 

@@ -12,7 +12,7 @@
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         <div class="mb-6 px-4 py-4">
-            <a href="{{ route('question-banks.index') }}" class="flex items-center text-sm text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors" wire:navigate>
+            <a href="{{ route('filament.admin.resources.question-banks.index') }}" class="flex items-center text-sm text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors" wire:navigate>
                 <flux:icon.arrow-left class="w-4 h-4 mr-2" />
                 Kembali
             </a>

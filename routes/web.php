@@ -31,5 +31,5 @@ Route::middleware(['auth'])->group(function () {
         ->name('two-factor.show');
 });
 
-Route::get('/question-banks/{questionBank}', \App\Livewire\Question\QuestionBank::class)
+Route::get('/question-banks/{questionBank}', \App\Livewire\Question\QuestionBankComponent::class)
     ->name('question-banks.show');

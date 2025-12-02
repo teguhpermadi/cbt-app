@@ -13,6 +13,16 @@ class QuestionBankSeeder extends Seeder
      */
     public function run(): void
     {
-        QuestionBank::factory(5)->create();
+        $banks = QuestionBank::factory(5)->create();
+
+        foreach ($banks as $bank) {
+            foreach (\App\Enums\QuestionTypeEnum::cases() as $type) {
+                \App\Models\Question::factory()
+                    ->withType($type)
+                    ->create([
+                        'question_bank_id' => $bank->id,
+                    ]);
+            }
+        }
     }
 }

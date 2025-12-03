@@ -27,9 +27,7 @@ class Question extends Model implements HasMedia
         'question_type',
         'difficulty_level',
         'timer',
-        'content', 
-        'options',      // JSON array/object
-        'key_answer',   // JSON array/object (kunci jawaban/rubrik)
+        'content',
         'score_value',
         'order',        // Nomor urut
         'is_active',
@@ -40,8 +38,6 @@ class Question extends Model implements HasMedia
         'question_type' => QuestionTypeEnum::class,
         'difficulty_level' => DifficultyLevelEnum::class,
         'timer' => TimerEnum::class,
-        'options' => 'array',     // Untuk opsi jawaban, termasuk media ULID
-        'key_answer' => 'array',  // Untuk kunci jawaban, termasuk rubrik/urutan
         'is_active' => 'boolean',
         'is_approved' => 'boolean', // Status persetujuan Peer Review
     ];
@@ -57,11 +53,17 @@ class Question extends Model implements HasMedia
     {
         return $this->belongsTo(ReadingMaterial::class);
     }
-    
+
     public function peerReviews(): HasMany
     {
         return $this->hasMany(QuestionPeerReview::class);
     }
+
+    public function options(): HasMany
+    {
+        return $this->hasMany(Option::class)->orderBy('order');
+    }
+
     
     // --- ACCESSORS & MUTATORS ---
 
@@ -92,16 +94,12 @@ class Question extends Model implements HasMedia
     // --- SPATIE CONFIGURATIONS ---
 
     /**
-     * Konfigurasi untuk Media Library (Media di Soal dan Opsi)
+     * Konfigurasi untuk Media Library (Media di Soal)
      */
     public function registerMediaCollections(): void
     {
         // Koleksi untuk media yang muncul di Konten Soal (gambar, audio, video)
         $this->addMediaCollection('question_content')
-            ->useDisk('public'); 
-
-        // Koleksi untuk media yang digunakan di dalam Opsi Jawaban
-        $this->addMediaCollection('option_media')
             ->useDisk('public');
     }
 

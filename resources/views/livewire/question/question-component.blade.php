@@ -15,10 +15,10 @@
         <div class="w-full">
             @switch($question->question_type->value)
             @case('multiple_choice')
-            <livewire:question.option.multiple-viewer-component :options="$question->options" :key_answer="$question->key_answer" />
+            <livewire:question.option.multiple-viewer-component :question="$question" />
             @break
             @case('multiple_selection')
-            <livewire:question.option.multiple-viewer-component :options="$question->options" :key_answer="$question->key_answer" />
+            <livewire:question.option.multiple-viewer-component :question="$question" />
             @break
             @default
             @endswitch

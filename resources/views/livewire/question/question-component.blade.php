@@ -20,7 +20,11 @@
             @case('multiple_selection')
             <livewire:question.option.multiple-viewer-component :question="$question" />
             @break
+            @case('true_false')
+            <livewire:question.option.multiple-viewer-component :question="$question" />
+            @break
             @default
+            
             @endswitch
         </div>
     </x-mary-card>

@@ -114,4 +114,100 @@ class Question extends Model implements HasMedia
             ->setDescriptionForEvent(fn(string $eventName) => "Soal tipe {$this->question_type->value} telah di-{$eventName} di Bank Soal: {$this->questionBank->name}")
             ->useLogName('question');
     }
+
+    // --- HELPER METHODS FOR EXAM SNAPSHOT ---
+
+    /**
+     * Mengambil opsi jawaban dalam format array untuk snapshot ExamQuestion.
+     * Mengkonversi dari relasi options ke format array yang kompatibel dengan JSON.
+     */
+    public function getOptionsForExam(): array
+    {
+        $options = [];
+
+        // Eager load options jika belum di-load
+        if (!$this->relationLoaded('options')) {
+            $this->load('options');
+        }
+
+        foreach ($this->options as $option) {
+            $optionData = [
+                'id' => $option->id, // Sertakan ID asli untuk referensi
+                'key' => $option->option_key,
+                'content' => $option->content,
+                'media' => $option->getMediaUrl(), // URL media jika ada
+                'type' => $option->getMetadata('type'), // Untuk matching (left/right)
+            ];
+
+            // Tambahkan metadata khusus jika ada
+            if ($option->metadata) {
+                $optionData = array_merge($optionData, $option->metadata);
+            }
+
+            // Format khusus berdasarkan tipe soal
+            if ($this->question_type === QuestionTypeEnum::Matching) {
+                // Untuk matching, kita butuh struktur yang jelas antara left dan right
+                // Tapi untuk snapshot, kita simpan flat array dengan key L1, R1, dst.
+                // Nanti di frontend yang akan memisahkan
+            }
+
+            $options[$option->option_key] = $optionData;
+        }
+
+        return $options;
+    }
+
+    /**
+     * Mengambil kunci jawaban dalam format array untuk snapshot ExamQuestion.
+     * Mengkonversi dari relasi options ke format array yang kompatibel dengan JSON.
+     */
+    public function getKeyAnswerForExam(): array
+    {
+        // Eager load options jika belum di-load
+        if (!$this->relationLoaded('options')) {
+            $this->load('options');
+        }
+
+        return match ($this->question_type) {
+            QuestionTypeEnum::MultipleChoice => [
+                'answer' => $this->options->where('is_correct', true)->first()?->option_key
+            ],
+
+            QuestionTypeEnum::MultipleSelection => [
+                'answers' => $this->options->where('is_correct', true)->pluck('option_key')->values()->toArray()
+            ],
+
+            QuestionTypeEnum::TrueFalse => [
+                'answer' => $this->options->where('is_correct', true)->first()?->option_key
+            ],
+
+            QuestionTypeEnum::Matching => [
+                'pairs' => $this->options->filter(function ($option) {
+                    return str_starts_with($option->option_key, 'L');
+                })
+                    ->mapWithKeys(function ($option) {
+                        return [$option->option_key => $option->getMetadata('match_with')];
+                    })->toArray()
+            ],
+
+            QuestionTypeEnum::Ordering => [
+                'order' => $this->options->sortBy(function ($option) {
+                    return $option->getMetadata('correct_position');
+                })->pluck('option_key')->values()->toArray()
+            ],
+
+            QuestionTypeEnum::NumericalInput => [
+                'answer' => $this->options->first()?->getMetadata('correct_answer'),
+                'tolerance' => $this->options->first()?->getMetadata('tolerance', 0),
+                'unit' => $this->options->first()?->getMetadata('unit'),
+            ],
+
+            QuestionTypeEnum::Essay => [
+                // Essay mungkin punya rubrik di metadata opsi atau null
+                'rubric' => $this->options->first()?->metadata
+            ],
+
+            default => []
+        };
+    }
 }

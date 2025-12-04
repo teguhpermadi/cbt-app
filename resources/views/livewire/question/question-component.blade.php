@@ -23,8 +23,11 @@
             @case('true_false')
             <livewire:question.option.multiple-viewer-component :question="$question" />
             @break
+            @case('matching')
+            <livewire:question.option.matching-viewer-component :question="$question" />
+            @break
             @default
-            
+            {!! $question->options !!}
             @endswitch
         </div>
     </x-mary-card>

@@ -15,16 +15,16 @@
         <div class="w-full">
             @switch($question->question_type->value)
             @case('multiple_choice')
-            <livewire:question.option.multiple-viewer-component :question="$question" />
+            <livewire:question.option.multiple-viewer-component :question="$question" wire:key="multiple_choice_{$question->id}"/>
             @break
             @case('multiple_selection')
-            <livewire:question.option.multiple-viewer-component :question="$question" />
+            <livewire:question.option.multiple-viewer-component :question="$question" wire:key="multiple_selection_{$question->id}"/>
             @break
             @case('true_false')
-            <livewire:question.option.multiple-viewer-component :question="$question" />
+            <livewire:question.option.multiple-viewer-component :question="$question" wire:key="true_false_{$question->id}" />
             @break
             @case('matching')
-            <livewire:question.option.matching-viewer-component :question="$question" />
+            <livewire:question.option.matching-viewer-component :question="$question" wire:key="matching_{$question->id}" />
             @break
             @default
             {!! $question->options !!}

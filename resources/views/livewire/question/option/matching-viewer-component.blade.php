@@ -2,6 +2,7 @@
     x-data="{
         lines: [],
         pairs: @js($pairs),
+        colors: ['#EF4444', '#F59E0B', '#10B981', '#3B82F6', '#6366F1', '#8B5CF6', '#EC4899', '#14B8A6'],
         init() {
             this.$nextTick(() => {
                 this.drawLines();
@@ -12,7 +13,7 @@
             this.lines = [];
             const container = this.$el.getBoundingClientRect();
             
-            this.pairs.forEach(pair => {
+            this.pairs.forEach((pair, index) => {
                 const leftEl = document.getElementById('option-' + pair.left);
                 const rightEl = document.getElementById('option-' + pair.right);
                 
@@ -28,28 +29,34 @@
                     const x2 = rightRect.left - container.left;
                     const y2 = rightRect.top + (rightRect.height / 2) - container.top;
                     
-                    // Calculate length and angle
-                    const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-                    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                    // Calculate midpoint X for orthogonal turn
+                    const midX = (x1 + x2) / 2;
                     
-                    this.lines.push({ x: x1, y: y1, length, angle });
+                    // Orthogonal Path: Move to Start -> Horizontal to Mid -> Vertical to Target Y -> Horizontal to End
+                    const path = `M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}`;
+                    
+                    this.lines.push({ 
+                        path: path, 
+                        color: this.colors[index % this.colors.length] 
+                    });
                 }
             });
         }
     }"
     class="relative">
-    {{-- CSS Lines Layer --}}
+    {{-- SVG Layer for Lines --}}
     <div class="absolute inset-0 w-full h-full pointer-events-none z-0">
         <template x-for="(line, index) in lines" :key="index">
-            <div
-                class="absolute border-t-2 border-green-400"
-                :style="`
-                    top: ${line.y}px; 
-                    left: ${line.x}px; 
-                    width: ${line.length}px; 
-                    transform: rotate(${line.angle}deg); 
-                    transform-origin: 0 0;
-                `"></div>
+            <svg class="absolute inset-0 w-full h-full">
+                <path
+                    :d="line.path"
+                    :stroke="line.color"
+                    stroke-width="2"
+                    fill="none" />
+                {{-- Optional: Add dots at endpoints for better visual connection --}}
+                <circle :cx="line.path.split(' ')[1]" :cy="line.path.split(' ')[2]" r="3" :fill="line.color" />
+                <circle :cx="line.path.split(' ')[10]" :cy="line.path.split(' ')[11]" r="3" :fill="line.color" />
+            </svg>
         </template>
     </div>
 

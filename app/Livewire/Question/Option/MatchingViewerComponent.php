@@ -12,8 +12,8 @@ class MatchingViewerComponent extends Component
     public function mount($question)
     {
         $this->question = $question;
-        $this->leftOptions = $question->options->filter(fn($o) => \Illuminate\Support\Str::startsWith($o->option_key, 'L'))->shuffle();
-        $this->rightOptions = $question->options->filter(fn($o) => \Illuminate\Support\Str::startsWith($o->option_key, 'R'))->shuffle();
+        $this->leftOptions = $question->options->filter(fn($o) => \Illuminate\Support\Str::startsWith($o->option_key, 'L'));
+        $this->rightOptions = $question->options->filter(fn($o) => \Illuminate\Support\Str::startsWith($o->option_key, 'R'));
 
         // Build pairs mapping (Left ID -> Right ID)
         $rightMap = $this->rightOptions->pluck('id', 'option_key');

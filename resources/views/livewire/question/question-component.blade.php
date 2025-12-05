@@ -26,6 +26,9 @@
             @case('matching')
             <livewire:question.option.matching-viewer-component :question="$question" wire:key="matching_{$question->id}" />
             @break
+            @case('ordering')
+            <livewire:question.option.ordering-viewer-component :question="$question" wire:key="ordering_{$question->id}" />
+            @break
             @default
             {!! $question->options !!}
             @endswitch

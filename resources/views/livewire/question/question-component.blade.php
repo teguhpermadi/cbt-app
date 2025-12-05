@@ -29,6 +29,9 @@
             @case('ordering')
             <livewire:question.option.ordering-viewer-component :question="$question" wire:key="ordering_{$question->id}" />
             @break
+            @case('numerical_input')
+            <livewire:question.option.numerical-viewer-component :question="$question" wire:key="numerical_{$question->id}" />
+            @break
             @default
             {!! $question->options !!}
             @endswitch

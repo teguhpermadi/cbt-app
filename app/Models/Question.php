@@ -66,30 +66,8 @@ class Question extends Model implements HasMedia
 
     
     // --- ACCESSORS & MUTATORS ---
-
-    /**
-     * Accessor untuk question_type enum
-     */
-    public function getQuestionTypeAttribute($value): QuestionTypeEnum
-    {
-        return QuestionTypeEnum::from($value);
-    }
-
-    /**
-     * Accessor untuk difficulty_level enum  
-     */
-    public function getDifficultyLevelAttribute($value): DifficultyLevelEnum
-    {
-        return DifficultyLevelEnum::from($value);
-    }
-
-    /**
-     * Accessor untuk timer enum
-     */
-    public function getTimerAttribute($value): ?TimerEnum
-    {
-        return $value ? TimerEnum::from($value) : null;
-    }
+    // Note: Enum accessors removed as they're redundant with the $casts array
+    // Laravel automatically handles enum casting when defined in $casts
 
     // --- SPATIE CONFIGURATIONS ---
 

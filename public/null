@@ -1,1 +1,2 @@
-User::get()
+QuestionBank::find('01kbhvv1p4nz9ny3m39fb1jnhc')
+QuestionBank::find('01kbhvv1p4nz9ny3m39fb1jnhc')->load('questions')

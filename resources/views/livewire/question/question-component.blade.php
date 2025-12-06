@@ -2,8 +2,7 @@
     <x-mary-card shadow>
         <!-- header -->
         <div class="flex items-center justify-between">
-            <p>{{ $question->question_type }}</p>
-            <p>{{ $question->id }}</p>
+            <livewire:question.selector.difficulty-selector-component :question="$question" wire:key="difficulty_{$question->id}" />
         </div>
 
         <!-- body -->
@@ -15,10 +14,10 @@
         <div class="w-full">
             @switch($question->question_type->value)
             @case('multiple_choice')
-            <livewire:question.option.multiple-viewer-component :question="$question" wire:key="multiple_choice_{$question->id}"/>
+            <livewire:question.option.multiple-viewer-component :question="$question" wire:key="multiple_choice_{$question->id}" />
             @break
             @case('multiple_selection')
-            <livewire:question.option.multiple-viewer-component :question="$question" wire:key="multiple_selection_{$question->id}"/>
+            <livewire:question.option.multiple-viewer-component :question="$question" wire:key="multiple_selection_{$question->id}" />
             @break
             @case('true_false')
             <livewire:question.option.multiple-viewer-component :question="$question" wire:key="true_false_{$question->id}" />

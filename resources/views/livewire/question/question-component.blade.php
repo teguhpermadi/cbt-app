@@ -3,6 +3,8 @@
         <!-- header -->
         <div class="flex items-center justify-between">
             <livewire:question.selector.difficulty-selector-component :question="$question" wire:key="difficulty_{$question->id}" />
+            <livewire:question.selector.timer-selector-component :question="$question" wire:key="timer_{$question->id}" />
+            <livewire:question.selector.score-selector-component :question="$question" wire:key="score_{$question->id}" />
         </div>
 
         <!-- body -->

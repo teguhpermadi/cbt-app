@@ -1,2 +1,3 @@
-QuestionBank::find('01kbhvv1p4nz9ny3m39fb1jnhc')
 QuestionBank::find('01kbhvv1p4nz9ny3m39fb1jnhc')->load('questions')
+QuestionBank::find('01kbhvv1p4nz9ny3m39fb1jnhc')->load('questions')->limit(1)
+QuestionBank::find('01kbhvv1p4nz9ny3m39fb1jnhc')->load('questions')->limit(1)->get()

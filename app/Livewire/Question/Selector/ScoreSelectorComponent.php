@@ -7,9 +7,9 @@ use Livewire\Component;
 
 class ScoreSelectorComponent extends Component
 {
-    public $question, $score, $scoresEnum;
+    public $questionId, $score, $scoresEnum;
 
-    public function mount($question)
+    public function mount($questionId)
     {
         // Populate options as array of arrays compatible with Mary UI
         $this->scoresEnum = collect(QuestionScoreEnum::cases())
@@ -19,17 +19,19 @@ class ScoreSelectorComponent extends Component
             ])
             ->all();
 
-        $this->question = $question;
+        $this->questionId = $questionId;
 
-        // Ensure we get the value whether it is an Enum instance or raw value
+        // Load question and get score value
+        $question = \App\Models\Question::find($questionId);
         $this->score = $question->score_value;
     }
 
     public function updatedScore($value)
     {
         // $value will be the integer value from the enum because we set 'id' => $case->value
-        $this->question->score_value = $value;
-        $this->question->save();
+        $question = \App\Models\Question::find($this->questionId);
+        $question->score_value = $value;
+        $question->save();
     }
 
     public function render()

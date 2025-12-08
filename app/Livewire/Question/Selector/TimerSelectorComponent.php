@@ -7,9 +7,9 @@ use Livewire\Component;
 
 class TimerSelectorComponent extends Component
 {
-    public $question, $timer, $timersEnum;
+    public $questionId, $timer, $timersEnum;
 
-    public function mount($question)
+    public function mount($questionId)
     {
         // Populate options as array of arrays compatible with Mary UI
         $this->timersEnum = collect(TimerEnum::cases())
@@ -19,17 +19,19 @@ class TimerSelectorComponent extends Component
             ])
             ->all();
 
-        $this->question = $question;
+        $this->questionId = $questionId;
 
-        // Ensure we get the value whether it is an Enum instance or raw value
+        // Load question and get timer value
+        $question = \App\Models\Question::find($questionId);
         $this->timer = $question->timer;
     }
 
     public function updatedTimer($value)
     {
         // $value will be the integer value from the enum because we set 'id' => $case->value
-        $this->question->timer = $value;
-        $this->question->save();
+        $question = \App\Models\Question::find($this->questionId);
+        $question->timer = $value;
+        $question->save();
     }
 
     public function render()

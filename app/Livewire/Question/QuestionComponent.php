@@ -13,17 +13,19 @@ class QuestionComponent extends Component
 
     public function mount(Question $question)
     {
-        $this->question = $question;
+        $this->question = $question->load('options', 'questionBank');
     }
 
     public function editQuestion()
     {
-        dd($this->question->id);
+        dump($this->question->id);
     }
 
     public function deleteQuestion()
     {
-        dd($this->question->id);
+        // delete question
+        $this->question->delete();
+        // $this->dispatch('questionDeleted', id: $this->question->id);
     }
 
     public function render()

@@ -7,9 +7,9 @@ use Livewire\Component;
 
 class DifficultySelectorComponent extends Component
 {
-    public $question, $difficultyLevel, $levelsEnum;
+    public $questionId, $difficultyLevel, $levelsEnum;
 
-    public function mount($question)
+    public function mount($questionId)
     {
         // Populate options as array of arrays compatible with Mary UI (default expects 'id' and 'name')
         $this->levelsEnum = collect(DifficultyLevelEnum::cases())
@@ -19,16 +19,18 @@ class DifficultySelectorComponent extends Component
             ])
             ->all();
 
-        $this->question = $question;
+        $this->questionId = $questionId;
 
-        // Ensure we get the value whether it is an Enum instance or raw value (safety check)
+        // Load question and get difficulty level
+        $question = \App\Models\Question::find($questionId);
         $this->difficultyLevel = $question->difficulty_level;
     }
 
     public function updatedDifficultyLevel($value)
     {
-        $this->question->difficulty_level = $value;
-        $this->question->save();
+        $question = \App\Models\Question::find($this->questionId);
+        $question->difficulty_level = $value;
+        $question->save();
     }
 
     public function render()

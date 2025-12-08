@@ -2,26 +2,25 @@
 
 namespace App\Livewire\Question\Option;
 
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class MultipleViewerComponent extends Component
 {
-    public $question;
+    #[Locked]
+    public $questionId;
 
-    public function mount($question)
+    public function mount($questionId)
     {
-        $this->question = $question;
+        $this->questionId = $questionId;
     }
 
     public function render()
     {
-        // Pastikan options di-load
-        if (!$this->question->relationLoaded('options')) {
-            $this->question->load('options');
-        }
+        $question = \App\Models\Question::with('options')->find($this->questionId);
 
         return view('livewire.question.option.multiple-viewer-component', [
-            'options' => $this->question->options
+            'options' => $question->options
         ]);
     }
 }

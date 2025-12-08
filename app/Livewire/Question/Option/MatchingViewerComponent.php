@@ -2,16 +2,23 @@
 
 namespace App\Livewire\Question\Option;
 
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class MatchingViewerComponent extends Component
 {
-    public $question, $leftOptions, $rightOptions;
+    #[Locked]
+    public $questionId;
+
+    public $leftOptions, $rightOptions;
     public $pairs = [];
 
-    public function mount($question)
+    public function mount($questionId)
     {
-        $this->question = $question;
+        $this->questionId = $questionId;
+
+        $question = \App\Models\Question::with('options')->find($questionId);
+
         $this->leftOptions = $question->options->filter(fn($o) => \Illuminate\Support\Str::startsWith($o->option_key, 'L'));
         $this->rightOptions = $question->options->filter(fn($o) => \Illuminate\Support\Str::startsWith($o->option_key, 'R'));
 

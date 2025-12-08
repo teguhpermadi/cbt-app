@@ -3,11 +3,14 @@
 namespace App\Livewire\Question\Selector;
 
 use App\Enums\QuestionScoreEnum;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class ScoreSelectorComponent extends Component
 {
-    public $questionId, $score, $scoresEnum;
+    #[Locked]
+    public $questionId;
+    public $score, $scoresEnum;
 
     public function mount($questionId)
     {

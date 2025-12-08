@@ -3,11 +3,14 @@
 namespace App\Livewire\Question\Selector;
 
 use App\Enums\DifficultyLevelEnum;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class DifficultySelectorComponent extends Component
 {
-    public $questionId, $difficultyLevel, $levelsEnum;
+    #[Locked]
+    public $questionId;
+    public $difficultyLevel, $levelsEnum;
 
     public function mount($questionId)
     {

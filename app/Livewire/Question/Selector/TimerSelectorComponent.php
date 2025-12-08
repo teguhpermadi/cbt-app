@@ -3,11 +3,14 @@
 namespace App\Livewire\Question\Selector;
 
 use App\Enums\TimerEnum;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class TimerSelectorComponent extends Component
 {
-    public $questionId, $timer, $timersEnum;
+    #[Locked]
+    public $questionId;
+    public $timer, $timersEnum;
 
     public function mount($questionId)
     {

@@ -2,15 +2,19 @@
 
 namespace App\Livewire\Question\Option;
 
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class NumericalViewerComponent extends Component
 {
-    public $question, $options;
+    #[Locked]
+    public $questionId;
+    public $options;
 
-    public function mount($question)
+    public function mount($questionId)
     {
-        $this->question = $question;
+        $this->questionId = $questionId;
+        $question = \App\Models\Question::with('options')->find($questionId);
         $this->options = $question->options;
     }
     public function render()

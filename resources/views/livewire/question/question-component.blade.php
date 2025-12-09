@@ -30,32 +30,32 @@
             @case('multiple_choice')
             <livewire:question.option.multiple-viewer-component
                 :options="$question->options"
-                wire:key="multiple_choice_{$question->id}" />
+                wire:key="multiple_choice_{{$question->id}}" />
             @break
             @case('multiple_selection')
             <livewire:question.option.multiple-viewer-component
                 :options="$question->options"
-                wire:key="multiple_selection_{$question->id}" />
+                wire:key="multiple_selection_{{$question->id}}" />
             @break
             @case('true_false')
             <livewire:question.option.multiple-viewer-component
                 :options="$question->options"
-                wire:key="true_false_{$question->id}" />
+                wire:key="true_false_{{$question->id}}" />
             @break
             @case('matching')
             <livewire:question.option.matching-viewer-component
                 :options="$question->options"
-                wire:key="matching_{$question->id}" />
+                wire:key="matching_{{$question->id}}" />
             @break
             @case('ordering')
             <livewire:question.option.ordering-viewer-component
                 :options="$question->options"
-                wire:key="ordering_{$question->id}" />
+                wire:key="ordering_{{$question->id}}" />
             @break
             @case('numerical_input')
             <livewire:question.option.numerical-viewer-component
                 :options="$question->options"
-                wire:key="numerical_{$question->id}" />
+                wire:key="numerical_{{$question->id}}" />
             @break
             @default
             {!! $question->options !!}

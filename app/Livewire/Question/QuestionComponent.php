@@ -52,7 +52,7 @@ class QuestionComponent extends Component
 
     public function editQuestion()
     {
-        dump($this->question->id);
+        return redirect()->route('questions.edit', $this->question->id);
     }
 
     public function deleteQuestion()

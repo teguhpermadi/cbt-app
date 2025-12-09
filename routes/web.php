@@ -33,3 +33,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/question-banks/{questionBank}', \App\Livewire\Question\QuestionBankComponent::class)
     ->name('question-banks.show');
+
+Route::get('/questions/{question}/edit', \App\Livewire\Question\Form\EditQuestionComponent::class)
+    ->name('questions.edit');

@@ -8,15 +8,13 @@ use Livewire\Component;
 class NumericalViewerComponent extends Component
 {
     #[Locked]
-    public $questionId;
     public $options;
 
-    public function mount($questionId)
+    public function mount($options)
     {
-        $this->questionId = $questionId;
-        $question = \App\Models\Question::with('options')->find($questionId);
-        $this->options = $question->options;
+        $this->options = $options;
     }
+
     public function render()
     {
         return view('livewire.question.option.numerical-viewer-component');

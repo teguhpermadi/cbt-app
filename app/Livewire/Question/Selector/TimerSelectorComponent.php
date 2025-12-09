@@ -12,7 +12,7 @@ class TimerSelectorComponent extends Component
     public $questionId;
     public $timer, $timersEnum;
 
-    public function mount($questionId)
+    public function mount($questionId, $timer)
     {
         // Populate options as array of arrays compatible with Mary UI
         $this->timersEnum = collect(TimerEnum::cases())
@@ -23,10 +23,7 @@ class TimerSelectorComponent extends Component
             ->all();
 
         $this->questionId = $questionId;
-
-        // Load question and get timer value
-        $question = \App\Models\Question::find($questionId);
-        $this->timer = $question->timer;
+        $this->timer = $timer;
     }
 
     public function updatedTimer($value)
@@ -35,6 +32,9 @@ class TimerSelectorComponent extends Component
         $question = \App\Models\Question::find($this->questionId);
         $question->timer = $value;
         $question->save();
+
+        // Dispatch event to parent component for reactivity
+        $this->dispatch('timer-updated', questionId: $this->questionId);
     }
 
     public function render()

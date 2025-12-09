@@ -12,7 +12,7 @@ class ScoreSelectorComponent extends Component
     public $questionId;
     public $score, $scoresEnum;
 
-    public function mount($questionId)
+    public function mount($questionId, $scoreValue)
     {
         // Populate options as array of arrays compatible with Mary UI
         $this->scoresEnum = collect(QuestionScoreEnum::cases())
@@ -23,10 +23,7 @@ class ScoreSelectorComponent extends Component
             ->all();
 
         $this->questionId = $questionId;
-
-        // Load question and get score value
-        $question = \App\Models\Question::find($questionId);
-        $this->score = $question->score_value;
+        $this->score = $scoreValue;
     }
 
     public function updatedScore($value)
@@ -35,6 +32,9 @@ class ScoreSelectorComponent extends Component
         $question = \App\Models\Question::find($this->questionId);
         $question->score_value = $value;
         $question->save();
+
+        // Dispatch event to parent component for reactivity
+        $this->dispatch('score-updated', questionId: $this->questionId);
     }
 
     public function render()

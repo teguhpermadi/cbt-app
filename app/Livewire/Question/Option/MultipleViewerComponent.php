@@ -8,19 +8,17 @@ use Livewire\Component;
 class MultipleViewerComponent extends Component
 {
     #[Locked]
-    public $questionId;
+    public $options;
 
-    public function mount($questionId)
+    public function mount($options)
     {
-        $this->questionId = $questionId;
+        $this->options = $options;
     }
 
     public function render()
     {
-        $question = \App\Models\Question::with('options')->find($this->questionId);
-
         return view('livewire.question.option.multiple-viewer-component', [
-            'options' => $question->options
+            'options' => $this->options
         ]);
     }
 }

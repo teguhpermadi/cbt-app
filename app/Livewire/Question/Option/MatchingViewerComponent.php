@@ -8,19 +8,18 @@ use Livewire\Component;
 class MatchingViewerComponent extends Component
 {
     #[Locked]
-    public $questionId;
+    public $options;
 
     public $leftOptions, $rightOptions;
     public $pairs = [];
 
-    public function mount($questionId)
+    public function mount($options)
     {
-        $this->questionId = $questionId;
+        $this->options = $options;
 
-        $question = \App\Models\Question::with('options')->find($questionId);
-
-        $this->leftOptions = $question->options->filter(fn($o) => \Illuminate\Support\Str::startsWith($o->option_key, 'L'));
-        $this->rightOptions = $question->options->filter(fn($o) => \Illuminate\Support\Str::startsWith($o->option_key, 'R'));
+        // Split options into left and right
+        $this->leftOptions = $options->filter(fn($o) => \Illuminate\Support\Str::startsWith($o->option_key, 'L'));
+        $this->rightOptions = $options->filter(fn($o) => \Illuminate\Support\Str::startsWith($o->option_key, 'R'));
 
         // Build pairs mapping (Left ID -> Right ID)
         $rightMap = $this->rightOptions->pluck('id', 'option_key');

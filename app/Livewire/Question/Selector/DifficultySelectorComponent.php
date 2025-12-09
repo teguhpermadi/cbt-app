@@ -12,7 +12,7 @@ class DifficultySelectorComponent extends Component
     public $questionId;
     public $difficultyLevel, $levelsEnum;
 
-    public function mount($questionId)
+    public function mount($questionId, $difficultyLevel)
     {
         // Populate options as array of arrays compatible with Mary UI (default expects 'id' and 'name')
         $this->levelsEnum = collect(DifficultyLevelEnum::cases())
@@ -23,10 +23,7 @@ class DifficultySelectorComponent extends Component
             ->all();
 
         $this->questionId = $questionId;
-
-        // Load question and get difficulty level
-        $question = \App\Models\Question::find($questionId);
-        $this->difficultyLevel = $question->difficulty_level;
+        $this->difficultyLevel = $difficultyLevel;
     }
 
     public function updatedDifficultyLevel($value)
@@ -34,6 +31,9 @@ class DifficultySelectorComponent extends Component
         $question = \App\Models\Question::find($this->questionId);
         $question->difficulty_level = $value;
         $question->save();
+
+        // Dispatch event to parent component for reactivity
+        $this->dispatch('difficulty-updated', questionId: $this->questionId);
     }
 
     public function render()

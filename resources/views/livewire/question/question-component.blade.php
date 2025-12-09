@@ -1,4 +1,4 @@
-<div>
+<div id="question-{{ $question->id }}">
     <x-mary-card shadow>
         <!-- header -->
         <div class="flex items-center justify-between">
@@ -15,6 +15,10 @@
                 :questionId="$question->id"
                 :scoreValue="$question->score_value"
                 wire:key="score_{{$question->id}}" />
+            <livewire:question.selector.order-selector-component
+                :questionId="$question->id"
+                :order="$question->order"
+                wire:key="order_{{$question->id}}" />
             <button wire:click="editQuestion" wire:key="edit_{{$question->id}}">Edit</button>
             <button wire:click="deleteQuestion" wire:key="delete_{{$question->id}}">Delete</button>
         </div>

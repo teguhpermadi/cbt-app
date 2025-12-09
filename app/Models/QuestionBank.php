@@ -16,7 +16,7 @@ class QuestionBank extends Model
     /** @use HasFactory<\Database\Factories\QuestionBankFactory> */
     use HasFactory, HasUlids, LogsActivity, SoftDeletes;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -29,7 +29,7 @@ class QuestionBank extends Model
         'description',
         'is_public',
     ];
-    
+
     protected $casts = [
         'is_public' => 'boolean',
     ];
@@ -49,7 +49,7 @@ class QuestionBank extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    
+
     /**
      * Scope untuk menampilkan Question Bank berdasarkan Subject yang memiliki academic_year_id yang sedang aktif
      */

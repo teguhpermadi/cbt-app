@@ -42,6 +42,14 @@ class QuestionComponent extends Component
         }
     }
 
+    #[On('order-updated')]
+    public function onOrderUpdated($questionId)
+    {
+        if ($this->question->id === $questionId) {
+            $this->question->refresh();
+        }
+    }
+
     public function editQuestion()
     {
         dump($this->question->id);
@@ -51,7 +59,7 @@ class QuestionComponent extends Component
     {
         // delete question
         $this->question->delete();
-        // $this->dispatch('questionDeleted', id: $this->question->id);
+        $this->dispatch('refreshQuestionBank');
     }
 
     public function render()

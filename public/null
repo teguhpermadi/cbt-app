@@ -1,3 +1,3 @@
-QuestionBank::find('01kbhvv1p4nz9ny3m39fb1jnhc')->load('questions')
-QuestionBank::find('01kbhvv1p4nz9ny3m39fb1jnhc')->load('questions')->limit(1)
-QuestionBank::find('01kbhvv1p4nz9ny3m39fb1jnhc')->load('questions')->limit(1)->get()
+QuestionBank::find('01kbhvv1p4nz9ny3m39fb1jnhc')->load('questions')->get()
+QuestionBank::find('01kbhvv1ns3650stp185wj9xt6')->load('questions')->get()
+QuestionBank::find('01kbhvv1ns3650stp185wj9xt6')->load('questions')

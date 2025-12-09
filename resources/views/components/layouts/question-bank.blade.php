@@ -83,7 +83,7 @@
         // Listen for page-refreshed event from OrderSelector
         document.addEventListener('livewire:init', () => {
             Livewire.on('page-refreshed', (event) => {
-                console.log('Page refreshed event received:', event);
+                console.log('Page refreshed event received (Livewire):', event);
 
                 const questionId = event.questionId || event[0]?.questionId;
                 if (!questionId) {
@@ -91,34 +91,60 @@
                     return;
                 }
 
-                // Function to try scrolling with retries
-                function tryScroll(attempts = 0, maxAttempts = 10) {
-                    const targetElement = document.getElementById('question-' + questionId);
-
-                    if (targetElement) {
-                        console.log('Scrolling to question:', questionId, 'after', attempts, 'attempts');
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-
-                        // Highlight the target
-                        targetElement.classList.add('ring-2', 'ring-blue-500', 'ring-offset-2');
-                        setTimeout(() => {
-                            targetElement.classList.remove('ring-2', 'ring-blue-500', 'ring-offset-2');
-                        }, 2000);
-                    } else if (attempts < maxAttempts) {
-                        console.log('Element not found yet, retrying... (attempt', attempts + 1, 'of', maxAttempts, ')');
-                        setTimeout(() => tryScroll(attempts + 1, maxAttempts), 200);
-                    } else {
-                        console.warn('Target element not found for question after', maxAttempts, 'attempts:', questionId);
-                    }
-                }
-
-                // Start trying to scroll after a short delay
-                setTimeout(() => tryScroll(), 300);
+                scrollToQuestion(questionId);
             });
         });
+
+        // Also listen for native CustomEvent (dispatched via js() helper)
+        window.addEventListener('page-refreshed', (event) => {
+            console.log('Page refreshed event received (CustomEvent):', event.detail);
+
+            const questionId = event.detail?.questionId;
+            if (!questionId) {
+                console.warn('No question ID in CustomEvent detail');
+                return;
+            }
+
+            scrollToQuestion(questionId);
+        });
+
+        // Shared scroll function
+        function scrollToQuestion(questionId) {
+            // Function to try scrolling with retries
+            function tryScroll(attempts = 0, maxAttempts = 10) {
+                const targetElement = document.getElementById('question-' + questionId);
+
+                if (targetElement) {
+                    console.log('Scrolling to question:', questionId, 'after', attempts, 'attempts');
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+
+                    // Highlight the target
+                    targetElement.classList.add('ring-2', 'ring-blue-500', 'ring-offset-2');
+                    setTimeout(() => {
+                        targetElement.classList.remove('ring-2', 'ring-blue-500', 'ring-offset-2');
+                    }, 2000);
+
+                    // Re-render KaTeX after scroll
+                    if (typeof window.renderKaTeX === 'function') {
+                        console.log('Re-rendering KaTeX for question:', questionId);
+                        setTimeout(() => {
+                            window.renderKaTeX(targetElement);
+                        }, 100);
+                    }
+                } else if (attempts < maxAttempts) {
+                    console.log('Element not found yet, retrying... (attempt', attempts + 1, 'of', maxAttempts, ')');
+                    setTimeout(() => tryScroll(attempts + 1, maxAttempts), 200);
+                } else {
+                    console.warn('Target element not found for question after', maxAttempts, 'attempts:', questionId);
+                }
+            }
+
+            // Start trying to scroll after a short delay
+            setTimeout(() => tryScroll(), 300);
+        }
     </script>
 </body>
 

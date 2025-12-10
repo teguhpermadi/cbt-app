@@ -38,40 +38,44 @@
         {{-- Content Section --}}
         <x-mary-form wire:submit="update">
             <div class="mb-4">
-                <x-mary-file label="Gambar Soal (Opsional)" wire:model="questionImage" accept="image/*" />
-                @if ($questionImage)
-                <div class="mt-2">
-                    <img src="{{ $questionImage->temporaryUrl() }}" class="h-32 rounded-lg border border-gray-200" />
+                <div class="mb-4">
+                    @if ($questionImage)
+                    <div class="flex flex-col gap-2">
+                        <img src="{{ $questionImage->temporaryUrl() }}" class="h-32 w-auto object-contain rounded-lg border border-gray-200" />
+                        <x-mary-button label="Hapus Gambar" icon="o-trash" class="btn-error btn-sm w-fit" wire:click="deleteQuestionImage" />
+                    </div>
+                    @elseif($existingQuestionImageUrl)
+                    <div class="flex flex-col gap-2">
+                        <img src="{{ $existingQuestionImageUrl }}" class="h-32 w-auto object-contain rounded-lg border border-gray-200" />
+                        <x-mary-button label="Hapus Gambar" icon="o-trash" class="btn-error btn-sm w-fit" wire:click="deleteQuestionImage" />
+                    </div>
+                    @else
+                    <x-mary-file label="Gambar Soal (Opsional)" wire:model="questionImage" accept="image/*" />
+                    @endif
                 </div>
-                @elseif($existingQuestionImageUrl)
-                <div class="mt-2 relative inline-block">
-                    <img src="{{ $existingQuestionImageUrl }}" class="h-32 rounded-lg border border-gray-200" />
-                </div>
-                @endif
-            </div>
 
-            <x-mary-textarea
-                label="Konten Soal"
-                wire:model="content"
-                placeholder="Masukkan konten soal di sini..."
-                rows="8"
-                hint="Tuliskan pertanyaan anda dengan jelas" />
+                <x-mary-textarea
+                    label="Konten Soal"
+                    wire:model="content"
+                    placeholder="Masukkan konten soal di sini..."
+                    rows="8"
+                    hint="Tuliskan pertanyaan anda dengan jelas" />
 
-            {{-- Options Section --}}
-            @switch($question->question_type->value)
-            @case('multiple_choice')
-            <livewire:question.form.option.multiple-option-editor-component
-                :questionId="$question->id"
-                wire:key="multiple-option-editor-{{ $question->id }}" />
-            @break
-            @default
-            {!! $question->options !!}
-            @endswitch
+                {{-- Options Section --}}
+                @switch($question->question_type->value)
+                @case('multiple_choice')
+                <livewire:question.form.option.multiple-option-editor-component
+                    :questionId="$question->id"
+                    wire:key="multiple-option-editor-{{ $question->id }}" />
+                @break
+                @default
+                {!! $question->options !!}
+                @endswitch
 
-            <x-slot:actions>
-                <x-mary-button label="Batal" wire:click="cancel" />
-                <x-mary-button label="Simpan Perubahan" class="btn-primary" type="submit" spinner="save2" />
-            </x-slot:actions>
+                <x-slot:actions>
+                    <x-mary-button label="Batal" wire:click="cancel" />
+                    <x-mary-button label="Simpan Perubahan" class="btn-primary" type="submit" spinner="save2" />
+                </x-slot:actions>
         </x-mary-form>
     </div>
 </div>

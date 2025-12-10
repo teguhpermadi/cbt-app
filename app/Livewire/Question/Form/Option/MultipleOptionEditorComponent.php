@@ -141,6 +141,27 @@ class MultipleOptionEditorComponent extends Component
         $this->reindexKeys(); // Maintain A, B, C sequence
     }
 
+    public function deleteOptionMedia($index)
+    {
+        // 1. Clear new upload if any
+        if (isset($this->options[$index]['new_media'])) {
+            $this->options[$index]['new_media'] = null;
+        }
+
+        // 2. Clear existing media if any
+        if (isset($this->options[$index]['id'])) {
+            $option = Option::find($this->options[$index]['id']);
+            if ($option) {
+                $option->clearMediaCollection('option_media');
+                $this->options[$index]['media_url'] = null;
+                $this->options[$index]['media_path'] = null;
+            }
+        }
+
+        // Ensure UI updates
+        $this->options[$index]['media_url'] = null;
+    }
+
     public function setCorrectAnswer($index)
     {
         foreach ($this->options as $key => &$option) {

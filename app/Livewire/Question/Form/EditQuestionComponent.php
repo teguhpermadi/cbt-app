@@ -60,6 +60,26 @@ class EditQuestionComponent extends Component
         $this->dispatch('save-options');
     }
 
+    public function deleteQuestionImage()
+    {
+        // If there is a temporary upload, just remove it
+        if ($this->questionImage) {
+            $this->questionImage = null;
+            return;
+        }
+
+        // If there is an existing image, delete it from DB
+        if ($this->existingQuestionImageUrl) {
+            $this->question->clearMediaCollection('question_content');
+            $this->existingQuestionImageUrl = null;
+
+            Notification::make()
+                ->title('Gambar berhasil dihapus')
+                ->success()
+                ->send();
+        }
+    }
+
     #[On('options-saved')]
     public function onOptionsSaved()
     {

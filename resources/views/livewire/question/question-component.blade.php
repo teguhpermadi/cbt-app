@@ -19,8 +19,8 @@
                 :questionId="$question->id"
                 :order="$question->order"
                 wire:key="order_{{$question->id}}" />
-            <button wire:click="editQuestion" wire:key="edit_{{$question->id}}">Edit</button>
-            <button wire:click="deleteQuestion" wire:key="delete_{{$question->id}}">Delete</button>
+            <x-mary-button label="Edit" wire:click="editQuestion" wire:key="edit_{{$question->id}}" />
+            <x-mary-button label="Delete" wire:click="deleteQuestion" wire:confirm="Are you sure you want to delete this question?" wire:key="delete_{{$question->id}}" />
         </div>
 
         <!-- body -->

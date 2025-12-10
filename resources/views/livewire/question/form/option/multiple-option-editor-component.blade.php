@@ -18,12 +18,29 @@
                         {{ $option['option_key'] ?? chr(65 + $index) }}
                     </div>
 
-                    {{-- Content Input --}}
-                    <div class="flex-1">
+                    {{-- Content Input & Media --}}
+                    <div class="flex-1 space-y-2">
                         <x-mary-input
                             wire:model="options.{{ $index }}.content"
                             placeholder="Isi teks opsi jawaban..."
                             class="w-full" />
+
+                        {{-- Media Upload --}}
+                        <div class="flex items-center gap-4">
+                            <div class="flex-1">
+                                <x-mary-file
+                                    wire:model="options.{{ $index }}.new_media"
+                                    accept="image/*"
+                                    class="file-input-xs file-input-ghost w-full max-w-xs" />
+                            </div>
+
+                            {{-- Preview --}}
+                            @if(isset($option['new_media']) && is_object($option['new_media']))
+                            <img src="{{ $option['new_media']->temporaryUrl() }}" class="h-10 w-10 object-cover rounded border" />
+                            @elseif(isset($option['media_url']) && $option['media_url'])
+                            <img src="{{ $option['media_url'] }}" class="h-10 w-10 object-cover rounded border" />
+                            @endif
+                        </div>
                     </div>
 
                     {{-- Correct Answer Toggle --}}

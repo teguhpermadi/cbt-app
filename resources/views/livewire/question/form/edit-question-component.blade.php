@@ -37,6 +37,19 @@
 
         {{-- Content Section --}}
         <x-mary-form wire:submit="update">
+            <div class="mb-4">
+                <x-mary-file label="Gambar Soal (Opsional)" wire:model="questionImage" accept="image/*" />
+                @if ($questionImage)
+                <div class="mt-2">
+                    <img src="{{ $questionImage->temporaryUrl() }}" class="h-32 rounded-lg border border-gray-200" />
+                </div>
+                @elseif($existingQuestionImageUrl)
+                <div class="mt-2 relative inline-block">
+                    <img src="{{ $existingQuestionImageUrl }}" class="h-32 rounded-lg border border-gray-200" />
+                </div>
+                @endif
+            </div>
+
             <x-mary-textarea
                 label="Konten Soal"
                 wire:model="content"
@@ -48,7 +61,7 @@
             @switch($question->question_type->value)
             @case('multiple_choice')
             <livewire:question.form.option.multiple-option-editor-component
-                wire:model="options"
+                :questionId="$question->id"
                 wire:key="multiple-option-editor-{{ $question->id }}" />
             @break
             @default

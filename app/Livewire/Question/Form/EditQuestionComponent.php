@@ -7,32 +7,27 @@ use App\Models\Question;
 use Livewire\Component;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\Attributes\On;
 
 class EditQuestionComponent extends Component
 {
+    use \Livewire\WithFileUploads;
+
     public Question $question;
     public $questionType;
     public $content;
-    public $options = []; // Initialize as array
+
+    public $questionImage; // Temporary upload
+    public $existingQuestionImageUrl;
 
     public function mount(Question $question)
     {
         $this->question = $question;
         $this->questionType = $question->question_type->value;
         $this->content = $question->content;
-
-        // Load existing options into array
-        $this->options = $question->options->map(function ($option) {
-            return [
-                'id' => $option->id,
-                'option_key' => $option->option_key,
-                'content' => $option->content,
-                'is_correct' => $option->is_correct,
-                'media_path' => $option->media_path,
-                'order' => $option->order,
-                'metadata' => $option->metadata,
-            ];
-        })->toArray();
+        $this->existingQuestionImageUrl = $question->getFirstMediaUrl('question_content');
     }
 
     public function rules()
@@ -40,8 +35,7 @@ class EditQuestionComponent extends Component
         return [
             'content' => 'required|string',
             'questionType' => 'required|string',
-            'options' => 'array', // Validation for options
-            'options.*.content' => 'required|string',
+            'questionImage' => 'nullable|image|max:2048', // 2MB Max
         ];
     }
 
@@ -55,51 +49,21 @@ class EditQuestionComponent extends Component
                 'question_type' => QuestionTypeEnum::from($this->questionType),
             ]);
 
-            $this->syncOptions();
+            // Handle Question Image
+            if ($this->questionImage) {
+                $this->question->clearMediaCollection('question_content');
+                $this->question->addMedia($this->questionImage)->toMediaCollection('question_content');
+            }
         });
 
-        // Send notification
-        Notification::make()
-            ->title('Soal berhasil diperbarui')
-            ->success()
-            ->send();
-
-        return redirect()->route('question-banks.show', $this->question->question_bank_id);
+        // Trigger Child Component to Save Options
+        $this->dispatch('save-options');
     }
 
-    protected function syncOptions()
+    #[On('options-saved')]
+    public function onOptionsSaved()
     {
-        // 1. Get existing IDs from DB
-        $existingIds = $this->question->options()->pluck('id')->toArray();
-
-        // 2. Identify submitted IDs
-        $submittedIds = array_column(array_filter($this->options, fn($opt) => isset($opt['id'])), 'id');
-
-        // 3. Delete options that are in DB but missing from submission
-        $idsToDelete = array_diff($existingIds, $submittedIds);
-        if (!empty($idsToDelete)) {
-            $this->question->options()->whereIn('id', $idsToDelete)->delete();
-        }
-
-        // 4. Update or Create
-        foreach ($this->options as $index => $optionData) {
-            $dataToSave = [
-                'question_id' => $this->question->id,
-                'option_key' => $optionData['option_key'] ?? chr(65 + $index), // Fallback key if missing
-                'content' => $optionData['content'],
-                'is_correct' => $optionData['is_correct'] ?? false,
-                'order' => $index, // Ensure order matches array index
-                // 'metadata' => $optionData['metadata'] ?? null, // Uncomment if metadata needed
-            ];
-
-            if (isset($optionData['id'])) {
-                // Update existing
-                $this->question->options()->where('id', $optionData['id'])->update($dataToSave);
-            } else {
-                // Create new
-                $this->question->options()->create($dataToSave);
-            }
-        }
+        return redirect()->route('question-banks.show', $this->question->question_bank_id);
     }
 
     public function cancel()

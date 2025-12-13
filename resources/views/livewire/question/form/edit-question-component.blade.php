@@ -73,6 +73,11 @@
                     :questionId="$question->id"
                     wire:key="true-false-editor-{{ $question->id }}" />
                 @break
+                @case('multiple_selection')
+                <livewire:question.form.option.multiple-selection-editor-component
+                    :questionId="$question->id"
+                    wire:key="multiple-selection-editor-{{ $question->id }}" />
+                @break
                 @default
                 {!! $question->options !!}
                 @endswitch

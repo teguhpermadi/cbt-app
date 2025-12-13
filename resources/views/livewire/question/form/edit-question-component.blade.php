@@ -14,7 +14,7 @@
             <x-mary-select
                 label="Tipe Soal"
                 :options="$questionTypes"
-                wire:model="questionType" />
+                wire:model.live="questionType" />
 
             {{-- Difficulty Selector --}}
             <livewire:question.selector.difficulty-selector-component
@@ -62,7 +62,7 @@
                     hint="Tuliskan pertanyaan anda dengan jelas" />
 
                 {{-- Options Section --}}
-                @switch($question->question_type->value)
+                @switch($questionType)
                 @case('multiple_choice')
                 <livewire:question.form.option.multiple-option-editor-component
                     :questionId="$question->id"

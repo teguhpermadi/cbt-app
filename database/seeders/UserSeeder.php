@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -27,5 +28,14 @@ class UserSeeder extends Seeder
         foreach ($students as $student) {
             $student->assignRole('student');
         }
+
+        // admin
+        $admin = User::create([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('password'),
+            'user_type' => 'admin',
+        ]);
+        $admin->assignRole('admin');
     }
 }

@@ -68,6 +68,11 @@
                     :questionId="$question->id"
                     wire:key="multiple-option-editor-{{ $question->id }}" />
                 @break
+                @case('true_false')
+                <livewire:question.form.option.true-false-editor-component
+                    :questionId="$question->id"
+                    wire:key="true-false-editor-{{ $question->id }}" />
+                @break
                 @default
                 {!! $question->options !!}
                 @endswitch

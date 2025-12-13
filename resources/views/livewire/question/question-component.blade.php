@@ -61,6 +61,11 @@
                 :options="$question->options"
                 wire:key="numerical_{{$question->id}}" />
             @break
+            @case('essay')
+            <livewire:question.option.essay-viewer-component
+                :options="$question->options"
+                wire:key="essay_{{$question->id}}" />
+            @break
             @default
             {!! $question->options !!}
             @endswitch

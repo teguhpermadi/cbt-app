@@ -83,6 +83,11 @@
                     :questionId="$question->id"
                     wire:key="essay-editor-{{ $question->id }}" />
                 @break
+                @case('ordering')
+                <livewire:question.form.option.ordering-editor-component
+                    :questionId="$question->id"
+                    wire:key="ordering-editor-{{ $question->id }}" />
+                @break
                 @default
                 {!! $question->options !!}
                 @endswitch

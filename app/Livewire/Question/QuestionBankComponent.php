@@ -34,6 +34,11 @@ class QuestionBankComponent extends Component
         }
     }
 
+    public function createQuestion()
+    {
+        return redirect()->route('questions.create', ['questionBank' => $this->questionBank->id]);
+    }
+
     public function render()
     {
         return view('livewire.question.question-bank-component');

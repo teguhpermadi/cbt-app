@@ -57,6 +57,13 @@ class MultipleSelectionEditorComponent extends Component
     {
         $this->validate();
 
+        // Custom Validation: At least one correct answer
+        $correctCount = collect($this->options)->where('is_correct', true)->count();
+        if ($correctCount < 1) {
+            $this->addError('correct_answer', 'Harap pilih setidaknya satu kunci jawaban yang benar.');
+            return;
+        }
+
         $question = Question::findOrFail($this->questionId);
 
         // 1. Get existing IDs from DB

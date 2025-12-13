@@ -36,3 +36,6 @@ Route::get('/question-banks/{questionBank}', \App\Livewire\Question\QuestionBank
 
 Route::get('/questions/{question}/edit', \App\Livewire\Question\Form\EditQuestionComponent::class)
     ->name('questions.edit');
+
+Route::get('/question-banks/{questionBank}/create-question', \App\Livewire\Question\Form\CreateQuestionComponent::class)
+    ->name('questions.create');

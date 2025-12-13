@@ -73,6 +73,13 @@ class TrueFalseEditorComponent extends Component
     {
         $this->validate();
 
+        // Custom Validation: Exactly one correct answer
+        $correctCount = collect($this->options)->where('is_correct', true)->count();
+        if ($correctCount !== 1) {
+            $this->addError('correct_answer', 'Harap tandai satu opsi sebagai kunci jawaban yang benar.');
+            return;
+        }
+
         $question = Question::findOrFail($this->questionId);
 
         // 1. Get existing IDs from DB

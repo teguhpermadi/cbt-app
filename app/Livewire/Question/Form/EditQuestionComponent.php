@@ -60,6 +60,11 @@ class EditQuestionComponent extends Component
         $this->dispatch('save-options');
     }
 
+    public function createQuestion()
+    {
+        return redirect()->route('questions.create', ['questionBank' => $this->question->question_bank_id]);
+    }
+
     public function deleteQuestionImage()
     {
         // If there is a temporary upload, just remove it

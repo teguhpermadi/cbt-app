@@ -86,5 +86,13 @@
                 @endif
             </div>
         </div>
+
+        @error('correct_answer')
+        <div class="text-error text-sm font-bold mt-3 p-2 bg-error/10 rounded-lg">
+            <x-mary-icon name="o-exclamation-triangle" class="w-4 h-4 inline mr-1" />
+            {{ $message }}
+        </div>
+        @enderror
     </div>
+</div>
 </div>

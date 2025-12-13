@@ -1,15 +1,9 @@
 <div>
-    <x-mary-header title="Edit Soal" separator />
+    <x-mary-header title="Buat Soal Baru" separator />
 
     <div class="grid gap-6">
         {{-- Settings Section --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {{-- Order Selector --}}
-            <livewire:question.selector.order-selector-component
-                :questionId="$question->id"
-                :order="$question->order"
-                wire:key="order-selector-{{ $question->id }}" />
-
             {{-- Question Type (Primary Form Field) --}}
             <x-mary-select
                 label="Tipe Soal"
@@ -36,7 +30,7 @@
         </div>
 
         {{-- Content Section --}}
-        <x-mary-form wire:submit="update">
+        <x-mary-form wire:submit="save">
             <div class="mb-4">
                 <div class="mb-4">
                     @if ($questionImage)
@@ -94,16 +88,14 @@
                     wire:key="matching-editor-{{ $question->id }}" />
                 @break
                 @default
-                {!! $question->options !!}
+                {{-- Fallback or empty state --}}
+                <div class="text-gray-500 italic">Pilih tipe soal untuk melihat editor opsi.</div>
                 @endswitch
 
                 <x-slot:actions>
                     <x-mary-button label="Batal" wire:click="cancel" />
-                    <x-mary-button label="Simpan Perubahan" class="btn-primary" type="submit" spinner="save2" />
+                    <x-mary-button label="Buat Soal" class="btn-primary" type="submit" spinner="save" />
                 </x-slot:actions>
         </x-mary-form>
     </div>
-
-    <!-- create question button -->
-    <x-mary-button label="Tambah Soal" icon="o-plus" class="btn-primary btn-sm" wire:click="createQuestion" />
 </div>

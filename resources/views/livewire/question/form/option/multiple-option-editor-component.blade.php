@@ -68,12 +68,14 @@
                     </div>
 
                     {{-- Delete Button --}}
+                    @if(count($options) > 3)
                     <div class="pt-1">
                         <x-mary-button
                             icon="o-trash"
                             class="btn-sm btn-circle btn-ghost text-error"
                             wire:click="removeOption({{ $index }})" />
                     </div>
+                    @endif
                 </div>
                 @endforeach
 

@@ -88,6 +88,11 @@
                     :questionId="$question->id"
                     wire:key="ordering-editor-{{ $question->id }}" />
                 @break
+                @case('matching')
+                <livewire:question.form.option.matching-editor-component
+                    :questionId="$question->id"
+                    wire:key="matching-editor-{{ $question->id }}" />
+                @break
                 @default
                 {!! $question->options !!}
                 @endswitch

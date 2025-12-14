@@ -32,7 +32,22 @@ class ExamForm
                                     ->label('Mata Pelajaran')
                                     ->searchable()
                                     ->preload()
-                                    ->required(),
+                                    ->required()
+                                    ->reactive(), // Make it reactive so we can filter question banks
+
+                                Select::make('question_bank_id')
+                                    ->relationship('questionBank', 'name', function ($query, $get) {
+                                        // Filter by subject if selected
+                                        if ($subjectId = $get('subject_id')) {
+                                            $query->where('subject_id', $subjectId);
+                                        }
+                                        return $query;
+                                    })
+                                    ->label('Ambil Soal dari Bank Soal')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required() // Optional if they want to create manual questions later, but for now user implies copy
+                                    ->helperText('Soal akan disalin dari bank soal yang dipilih saat ujian dibuat.'),
 
                                 Select::make('grade_id')
                                     ->relationship('grade', 'name')

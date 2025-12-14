@@ -20,7 +20,10 @@ class Exam extends Model
         'academic_year_id',
         'grade_id',
         'subject_id',
+        'grade_id',
+        'subject_id',
         'teacher_id',       // Guru yang membuat ujian
+        'question_bank_id', // Bank soal yang digunakan (opsional)
         'title',
         'exam_type',        // Tipe ujian (Harian, UTS, UAS, dll.)
         'duration',         // Durasi ujian dalam menit
@@ -81,6 +84,11 @@ class Exam extends Model
     {
         // Guru yang membuat/mengawasi ujian
         return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+    public function questionBank(): BelongsTo
+    {
+        return $this->belongsTo(QuestionBank::class);
     }
 
     /**

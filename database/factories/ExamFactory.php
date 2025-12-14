@@ -16,13 +16,23 @@ class ExamFactory extends Factory
 {
     public function definition(): array
     {
-        // 1. Pastikan Relasi Dasar Sudah Ada
-        $academicYear = AcademicYear::inRandomOrder()->first();
-        $grade = Grade::inRandomOrder()->first();
-        $subject = Subject::inRandomOrder()->first();
-        
+        // 1. Coba ambil Question Bank acak
+        $questionBank = \App\Models\QuestionBank::inRandomOrder()->first();
+
+        if ($questionBank) {
+            // Jika ada Bank Soal, gunakan Subject dan Grade dari Bank Soal tersebut (via Subject)
+            $subject = $questionBank->subject;
+            $grade = $subject->grade; // Subject punya relasi ke Grade
+            $academicYear = $subject->academicYear; // Subject punya relasi ke AcademicYear
+        } else {
+            // Fallback: Jika tidak ada Question Bank, ambil random
+            $subject = Subject::inRandomOrder()->first() ?? Subject::factory()->create();
+            $grade = $subject->grade ?? Grade::inRandomOrder()->first() ?? Grade::factory()->create();
+            $academicYear = $subject->academicYear ?? AcademicYear::inRandomOrder()->first() ?? AcademicYear::factory()->create();
+        }
+
         // Asumsi guru yang membuat ujian adalah user_type 'teacher'
-        $teacher = User::where('user_type', 'teacher')->inRandomOrder()->first();
+        $teacher = User::where('user_type', 'teacher')->inRandomOrder()->first() ?? User::factory()->create(['user_type' => 'teacher']);
 
         $examType = $this->faker->randomElement(ExamTypeEnum::cases());
         $titlePrefix = match ($examType) {
@@ -31,7 +41,7 @@ class ExamFactory extends Factory
             ExamTypeEnum::Final => 'Ujian Akhir Semester',
             ExamTypeEnum::Tryout => 'Try Out Mandiri',
         };
-        
+
         // Jumlah soal yang akan digunakan dalam ujian
         $totalQuestions = $this->faker->numberBetween(30, 50);
 
@@ -44,17 +54,18 @@ class ExamFactory extends Factory
             'grade_id' => $grade->id,
             'subject_id' => $subject->id,
             'teacher_id' => $teacher->id,
-            
+            'question_bank_id' => $questionBank?->id,
+
             'title' => "{$titlePrefix} {$subject->name} Kelas {$grade->name}",
             'exam_type' => $examType,
-            
+
             'duration' => $this->faker->randomElement([60, 90, 120]), // Durasi 60/90/120 menit
             'total_questions' => $totalQuestions,
             'passing_score' => $this->faker->randomElement([65, 70, 75]),
-            
+
             'is_published' => $this->faker->boolean(70), // 70% sudah terbit
             'is_randomized' => $this->faker->boolean(80), // 80% urutan diacak
-            
+
             'start_time' => $startTime,
             'end_time' => $endTime,
         ];

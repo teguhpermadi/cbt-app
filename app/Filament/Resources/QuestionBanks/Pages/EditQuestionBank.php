@@ -20,4 +20,9 @@ class EditQuestionBank extends EditRecord
             RestoreAction::make(),
         ];
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('page-question-banks', ['record' => $this->record]);
+    }
 }

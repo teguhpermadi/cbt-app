@@ -5,6 +5,10 @@ namespace App\Filament\Resources\QuestionBanks\Pages;
 use App\Filament\Resources\QuestionBanks\QuestionBankResource;
 use App\Models\QuestionBank;
 use Filament\Actions\Action;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
 use Livewire\Attributes\On;
 
@@ -34,6 +38,31 @@ class PageQuestionBanks extends Page
     protected function getHeaderActions(): array
     {
         return [
+            EditAction::make('edit_header')
+                ->record($this->record)
+                ->form([
+                    TextInput::make('name')
+                        ->label('Nama Question Bank')
+                        ->required()
+                        ->maxLength(255),
+                    Textarea::make('description')
+                        ->label('Deskripsi')
+                        ->rows(3),
+                ])
+                ->action(function (array $data, QuestionBank $record) {
+                    $record->update($data);
+
+                    Notification::make()
+                        ->title('Header updated successfully')
+                        ->success()
+                        ->send();
+
+                    $this->redirect($this->getResource()::getUrl('page-question-banks', ['record' => $record]));
+                })
+                ->icon('heroicon-o-pencil')
+                ->color('gray')
+                ->tooltip('Edit Title & Description'),
+
             Action::make('create_question')
                 ->label('Tambah Soal')
                 ->icon('heroicon-o-plus')

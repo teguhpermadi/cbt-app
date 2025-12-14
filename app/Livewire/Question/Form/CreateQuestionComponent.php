@@ -12,6 +12,7 @@ use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile; // Kept consistent with Edit component logic if needed, though mostly trait handles it
+use App\Filament\Resources\QuestionBanks\QuestionBankResource;
 
 use App\Models\Option;
 
@@ -175,7 +176,8 @@ class CreateQuestionComponent extends Component
             ->success()
             ->send();
 
-        return redirect()->route('question-banks.show', $this->question->question_bank_id);
+        // return redirect()->route('question-banks.show', $this->question->question_bank_id);
+        return redirect()->to(QuestionBankResource::getUrl('page-question-banks', ['record' => $this->question->question_bank_id]));
     }
 
     public function cancel()
@@ -183,7 +185,8 @@ class CreateQuestionComponent extends Component
         // Hapus draft question karena batal membuat
         $this->question->forceDelete();
 
-        return redirect()->route('question-banks.show', $this->question->question_bank_id);
+        // return redirect()->route('question-banks.show', $this->question->question_bank_id);
+        return redirect()->to(QuestionBankResource::getUrl('page-question-banks', ['record' => $this->question->question_bank_id]));
     }
 
     public function render()

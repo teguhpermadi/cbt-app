@@ -4,6 +4,7 @@ namespace App\Livewire\Question\Form;
 
 use App\Enums\QuestionTypeEnum;
 use App\Models\Question;
+use App\Filament\Resources\QuestionBanks\QuestionBankResource;
 use Livewire\Component;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
@@ -88,12 +89,14 @@ class EditQuestionComponent extends Component
     #[On('options-saved')]
     public function onOptionsSaved()
     {
-        return redirect()->route('question-banks.show', $this->question->question_bank_id);
+        // return redirect()->route('question-banks.show', $this->question->question_bank_id);
+        return redirect()->to(QuestionBankResource::getUrl('page-question-banks', ['record' => $this->question->question_bank_id]));
     }
 
     public function cancel()
     {
-        return redirect()->route('question-banks.show', $this->question->question_bank_id);
+        // return redirect()->route('question-banks.show', $this->question->question_bank_id);
+        return redirect()->to(QuestionBankResource::getUrl('page-question-banks', ['record' => $this->question->question_bank_id]));
     }
 
     public function render()

@@ -35,7 +35,13 @@ class ExamForm
                                     ->required()
                                     ->reactive(), // Make it reactive so we can filter question banks
 
+                                Select::make('grade_id')
+                                    ->relationship('grade', 'name')
+                                    ->label('Kelas/Jenjang')
+                                    ->required(),
+
                                 Select::make('question_bank_id')
+                                    ->columnSpanFull()
                                     ->relationship('questionBank', 'name', function ($query, $get) {
                                         // Filter by subject if selected
                                         if ($subjectId = $get('subject_id')) {
@@ -49,16 +55,13 @@ class ExamForm
                                     ->required() // Optional if they want to create manual questions later, but for now user implies copy
                                     ->helperText('Soal akan disalin dari bank soal yang dipilih saat ujian dibuat.'),
 
-                                Select::make('grade_id')
-                                    ->relationship('grade', 'name')
-                                    ->label('Kelas/Jenjang')
-                                    ->required(),
-
-                                Select::make('academic_year_id')
-                                    ->relationship('academicYear', 'year')
-                                    ->label('Tahun Ajaran')
-                                    ->default(fn() => \App\Models\AcademicYear::where('is_active', true)->first()?->id)
-                                    ->required(),
+                                // Select::make('academic_year_id')
+                                //     ->relationship('academicYear', 'year')
+                                //     ->label('Tahun Ajaran')
+                                //     ->default(fn() => \App\Models\AcademicYear::where('is_active', true)->first()?->id)
+                                //     ->required(),
+                                Hidden::make('academic_year_id')
+                                    ->default(fn() => \App\Models\AcademicYear::where('is_active', true)->first()?->id),
                             ])
                             ->columns(2),
 

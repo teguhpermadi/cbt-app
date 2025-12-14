@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\QuestionBanks\Tables;
 
+use App\Filament\Resources\QuestionBanks\QuestionBankResource;
 use App\Models\QuestionBank;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -42,6 +43,10 @@ class QuestionBanksTable
                 Action::make('questions')
                     ->label('Questions')
                     ->url(fn(QuestionBank $record): string => route('question-banks.show', $record)),
+                // page questions
+                Action::make('page questions')
+                    ->label('Page Questions')
+                    ->url(fn(QuestionBank $record): string => QuestionBankResource::getUrl('page-question-banks', ['record' => $record])),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

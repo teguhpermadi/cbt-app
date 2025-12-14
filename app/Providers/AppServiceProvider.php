@@ -19,6 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \Livewire\Livewire::component('app.filament.resources.question-banks.pages.page-question-banks', \App\Filament\Resources\QuestionBanks\Pages\PageQuestionBanks::class);
     }
 }

@@ -2,6 +2,13 @@
 
 namespace App\Filament\Resources\Exams\Schemas;
 
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class ExamForm
@@ -10,7 +17,95 @@ class ExamForm
     {
         return $schema
             ->components([
-                //
-            ]);
+                Group::make()
+                    ->schema([
+                        Section::make('Informasi Umum')
+                            ->schema([
+                                TextInput::make('title')
+                                    ->label('Judul Ujian')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->columnSpanFull(),
+
+                                Select::make('subject_id')
+                                    ->relationship('subject', 'name')
+                                    ->label('Mata Pelajaran')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required(),
+
+                                Select::make('grade_id')
+                                    ->relationship('grade', 'name')
+                                    ->label('Kelas/Jenjang')
+                                    ->required(),
+
+                                Select::make('academic_year_id')
+                                    ->relationship('academicYear', 'year')
+                                    ->label('Tahun Ajaran')
+                                    ->default(fn() => \App\Models\AcademicYear::where('is_active', true)->first()?->id)
+                                    ->required(),
+                            ])
+                            ->columns(2),
+
+                        Section::make('Konfigurasi Ujian')
+                            ->schema([
+                                Select::make('exam_type')
+                                    ->label('Tipe Ujian')
+                                    ->options(\App\Enums\ExamTypeEnum::class)
+                                    ->required(),
+
+                                TextInput::make('duration')
+                                    ->label('Durasi (Menit)')
+                                    ->numeric()
+                                    ->required()
+                                    ->default(60),
+
+                                // TextInput::make('total_questions')
+                                //     ->label('Jumlah Soal')
+                                //     ->numeric()
+                                //     ->required()
+                                //     ->minValue(1),
+
+                                TextInput::make('passing_score')
+                                    ->label('KKM (Nilai Lulus)')
+                                    ->numeric()
+                                    ->default(75)
+                                    ->required(),
+                            ])
+                            ->columns(2),
+                    ])
+                    ->columnSpan(['lg' => 2]),
+
+                Group::make()
+                    ->schema([
+                        Section::make('Jadwal & Status')
+                            ->schema([
+                                DateTimePicker::make('start_time')
+                                    ->label('Waktu Mulai')
+                                    ->seconds(false)
+                                    ->required(),
+
+                                DateTimePicker::make('end_time')
+                                    ->label('Waktu Selesai')
+                                    ->seconds(false)
+                                    ->required()
+                                    ->after('start_time'),
+
+                                Toggle::make('is_published')
+                                    ->label('Terbitkan Ujian')
+                                    ->helperText('Jika aktif, ujian akan terlihat oleh siswa pada waktunya.')
+                                    ->default(false),
+
+                                Toggle::make('is_randomized')
+                                    ->label('Acak Soal')
+                                    ->default(true),
+                            ]),
+
+                        Hidden::make('teacher_id')
+                            ->default(fn() => auth()->id()),
+                    ])
+                    ->columnSpan(['lg' => 1]),
+            ])
+            ->columns(3);
     }
 }

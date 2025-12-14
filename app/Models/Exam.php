@@ -86,18 +86,18 @@ class Exam extends Model
     /**
      * Relasi ke model ExamQuestion (Salinan soal yang digunakan dalam ujian ini).
      */
-    // public function examQuestions(): HasMany
-    // {
-    //     return $this->hasMany(ExamQuestion::class);
-    // }
+    public function examQuestions(): HasMany
+    {
+        return $this->hasMany(ExamQuestion::class);
+    }
 
     /**
      * Relasi ke model ExamResult (Hasil ujian siswa).
      */
-    // public function examResults(): HasMany
-    // {
-    //     return $this->hasMany(ExamResult::class);
-    // }
+    public function examResults(): HasMany
+    {
+        return $this->hasMany(ExamResult::class);
+    }
 
     // --- SPATIE CONFIGURATIONS ---
 

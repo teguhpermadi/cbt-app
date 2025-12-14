@@ -40,9 +40,9 @@ class QuestionBanksTable
             ])
             ->recordActions([
                 EditAction::make(),
-                Action::make('questions')
-                    ->label('Questions')
-                    ->url(fn(QuestionBank $record): string => route('question-banks.show', $record)),
+                // Action::make('questions')
+                //     ->label('Questions')
+                //     ->url(fn(QuestionBank $record): string => route('question-banks.show', $record)),
                 // page questions
                 Action::make('page questions')
                     ->label('Page Questions')

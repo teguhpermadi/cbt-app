@@ -22,7 +22,7 @@ class QuestionComponent extends Component
     public function onDifficultyUpdated($questionId)
     {
         if ($this->question->id === $questionId) {
-            $this->question->refresh();
+            // $this->question->refresh();
         }
     }
 
@@ -30,7 +30,7 @@ class QuestionComponent extends Component
     public function onTimerUpdated($questionId)
     {
         if ($this->question->id === $questionId) {
-            $this->question->refresh();
+            // $this->question->refresh();
         }
     }
 
@@ -38,7 +38,7 @@ class QuestionComponent extends Component
     public function onScoreUpdated($questionId)
     {
         if ($this->question->id === $questionId) {
-            $this->question->refresh();
+            // $this->question->refresh();
         }
     }
 
@@ -46,7 +46,7 @@ class QuestionComponent extends Component
     public function onOrderUpdated($questionId)
     {
         if ($this->question->id === $questionId) {
-            $this->question->refresh();
+            // $this->question->refresh();
         }
     }
 

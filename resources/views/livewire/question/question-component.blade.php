@@ -24,12 +24,12 @@
         </div>
 
         <!-- body -->
-        <div class="p-4">
+        <div class="p-4" wire:ignore>
             <p>{{ $question->content }}</p>
         </div>
 
         <!-- footer -->
-        <div class="w-full">
+        <div class="w-full" wire:ignore>
             @switch($question->question_type->value)
             @case('multiple_choice')
             <livewire:question.option.multiple-viewer-component

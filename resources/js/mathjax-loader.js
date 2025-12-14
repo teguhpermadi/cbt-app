@@ -26,14 +26,16 @@ export function loadMathJax() {
                 processHtmlClass: 'tex2jax_process'
             },
             startup: {
-                ready: function() {
+                ready: function () {
                     console.log('MathJax is ready');
                     MathJax.startup.defaultReady();
-                    MathJax.startup.promise.then(function() {
+                    MathJax.startup.promise.then(function () {
+                        // Re-render when Livewire updates
                         // Re-render when Livewire updates
                         if (window.Livewire) {
-                            window.Livewire.hook('message.processed', function() {
-                                MathJax.typesetPromise([document.querySelector('.math-display')]);
+                            // Livewire v3 hook
+                            window.Livewire.hook('morph.updated', ({ el, component }) => {
+                                MathJax.typesetPromise([el]);
                             });
                         }
                         resolve(MathJax);

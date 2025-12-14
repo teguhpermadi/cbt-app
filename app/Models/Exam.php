@@ -42,6 +42,24 @@ class Exam extends Model
         'end_time' => 'datetime',
     ];
 
+    /**
+     * Accessor untuk menentukan status ujian berdasarkan waktu saat ini.
+     */
+    public function getStatusAttribute(): \App\Enums\ExamStatusEnum
+    {
+        $now = now();
+
+        if ($now < $this->start_time) {
+            return \App\Enums\ExamStatusEnum::Scheduled;
+        }
+
+        if ($now >= $this->start_time && $now <= $this->end_time) {
+            return \App\Enums\ExamStatusEnum::Ongoing;
+        }
+
+        return \App\Enums\ExamStatusEnum::Finished;
+    }
+
     // --- RELATIONS ---
 
     public function academicYear(): BelongsTo
@@ -58,7 +76,7 @@ class Exam extends Model
     {
         return $this->belongsTo(Subject::class);
     }
-    
+
     public function teacher(): BelongsTo
     {
         // Guru yang membuat/mengawasi ujian
@@ -80,7 +98,7 @@ class Exam extends Model
     // {
     //     return $this->hasMany(ExamResult::class);
     // }
-    
+
     // --- SPATIE CONFIGURATIONS ---
 
     public function getActivitylogOptions(): LogOptions

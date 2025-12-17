@@ -10,8 +10,10 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ExamsTable
 {
@@ -19,6 +21,10 @@ class ExamsTable
     {
         return $table
             ->columns([
+                ToggleColumn::make('is_published')
+                    ->label('Published')
+                    ->sortable(),
+
                 TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
@@ -39,8 +45,6 @@ class ExamsTable
                     ->badge()
                     ->sortable(),
 
-
-
                 // TextColumn::make('duration')
                 //     ->numeric()
                 //     ->suffix(' min')
@@ -58,10 +62,7 @@ class ExamsTable
                     ->date()
                     ->sortable(),
 
-                // IconColumn::make('is_published')
-                //     ->boolean()
-                //     ->label('Published')
-                //     ->sortable(),
+
 
                 // IconColumn::make('is_randomized')
                 //     ->boolean()
@@ -91,6 +92,9 @@ class ExamsTable
                     ForceDeleteBulkAction::make(),
                     RestoreBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->orderBy('created_at', 'desc');
+            });
     }
 }

@@ -19,7 +19,7 @@ class CreateExam extends CreateRecord
 
             if ($questionBank && $questionBank->questions->isNotEmpty()) {
                 $examQuestions = [];
-                $totalQuestions = 0;
+
                 $number = 1;
 
                 foreach ($questionBank->questions as $question) {
@@ -42,16 +42,11 @@ class CreateExam extends CreateRecord
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
-
-                    $totalQuestions++;
                 }
 
                 // Batch insert untuk efisiensi
                 if (!empty($examQuestions)) {
                     \App\Models\ExamQuestion::insert($examQuestions);
-
-                    // Update total soal di Exam
-                    $exam->update(['total_questions' => $totalQuestions]);
                 }
             }
         }

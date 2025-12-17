@@ -20,7 +20,7 @@ class ExamSeeder extends Seeder
 
                 if ($questionBank && $questionBank->questions->isNotEmpty()) {
                     $examQuestions = [];
-                    $totalQuestions = 0;
+
                     $number = 1;
 
                     foreach ($questionBank->questions as $question) {
@@ -40,13 +40,10 @@ class ExamSeeder extends Seeder
                             'created_at' => now(),
                             'updated_at' => now(),
                         ];
-
-                        $totalQuestions++;
                     }
 
                     if (!empty($examQuestions)) {
                         \App\Models\ExamQuestion::insert($examQuestions);
-                        $exam->update(['total_questions' => $totalQuestions]);
                     }
                 }
             }

@@ -27,7 +27,7 @@ class Exam extends Model
         'title',
         'exam_type',        // Tipe ujian (Harian, UTS, UAS, dll.)
         'duration',         // Durasi ujian dalam menit
-        'total_questions',  // Jumlah total soal yang digunakan
+
         'is_published',     // Status ujian: draft/terbit
         'is_randomized',    // Apakah urutan soal diacak
         'passing_score',    // Nilai minimum kelulusan
@@ -38,7 +38,7 @@ class Exam extends Model
     protected $casts = [
         'exam_type' => ExamTypeEnum::class,
         'duration' => 'integer',
-        'total_questions' => 'integer',
+
         'is_published' => 'boolean',
         'is_randomized' => 'boolean',
         'start_time' => 'datetime',

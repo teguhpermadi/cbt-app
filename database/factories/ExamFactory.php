@@ -42,8 +42,7 @@ class ExamFactory extends Factory
             ExamTypeEnum::Tryout => 'Try Out Mandiri',
         };
 
-        // Jumlah soal yang akan digunakan dalam ujian
-        $totalQuestions = $this->faker->numberBetween(30, 50);
+
 
         // Waktu mulai dan berakhir ujian
         $startTime = $this->faker->dateTimeBetween('-1 week', '+1 week');
@@ -60,7 +59,7 @@ class ExamFactory extends Factory
             'exam_type' => $examType,
 
             'duration' => $this->faker->randomElement([60, 90, 120]), // Durasi 60/90/120 menit
-            'total_questions' => $totalQuestions,
+
             'passing_score' => $this->faker->randomElement([65, 70, 75]),
 
             'is_published' => $this->faker->boolean(70), // 70% sudah terbit

@@ -78,11 +78,7 @@ class ExamForm
                                     ->required()
                                     ->default(60),
 
-                                // TextInput::make('total_questions')
-                                //     ->label('Jumlah Soal')
-                                //     ->numeric()
-                                //     ->required()
-                                //     ->minValue(1),
+
 
                                 TextInput::make('passing_score')
                                     ->label('KKM (Nilai Lulus)')

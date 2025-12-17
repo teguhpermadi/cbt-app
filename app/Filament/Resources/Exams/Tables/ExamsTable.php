@@ -39,11 +39,7 @@ class ExamsTable
                     ->badge()
                     ->sortable(),
 
-                // TextColumn::make('total_questions')
-                //     ->numeric()
-                //     ->sortable()
-                //     ->alignCenter()
-                //     ->label('Questions'),
+
 
                 // TextColumn::make('duration')
                 //     ->numeric()

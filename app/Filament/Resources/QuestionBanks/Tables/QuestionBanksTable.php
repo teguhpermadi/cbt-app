@@ -24,10 +24,16 @@ class QuestionBanksTable
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('description')
-                    ->searchable()
-                    ->limit(50)
-                    ->wrap(),
+                // TextColumn::make('description')
+                //     ->searchable()
+                //     ->limit(50)
+                //     ->wrap(),
+                TextColumn::make('subject.name')
+                    ->label('Mata Pelajaran')
+                    ->sortable(),
+                TextColumn::make('subject.grade.name')
+                    ->label('Kelas/Jenjang')
+                    ->sortable(),
                 ToggleColumn::make('is_public')
                     ->sortable(),
                 TextColumn::make('questions_count')

@@ -77,18 +77,13 @@ class MonitorExam extends Page implements HasActions, HasSchemas, HasTable
                     ->label('Selesai')
                     ->boolean(),
             ])
-        ->recordActions([
-            Action::make('details')
-                ->label('Detail')
-                ->icon('heroicon-o-eye')
-                ->modalContent(fn(ExamSession $record) => view('filament.resources.exams.pages.monitor-exam-session-detail', [
-                    'record' => $record->load(['details.examQuestion', 'user']),
-                ]))
-                ->modalSubmitAction(false)
-                ->modalCancelAction(fn(Action $action) => $action->label('Tutup'))
-                ->modalWidth('4xl'),
-        ])
-        ->poll('10s'); // Auto refresh every 10 seconds to monitor live
+            ->recordActions([
+                Action::make('details')
+                    ->label('Detail')
+                    ->icon('heroicon-o-eye')
+                    ->url(fn(ExamSession $record) => route('exams.monitor-session.detail', ['record' => $record->id])),
+            ])
+            ->poll('10s'); // Auto refresh every 10 seconds to monitor live
     }
 
     // public function render(): View

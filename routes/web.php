@@ -39,3 +39,7 @@ Route::get('/questions/{question}/edit', \App\Livewire\Question\Form\EditQuestio
 
 Route::get('/question-banks/{questionBank}/create-question', \App\Livewire\Question\Form\CreateQuestionComponent::class)
     ->name('questions.create');
+
+Route::get('/exams/monitor-session/{record}', \App\Livewire\Exams\MonitorExamResultDetail::class)
+    ->middleware(['auth'])
+    ->name('exams.monitor-session.detail');

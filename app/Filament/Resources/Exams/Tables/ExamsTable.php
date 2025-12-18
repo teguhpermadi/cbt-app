@@ -7,6 +7,9 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
+use App\Filament\Resources\Exams\ExamResource;
+use App\Models\Exam;
+use Filament\Actions\Action;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\TextColumn;
@@ -84,6 +87,10 @@ class ExamsTable
                     ->relationship('grade', 'name'),
             ])
             ->recordActions([
+                Action::make('monitor')
+                    ->label('Monitor')
+                    ->icon('heroicon-o-presentation-chart-line')
+                    ->url(fn($record) => ExamResource::getUrl('monitor', ['record' => $record])),
                 EditAction::make(),
             ])
             ->toolbarActions([

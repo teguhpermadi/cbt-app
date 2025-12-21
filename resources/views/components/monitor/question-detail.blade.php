@@ -3,42 +3,61 @@
 @php
 $question = $detail->examQuestion;
 $isCorrect = $detail->is_correct;
+
 $borderClass = match($isCorrect) {
 true => 'border-success/30 ring-success/5',
 false => 'border-danger/30 ring-danger/5',
 default => 'border-zinc-200 dark:border-zinc-700'
+};
+
+$headerClass = match($isCorrect) {
+true => 'bg-success/10 dark:bg-success/20 border-success/20',
+false => 'bg-danger/10 dark:bg-danger/20 border-danger/20',
+default => 'bg-zinc-50 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700'
 };
 @endphp
 
 <div id="question-{{ $index + 1 }}"
     class="relative p-6 rounded-2xl shadow-sm border-2 bg-white dark:bg-zinc-900 scroll-mt-24 transition-all hover:shadow-md {{ $borderClass }}">
 
-    {{-- Question Status Side Indicator --}}
-    <div class="absolute -left-3 top-6 flex items-center">
-        <div class="h-10 w-1.5 rounded-full {{ $isCorrect === true ? 'bg-success' : ($isCorrect === false ? 'bg-danger' : 'bg-zinc-300 dark:bg-zinc-600') }}"></div>
-    </div>
-
-    <div class="mb-6 flex justify-between items-center bg-zinc-50 dark:bg-zinc-800/50 -mx-6 -mt-6 p-4 rounded-t-2xl border-b border-inherit">
+    <div class="mb-6 flex justify-between items-center -mx-6 -mt-6 p-4 rounded-t-2xl border-b {{ $headerClass }}">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center font-black text-zinc-900 dark:text-white shadow-inner">
+            <div @class([ 'w-10 h-10 rounded-xl flex items-center justify-center font-black shadow-inner active:scale-95 transition-transform' , 'bg-success/20 text-success'=> $isCorrect === true,
+                'bg-danger/20 text-danger' => $isCorrect === false,
+                'bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-white' => $isCorrect === null,
+                ])>
                 {{ $index + 1 }}
             </div>
             <div>
-                <span class="text-xs font-bold text-zinc-500 uppercase tracking-widest block">Tipe Soal</span>
-                <span class="text-sm font-semibold text-zinc-900 dark:text-white">
+                <span @class([ 'text-xs font-bold uppercase tracking-widest block' , 'text-success/70'=> $isCorrect === true,
+                    'text-danger/70' => $isCorrect === false,
+                    'text-zinc-500' => $isCorrect === null,
+                    ])>Tipe Soal</span>
+                <span @class([ 'font-semibold' , 'text-success-content dark:text-success'=> $isCorrect === true,
+                    'text-danger-content dark:text-danger' => $isCorrect === false,
+                    'text-zinc-900 dark:text-white' => $isCorrect === null,
+                    ])>
                     {{ $question->question_type->getLabel() }}
                 </span>
             </div>
         </div>
 
         <div class="text-right">
-            <span class="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-1">Status & Poin</span>
+            <span @class([ 'text-xs font-bold uppercase tracking-widest block mb-1' , 'text-success/70'=> $isCorrect === true,
+                'text-danger/70' => $isCorrect === false,
+                'text-zinc-500' => $isCorrect === null,
+                ])>Status & Poin</span>
             <div class="flex items-center gap-2">
-                <span class="text-[10px] font-black px-3 py-1.5 rounded-full shadow-sm
-                        {{ $isCorrect ? 'bg-success text-success-fg' : ($isCorrect === false ? 'bg-danger text-danger-fg' : 'bg-zinc-500 text-white') }}">
+                <span @class([ 'text-xs font-black px-3 py-1.5 rounded-full shadow-sm' , 'bg-success text-success-fg'=> $isCorrect === true,
+                    'bg-danger text-danger-fg' => $isCorrect === false,
+                    'bg-zinc-500 text-white' => $isCorrect === null,
+                    ])>
                     {{ $isCorrect ? 'BENAR' : ($isCorrect === false ? 'SALAH' : 'PENDING') }}
                 </span>
-                <span class="text-sm font-bold text-zinc-700 dark:text-zinc-300">
+                <span @class([ 'font-bold text-base' , 'text-success'=> $isCorrect === true,
+                    'text-danger' => $isCorrect === false,
+                    'text-zinc-700 dark:text-zinc-300' => $isCorrect === null,
+                    ])>
                     {{ $detail->score_earned }} / {{ $question->score_value }}
                 </span>
             </div>
@@ -86,7 +105,7 @@ default => 'border-zinc-200 dark:border-zinc-700'
             <x-heroicon-m-chat-bubble-left-right class="w-4 h-4" />
             Catatan Koreksi
         </div>
-        <div class="text-zinc-700 dark:text-zinc-300 text-sm leading-relaxed">
+        <div class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
             {{ $detail->correction_notes }}
         </div>
     </div>

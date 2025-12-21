@@ -15,7 +15,7 @@
     @endif
 </div>
 @else
-<div class="text-zinc-900 dark:text-zinc-100 font-medium italic text-sm">
+<div class="text-zinc-900 dark:text-zinc-100">
     {{ $answer ?? '(Tidak menjawab)' }}
 </div>
 @endif

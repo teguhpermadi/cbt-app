@@ -26,6 +26,17 @@ class Grade extends Model
     }
 
     /**
+     * Get the students associated with the grade.
+     */
+    public function students()
+    {
+        return $this->belongsToMany(User::class)
+            ->using(GradeUser::class)
+            ->withPivot('id', 'is_active')
+            ->withTimestamps();
+    }
+
+    /**
      * Konfigurasi untuk Spatie Activity Log
      */
     public function getActivitylogOptions(): LogOptions

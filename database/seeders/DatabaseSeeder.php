@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             AcademicYearSeeder::class,      // Tahun Ajaran
             GradeSeeder::class,             // Kelas
             SubjectSeeder::class,           // Mata Pelajaran
+            GradeUserSeeder::class,         // Grade User
 
             // =========================================================
             // II. Bank Soal (Questions)

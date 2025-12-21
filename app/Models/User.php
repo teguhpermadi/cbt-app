@@ -64,7 +64,18 @@ class User extends Authenticatable implements HasMedia
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    /**
+     * Get the grades associated with the user.
+     */
+    public function grades()
+    {
+        return $this->belongsToMany(Grade::class)
+            ->using(GradeUser::class)
+            ->withPivot('id', 'is_active')
+            ->withTimestamps();
     }
 }

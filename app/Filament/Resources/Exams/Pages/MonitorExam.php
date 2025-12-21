@@ -83,7 +83,13 @@ class MonitorExam extends Page implements HasActions, HasSchemas, HasTable
                     ->icon('heroicon-o-eye')
                     ->url(fn(ExamSession $record) => route('exams.monitor-session.detail', ['record' => $record->id])),
             ])
-            ->poll('10s'); // Auto refresh every 10 seconds to monitor live
+            ->poll('10s')
+            ->headerActions([
+                Action::make('edit')
+                    ->label('Edit')
+                    ->icon('heroicon-o-pencil')
+                    ->url(fn() => ExamResource::getUrl('edit', ['record' => $this->record->id])),
+            ]); // Auto refresh every 10 seconds to monitor live
     }
 
     // public function render(): View

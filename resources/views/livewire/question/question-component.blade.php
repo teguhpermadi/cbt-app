@@ -29,42 +29,24 @@
         </div>
 
         <!-- footer -->
-        <div class="w-full" wire:ignore>
+        <div class="w-full">
             @switch($question->question_type->value)
             @case('multiple_choice')
-            <livewire:question.option.multiple-viewer-component
-                :options="$question->options"
-                wire:key="multiple_choice_{{$question->id}}" />
-            @break
             @case('multiple_selection')
-            <livewire:question.option.multiple-viewer-component
-                :options="$question->options"
-                wire:key="multiple_selection_{{$question->id}}" />
-            @break
             @case('true_false')
-            <livewire:question.option.multiple-viewer-component
-                :options="$question->options"
-                wire:key="true_false_{{$question->id}}" />
+            <x-option-multiple-viewer :options="$question->options" />
             @break
             @case('matching')
-            <livewire:question.option.matching-viewer-component
-                :options="$question->options"
-                wire:key="matching_{{$question->id}}" />
+            <x-option-matching-viewer :options="$question->options" />
             @break
             @case('ordering')
-            <livewire:question.option.ordering-viewer-component
-                :options="$question->options"
-                wire:key="ordering_{{$question->id}}" />
+            <x-option-ordering-viewer :options="$question->options" />
             @break
             @case('numerical_input')
-            <livewire:question.option.numerical-viewer-component
-                :options="$question->options"
-                wire:key="numerical_{{$question->id}}" />
+            <x-option-numerical-viewer :options="$question->options" />
             @break
             @case('essay')
-            <livewire:question.option.essay-viewer-component
-                :options="$question->options"
-                wire:key="essay_{{$question->id}}" />
+            <x-option-essay-viewer :options="$question->options" />
             @break
             @default
             {!! $question->options !!}
